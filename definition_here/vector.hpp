@@ -7,13 +7,8 @@
 
 namespace ft
 {
-template <class T, class Alloc = allocator<T> >
+template <class T, class Alloc = std::allocator<T> >
 class vector {
-		private :
-				allocator_type	_alloc;
-				size_type	_capacity;
-				pointer		_first;
-				size_type	_size;
 				
 
 
@@ -30,6 +25,13 @@ class vector {
 					typedef	VectorReverseIterator<const_iterator> 		const_reverse_iterator;
 					typedef	VectorIteratorTraits<iterator> 			difference_type; */
 					typedef	unsigned long					size_type;
+		private :
+				allocator_type	_alloc;
+				size_type	_capacity;
+				pointer		_first;
+				size_type	_size;
+
+		public :
 
 /*----------------------------------------constructor-----------------------------------------------------------*/
 
@@ -108,6 +110,10 @@ class vector {
 						}
 					}
 					else
+					{
+						if (val)
+							return ;
+					}
 						// insert to do here
 
 				}
@@ -154,6 +160,6 @@ class vector {
 
 
 
-}
+};
 
 #endif
