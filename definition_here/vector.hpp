@@ -1,6 +1,5 @@
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
-//#include <vector>
 
 # include <memory>
 # include <stdexcept>
@@ -148,18 +147,19 @@ class vector {
 					pointer	cur;
 					size_type nbr = _size;
 					_first = _alloc.allocate( n );
-					cur = _first;	
+					cur = _first;
 					for (size_type i = 0; i < nbr; i++)
 					{
-						_alloc.construct(cur, cur_prec.value_type());
+						_alloc.construct(cur, *cur_prec);
 						cur++;
 						cur_prec++;
 					}
+					_capacity = n;
 					_alloc.deallocate(start, nbr);
 				}
 
 
 
 };
-
+}
 #endif

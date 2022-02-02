@@ -15,7 +15,7 @@ OBJS    = $(addprefix $(OBJ_DIR)/, $(SRCS:%.cpp=%.o))
 
 # --   Compilation flags  -- #
 CC        = clang++
-CPPFLAG    = -Wall -Wextra -Werror -std=c++98
+CPPFLAG    = -std=c++98 #-Wall -Wextra -Werror -std=c++98
 
 .PHONY: all
 
