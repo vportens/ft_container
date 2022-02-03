@@ -77,7 +77,16 @@ class vector {
 **
 */
 
-//	besoin des menbre priver donc besoin de geter				vector (const vector& cpy) : _alloc(cpy.
+					vector (const vector& cpy) : _alloc(cpy._alloc), _size(cpy._size), _capacity(cpy._capacity) {
+						_first = _alloc.allocate(_capacity);
+						pointer cur = _first;
+						for (size_type i = 0; i < _size; i++)
+						{
+							_alloc.construct(cur, cpy[i]);
+							cur++;
+						}
+						return (*this);
+					}
 
 
 /*---------------------------------------------capacity--------------------------------------------------------------*/
