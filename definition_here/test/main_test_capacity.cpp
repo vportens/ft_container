@@ -112,5 +112,19 @@ int main()
 	print_elem(test);
 	std::cout << "print test2" << std::endl;
 	print_elem(test2);
+
+	std::vector<double> t;
+	ft::vector<double> tt;
+	std::vector<int> r;
+
+	std::cout << "difference entre test[0] et test.front()" << std::endl;
+	std::cout << test[0] << std::endl;
+	std::cout << test.front() << std::endl;
+	
+	std::cout << "difference entre test[test.size() -1] et test.back()" << std::endl;
+	std::cout << test[test.size() - 1] << std::endl;
+	std::cout << test.back() << std::endl;
+	//std::cout << "test de back dun vector vide: " << t.back() << std::endl; le vrai vector segfault
+	//std::cout << "test de back dun faux vector vide: " << tt.back() << std::endl;
 	return (0);
 }

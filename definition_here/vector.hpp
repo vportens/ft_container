@@ -190,25 +190,32 @@ class vector {
 			{
 			//	if (x == *this)
 			//		return ;
+				if (x._alloc != _alloc)
+					return ;
 				pointer	p_tmp = x._first;
 				size_type c_tmp = x._capacity;
 				size_type s_tmp = x._size;
-				Alloc a_tmp = x._alloc;
+				
 
 				x._first = _first;
 				x._capacity = _capacity;
 				x._size = _size;
-				x._alloc = _alloc;
 
 				_first = p_tmp;
 				_capacity= c_tmp;
 				_size = s_tmp;
-				_alloc = a_tmp;
 				return ;
 				
 					
 			}
-		
+/*	Clean
+**	Destroy all elements
+*/	
+			void	clear() {
+				for (size_type i = 0; i < _size; i++)
+					_alloc.destroy(_first + i);
+				_size = 0;
+			}
 
 /*---------------------------------------Element Access-----------------------------------------*/
 
@@ -216,6 +223,46 @@ class vector {
 **	Access to vector val in position n.
 */
 	reference operator[] (size_type n) {return (*(_first + n));} //check buserror
+
+/*	At
+**	Return the reference to the element at position n in vector
+*/
+	reference	at(size_type n) {
+		if (n >= _size)
+			throw (std::out_of_range("out of range in fonction at"));
+		return (*(_first + n));
+
+	}
+	
+	const_reference at(size_type n) const {
+		if (n >= _size)
+			throw (std::out_of_range("out of range in fonction at"));
+		return (*(_first + n));
+	
+	}
+
+/*	Front
+**	Return a reference to the first elem in vector
+*/
+	reference front() {
+		return (*(_first));
+	}
+
+	const_reference front() const {
+		return (*(_first));
+	}
+
+/*	Back
+**	Return a reference to the last elem in vector
+*/
+	reference	back() {
+		return (*(_first + _size -1));
+	}
+
+	const_reference	back() const{
+		return (*(_first + _size -1));
+	}
+
 
 };
 }
