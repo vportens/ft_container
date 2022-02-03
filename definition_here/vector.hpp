@@ -158,7 +158,64 @@ class vector {
 					_alloc.deallocate(start, nbr);
 				}
 
+/*------------------------------------------Modifiers----------------------------------------------*/
 
+/*		Push_back
+**		Add new element at the end of the vector.
+*/
+			void	push_back(const value_type& val) {
+				if (_size == 0)
+					reserve(1);
+				else if (_size == _capacity)
+					reserve(_capacity * 2);
+				_alloc.construct(_first + _size, val);
+				_size++;
+			
+			}
+
+/*	Pop_back
+**	Remove the last element reducing the size by one.
+*/
+			void	pop_back() {
+				if (_size == 0)
+					return ;
+				_alloc.destroy(_first + _size -1);
+				_size--;
+			}
+
+/*	Swap
+**	Swap two vector (contenue)
+*/
+			void	swap(vector& x)
+			{
+			//	if (x == *this)
+			//		return ;
+				pointer	p_tmp = x._first;
+				size_type c_tmp = x._capacity;
+				size_type s_tmp = x._size;
+				Alloc a_tmp = x._alloc;
+
+				x._first = _first;
+				x._capacity = _capacity;
+				x._size = _size;
+				x._alloc = _alloc;
+
+				_first = p_tmp;
+				_capacity= c_tmp;
+				_size = s_tmp;
+				_alloc = a_tmp;
+				return ;
+				
+					
+			}
+		
+
+/*---------------------------------------Element Access-----------------------------------------*/
+
+/*	Operator[]
+**	Access to vector val in position n.
+*/
+	reference operator[] (size_type n) {return (*(_first + n));} //check buserror
 
 };
 }
