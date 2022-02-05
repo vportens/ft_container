@@ -5,6 +5,11 @@
 		"map": "cpp",
 		"string": "cpp",
 		"unordered_map": "cpp",
-		"*.tcc": "cpp"
+		"*.tcc": "cpp",
+		"iterator": "cpp",
+		"algorithm": "cpp",
+		"memory": "cpp",
+		"numeric": "cpp",
+		"ranges": "cpp"
 	}
 }
