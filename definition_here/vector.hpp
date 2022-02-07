@@ -3,6 +3,7 @@
 
 # include <memory>
 # include <stdexcept>
+# include "randomIterator.hpp"
 
 namespace ft
 {
@@ -18,11 +19,11 @@ class vector {
 					typedef	typename allocator_type::const_reference 			const_reference;
 					typedef	typename allocator_type::pointer				pointer;
 					typedef	typename allocator_type::const_pointer			const_pointer;
-				/*	typedef	VectorIterator<T> 				iterator; //to define;
-					typedef	VectorIterator<const T>				const_iterator;
-					typedef	VectorReverseIterator<iterator> 		reverse_iterator;
-					typedef	VectorReverseIterator<const_iterator> 		const_reverse_iterator;
-					typedef	VectorIteratorTraits<iterator> 			difference_type; */
+					typedef	ft::VectorIterator<T> 				iterator; //to define;
+					typedef	ft::VectorIterator<const T>				const_iterator;
+				//	typedef	ft::VectorReverseIterator<iterator> 		reverse_iterator;
+				//	typedef	ft::VectorReverseIterator<const_iterator> 		const_reverse_iterator;
+					typedef	ft::iterator_traits<iterator> 			difference_type; 
 					typedef	unsigned long					size_type;
 		private :
 				allocator_type	_alloc;
@@ -67,26 +68,56 @@ class vector {
 */
 
 
-/*					template <class InputIterator>
-						vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) {
-					
-}*/
+					template <typename wasagaga >
+					vector (wasagaga first, wasagaga last, const allocator_type& alloc = allocator_type()) {
+						difference_type	n = ft::distance(first, last);							
+						
+					}
+
 
 /*	Copy constructor
 **	Constructs a constainer with a copy of each of the elements in cpy, in the same order.
 **
 */
 
-					vector (const vector& cpy) : _alloc(cpy._alloc), _size(cpy._size), _capacity(cpy._capacity) {
+					vector (const vector& cpy) : _alloc(cpy._alloc), _capacity(cpy._capacity), _size(cpy._size) {
 						_first = _alloc.allocate(_capacity);
 						pointer cur = _first;
 						for (size_type i = 0; i < _size; i++)
 						{
-							_alloc.construct(cur, cpy[i]);
+							_alloc.construct(cur, cpy._first[i]);
 							cur++;
 						}
-						return (*this);
+					//	return (*this);
 					}
+
+
+
+/*-----------------------------------------------iterator--------------------------------------------------*/
+
+/*	Begin
+**	Returns an iterator pointing to the first elements
+*/
+		iterator begin() {
+			return (_first);
+		}
+
+		const_iterator begin() const {
+			return (_first);
+		}
+
+
+/*	End
+**	Returns an iterator pointing to the past end elements
+*/
+		iterator end() {
+			return (_first + _size);
+		}
+
+		const_iterator end() const {
+			return (_first + _size);
+
+		}
 
 
 /*---------------------------------------------capacity--------------------------------------------------------------*/
@@ -169,6 +200,42 @@ class vector {
 
 /*------------------------------------------Modifiers----------------------------------------------*/
 
+/*	Assign, range
+**	change the element from first to end to val
+*/
+/*			template <class InputIterator>
+				void assign(InputIterator first, InputIterator last) {
+					int i = 0;
+					while (first != last)
+					{
+						_first[i] = *first;	
+						first++;
+						i++;	
+					}
+					
+				}
+*/
+/*	Assign, fill
+**	change the n first valut to val	
+*/
+			void	assign(size_type n, const value_type& val) {
+				if (n <= _size)
+				{
+					for (size_type i = 0; i < n; i++)
+						_first[i] = val;
+						//_alloc.construct(_first+i,  val);
+				}
+				else
+				{
+					reserve(n);
+					for (size_type i = 0; i < n; i++)
+						_alloc.construct(_first+i,  val);
+					
+				}
+				_size = n;
+				
+			}
+
 /*		Push_back
 **		Add new element at the end of the vector.
 */
@@ -191,6 +258,13 @@ class vector {
 				_alloc.destroy(_first + _size -1);
 				_size--;
 			}
+
+/*	Insert
+**	
+*/
+
+
+
 
 /*	Swap
 **	Swap two vector (contenue)
@@ -237,7 +311,7 @@ class vector {
 **	Return the reference to the element at position n in vector
 */
 	reference	at(size_type n) {
-		if (n >= _size)
+		if (n >= size())
 			throw (std::out_of_range("out of range in fonction at"));
 		return (*(_first + n));
 

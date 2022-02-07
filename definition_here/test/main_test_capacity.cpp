@@ -40,6 +40,54 @@ int	compare_elements(ft::vector<T> test, std::vector<T> vrai)
 	return (0);
 }
 
+void	test_assign(){
+	std::vector<int> assi;
+	ft::vector<int> test;
+
+	assi.reserve(3);	
+	test.reserve(3);
+	for (int i = 0; i < 3; i++)
+	{
+		assi.push_back(i*2 + 10);
+		test.push_back(i*2 + 10);
+	}
+		std::cout << "print new vector for assign" << std::endl;
+	std::cout << "size befor assigne " << assi.size()<< std::endl;
+	std::cout << "capacity befor assigne " << assi.capacity() << std::endl;
+	for (int i = 0; i < 3; i++)
+	{
+		std::cout << " " << assi[i];
+	}
+	std::cout << std::endl;
+	std::cout << "size befor assigne test " << test.size()<< std::endl;
+	std::cout << "capacity befor assigne test " << test.capacity() << std::endl;
+	for (int i = 0; i < 15; i++)
+	{
+		std::cout << " " << test[i];
+	}
+	std::cout << std::endl;
+
+	assi.assign(7, 15);
+	test.assign(7, 15);
+	for (int i = 0; i < 15; i++)
+	{
+		std::cout << " " << assi[i];
+	}
+	std::cout << std::endl;
+	std::cout << "size after assigne " << assi.size() << std::endl;
+	std::cout << "capacity after assigne " << assi.capacity() << std::endl;
+	for (int i = 0; i < 15; i++)
+	{
+		std::cout << " " << test[i];
+	}
+	std::cout << std::endl;
+	std::cout << "size after assigne " << test.size() << std::endl;
+	std::cout << "capacity after assigne " << test.capacity() << std::endl;
+
+
+
+}
+
 int main()
 {
 	ft::vector<int> test;
@@ -126,5 +174,9 @@ int main()
 	std::cout << test.back() << std::endl;
 	//std::cout << "test de back dun vector vide: " << t.back() << std::endl; le vrai vector segfault
 	//std::cout << "test de back dun faux vector vide: " << tt.back() << std::endl;
+
+
+	test_assign();
+
 	return (0);
 }
