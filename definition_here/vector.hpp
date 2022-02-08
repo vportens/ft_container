@@ -31,7 +31,6 @@ class vector {
 				size_type	_capacity;
 				pointer		_first;
 				size_type	_size;
-				bool		_c;
 
 		public :
 
@@ -231,8 +230,12 @@ class vector {
 							_alloc.construct(_first + i, *first);
 							first++;
 						}
+						return ;
 					
 					}
+					_first = _allocate(n);
+					_size = n;
+					_capacity = n;
 					while (first != last)
 					{
 						_first[i] = *first;	
