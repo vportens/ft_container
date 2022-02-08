@@ -221,6 +221,7 @@ class vector {
 */
 			template <class InputIterator>
 				void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = u_nullptr) {
+					clear();
 					int i = 0;
 					size_t n = ft::distance(first, last);
 					if (n <= _size)
@@ -230,10 +231,11 @@ class vector {
 							_alloc.construct(_first + i, *first);
 							first++;
 						}
+						_size = n;
 						return ;
 					
 					}
-					_first = _allocate(n);
+					_first = _alloc.allocate(n);
 					_size = n;
 					_capacity = n;
 					while (first != last)
@@ -246,9 +248,10 @@ class vector {
 				}
 
 /*	Assign, fill
-**	change the n first valut to val	
+**	change the n first value to val	
 */
 			void	assign(size_type n, const value_type& val) {
+				clear();
 				if (n <= _size)
 				{
 					for (size_type i = 0; i < n; i++)
@@ -291,9 +294,8 @@ class vector {
 			}
 
 /*	Insert
-**	
+**	Insert an element at the position give by ite pos
 */
-
 
 
 
@@ -328,7 +330,7 @@ class vector {
 			void	clear() {
 				for (size_type i = 0; i < _size; i++)
 					_alloc.destroy(_first + i);
-				_size = 0;
+			//	_size = 0;
 			}
 
 /*---------------------------------------Element Access-----------------------------------------*/
