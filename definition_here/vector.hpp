@@ -224,8 +224,15 @@ class vector {
 				void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = u_nullptr) {
 					int i = 0;
 					size_t n = ft::distance(first, last);
-					if (n <= ft::distance(_first, _first + _size))
-						std::cout << "ok" << std::endl;
+					if (n <= _size)
+					{
+						for (size_t i = 0; i < n; i++)
+						{
+							_alloc.construct(_first + i, *first);
+							first++;
+						}
+					
+					}
 					while (first != last)
 					{
 						_first[i] = *first;	
@@ -242,12 +249,13 @@ class vector {
 				if (n <= _size)
 				{
 					for (size_type i = 0; i < n; i++)
-						_first[i] = val;
-						//_alloc.construct(_first+i,  val);
+						_alloc.construct(_first + i, val);
 				}
 				else
 				{
-					reserve(n);
+					_alloc.dealloc(_first, _capacity);
+					_first = _alloc.allocate(n);
+					_capacity = n;
 					for (size_type i = 0; i < n; i++)
 						_alloc.construct(_first+i,  val);
 					
