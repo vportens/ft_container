@@ -21,7 +21,7 @@ class vector {
 					typedef	typename allocator_type::pointer				pointer;
 					typedef	typename allocator_type::const_pointer			const_pointer;
 					typedef	ft::VectorIterator<value_type> 				iterator; //to define;
-					typedef	ft::VectorIterator<const value_type>				const_iterator;
+					typedef	ft::VectorIterator<value_type>				const_iterator;
 				//	typedef	ft::VectorReverseIterator<iterator> 		reverse_iterator;
 				//	typedef	ft::VectorReverseIterator<const_iterator> 		const_reverse_iterator;
 					typedef	std::ptrdiff_t			difference_type; 
@@ -31,6 +31,7 @@ class vector {
 				size_type	_capacity;
 				pointer		_first;
 				size_type	_size;
+				bool		_c;
 
 		public :
 

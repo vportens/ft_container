@@ -209,9 +209,46 @@ class VectorIterator : public ft::iterator<ft::random_access_iterator_tag, T> {
 
 			}
 
+	                operator VectorIterator<const T> () const
+       		         { return (VectorIterator<const T>(this->_elem)); }
 
 };
+/*
+template<class T, class Distance = std::ptrdiff_t,
+		class Pointer = T*, class Reference = T&>
+class ConstVectorIterator {
+		private :
 
+  		T* _p;
+
+		public :	
+
+		typedef T		value_type;	
+		typedef Distance		difference_type;	
+
+		typedef const T*		const_pointer;	
+		typedef const T&		const_reference;
+
+
+			ConstVectorIterator(): _p(NULL), _c(1) {}
+
+			ConstVectorIterator(const_pointer value) : _p(value) , _c(1)  {}
+
+
+ 			ConstVectorIterator(const ConstVectorIterator& cpy) : _p(cpy._p), _c(1){
+			}
+			
+			ConstVectorIterator&	operator=(const ConstVectorIterator& cpy) {
+				_p = cpy._p;
+				return *this;
+			};
+
+
+			~ConstVectorIterator() {};
+
+
+
+};*/
 
 
 /*-------------------------------------------fonction---------------------------------*/
@@ -234,8 +271,7 @@ class VectorIterator : public ft::iterator<ft::random_access_iterator_tag, T> {
 
 			template<typename T, typename T1>
 			typename ft::VectorIterator<T>::different_type 
- 			operator==(const ft::VectorIterator<T> ite1, const ft::VectorIterator<T1> ite2) {return ite1.getter() == ite2.getter();}
-
+ 			operator==(const ft::VectorIterator<T> ite1, const ft::VectorIterator<T1> ite2) {return ite1.getter() == ite2.getter();} 
 
 }
 
