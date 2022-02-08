@@ -4,6 +4,7 @@
 # include <memory>
 # include <stdexcept>
 # include "randomIterator.hpp"
+# include "utils.hpp"
 
 namespace ft
 {
@@ -19,11 +20,11 @@ class vector {
 					typedef	typename allocator_type::const_reference 			const_reference;
 					typedef	typename allocator_type::pointer				pointer;
 					typedef	typename allocator_type::const_pointer			const_pointer;
-					typedef	ft::VectorIterator<T> 				iterator; //to define;
-					typedef	ft::VectorIterator<const T>				const_iterator;
+					typedef	ft::VectorIterator<value_type> 				iterator; //to define;
+					typedef	ft::VectorIterator<const value_type>				const_iterator;
 				//	typedef	ft::VectorReverseIterator<iterator> 		reverse_iterator;
 				//	typedef	ft::VectorReverseIterator<const_iterator> 		const_reverse_iterator;
-					typedef	ft::iterator_traits<iterator> 			difference_type; 
+					typedef	std::ptrdiff_t			difference_type; 
 					typedef	unsigned long					size_type;
 		private :
 				allocator_type	_alloc;
@@ -68,11 +69,26 @@ class vector {
 */
 
 
-					template <typename wasagaga >
-					vector (wasagaga first, wasagaga last, const allocator_type& alloc = allocator_type()) {
-						difference_type	n = ft::distance(first, last);							
+					template <class InputIterator>
+					vector ( InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()
+					,		typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = u_nullptr) : _alloc(alloc) {
+				difference_type n = ft::distance(first, last);
+				_first= _alloc.allocate( n );
+				_size = n;
+				_capacity = n;
+	
+				pointer cur = _first;
+				while (n--)
+				{
+					_alloc.construct(_first, *first);
+					first++;
+					_first++;
+					
+				}
+				_first = cur;
+			}				//		difference_type	n = ft::distance(first, last);							
 						
-					}
+				
 
 
 /*	Copy constructor
@@ -97,13 +113,13 @@ class vector {
 
 /*	Begin
 **	Returns an iterator pointing to the first elements
-*/
-		iterator begin() {
-			return (_first);
-		}
+// */
+ 		iterator begin(){
+ 			return (iterator(_first));
+ 		}
 
 		const_iterator begin() const {
-			return (_first);
+			return (const_iterator(_first));
 		}
 
 
@@ -203,9 +219,12 @@ class vector {
 /*	Assign, range
 **	change the element from first to end to val
 */
-/*			template <class InputIterator>
-				void assign(InputIterator first, InputIterator last) {
+			template <class InputIterator>
+				void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = u_nullptr) {
 					int i = 0;
+					size_t n = ft::distance(first, last);
+					if (n <= ft::distance(_first, _first + _size))
+						std::cout << "ok" << std::endl;
 					while (first != last)
 					{
 						_first[i] = *first;	
@@ -214,7 +233,7 @@ class vector {
 					}
 					
 				}
-*/
+
 /*	Assign, fill
 **	change the n first valut to val	
 */

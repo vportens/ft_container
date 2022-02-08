@@ -10,6 +10,7 @@
 		"algorithm": "cpp",
 		"memory": "cpp",
 		"numeric": "cpp",
-		"ranges": "cpp"
+		"ranges": "cpp",
+		"type_traits": "cpp"
 	}
 }

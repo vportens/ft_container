@@ -14,10 +14,23 @@ struct bidirectional_iterator_tag : public forward_iterator_tag {};
 
 struct random_access_iterator_tag : public bidirectional_iterator_tag {};
 
+template<typename Iterator>
+struct iterator_traits;
 
+template<typename Tp>
+struct iterator_traits<Tp*> {
 
+	public :
+		typedef random_access_iterator_tag	iterator_category;	
+		typedef Tp		value_type;	
+		typedef std::ptrdiff_t		difference_type;	
+		typedef Tp*		pointer;	
+		typedef Tp&		reference;
+}; //to do
+
+/*
 template<class Iterator>
-class iterator_traits {
+struct iterator_traits {
 	
 	public :
 		typedef typename Iterator::iterator_category	iterator_category;
@@ -27,28 +40,18 @@ class iterator_traits {
 		typedef typename Iterator::reference		reference;	
 
 }; //to do
+*/
 
 
-template<class T>
-class iterator_traits<T*> {
 
+template<typename Tp>
+struct iterator_traits<const Tp*> {
 	public :
 		typedef random_access_iterator_tag	iterator_category;	
-		typedef T		value_type;	
+		typedef Tp		value_type;	
 		typedef std::ptrdiff_t		difference_type;	
-		typedef T*		pointer;	
-		typedef T&		reference;
-}; //to do
-
-
-template<class T>
-class iterator_traits<const T*> {
-	public :
-		typedef random_access_iterator_tag	iterator_category;	
-		typedef T		value_type;	
-		typedef std::ptrdiff_t		difference_type;	
-		typedef const T*		pointer;	
-		typedef const T&		reference;
+		typedef const Tp*		pointer;	
+		typedef const Tp&		reference;
 }; //to do
 
 
@@ -74,6 +77,8 @@ template<class T, class Distance = std::ptrdiff_t,
 		class Pointer = T*, class Reference = T&>
 class VectorIterator : public ft::iterator<ft::random_access_iterator_tag, T> {
 
+		protected :
+		typedef typename ft::iterator_traits<T> _trait;
 		private :
 
   			T* _p;
@@ -88,14 +93,17 @@ class VectorIterator : public ft::iterator<ft::random_access_iterator_tag, T> {
 		typedef Distance		difference_type;	
 		typedef Pointer		pointer;	
 		typedef Reference		reference;	
+		typedef const T*		const_pointer;	
+		typedef const T&		const_reference;
 
 
 			VectorIterator(): _p(NULL) {}
 
-			VectorIterator(T* value) : _p(value) {}
+			VectorIterator(pointer value) : _p(value) {}
 
- 			VectorIterator(const VectorIterator& cpy) {
-				*this = cpy;
+	//		VectorIterator(const_pointer value) : _p(value) {}
+
+ 			VectorIterator(const VectorIterator& cpy) : _p(cpy._p){
 			}
 			
 			VectorIterator&	operator=(const VectorIterator& cpy) {
@@ -107,20 +115,25 @@ class VectorIterator : public ft::iterator<ft::random_access_iterator_tag, T> {
 			~VectorIterator() {};
 
 /*----------all category--------------*/
-			VectorIterator& operator++(int) {
+			VectorIterator operator++(int) {
+				VectorIterator tmp(*this);
+				operator++(); 
+				return tmp;
+			}
+
+			VectorIterator& 	operator++(void) {
 				++_p;
 				return *this;
 			}
 
-			VectorIterator 	operator++(void) {
-				VectorIterator tmp(*this);
-				operator+(1); 
-				return tmp;
+
+			pointer	getter() const {
+				return (_p);
 			}
-
-
 /*--------------------input----------------*/
- 			bool 		operator==(const VectorIterator& cpy) const {return _p == cpy._p;}
+
+
+
   			bool		operator!=(const VectorIterator& cpy) const {return _p != cpy._p;}
 
 			reference	operator*() const {return *_p;}
@@ -130,15 +143,15 @@ class VectorIterator : public ft::iterator<ft::random_access_iterator_tag, T> {
 			
 
 /*------------------Bidirectional---------------*/
-			VectorIterator& operator--(int) {
-				--_p;
-				return *this;
+			VectorIterator operator--(int) {
+				VectorIterator tmp(*this);
+				operator-();
+				return tmp;
 			}
 
-			VectorIterator	operator--(void) {
-				VectorIterator tmp(*this);
-				operator-(1);
-				return tmp;
+			VectorIterator&	operator--(void) {
+				--_p;
+				return *this;
 			}
 
 			
@@ -199,20 +212,29 @@ class VectorIterator : public ft::iterator<ft::random_access_iterator_tag, T> {
 
 };
 
+
+
 /*-------------------------------------------fonction---------------------------------*/
 
-			template<class VectorIterator>
-			typename ft::iterator_traits<VectorIterator>::difference_type
-			distance (VectorIterator first, VectorIterator last)
+			//typename ft::iterator_traits<VectorIterator>::difference_type
+			template<class InputIterator>
+			size_t distance(InputIterator first, InputIterator last)
 			{
-				int i = 0;
+				size_t i = 0;
 				while (first != last)
 				{
 					i++;
-					first = first+1;
+					first++;
 				}	
 				return (i);
 			}
+
+			template<typename T>
+ 			bool operator==(const ft::VectorIterator<T> ite1, const ft::VectorIterator<T> ite2) {return (ite1.getter() == ite2.getter());}
+
+			template<typename T, typename T1>
+			typename ft::VectorIterator<T>::different_type 
+ 			operator==(const ft::VectorIterator<T> ite1, const ft::VectorIterator<T1> ite2) {return ite1.getter() == ite2.getter();}
 
 
 }
