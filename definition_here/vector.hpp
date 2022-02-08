@@ -253,7 +253,7 @@ class vector {
 				}
 				else
 				{
-					_alloc.dealloc(_first, _capacity);
+					_alloc.deallocate(_first, _capacity);
 					_first = _alloc.allocate(n);
 					_capacity = n;
 					for (size_type i = 0; i < n; i++)
