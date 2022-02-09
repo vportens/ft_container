@@ -109,6 +109,12 @@ class vector {
 					}
 
 
+				vector& operator=(const vector& cpy) {
+					clear();
+					insert(end(), cpy.begin(), cpy.end());
+					return (*this);
+
+				}
 
 /*-----------------------------------------------iterator--------------------------------------------------*/
 
