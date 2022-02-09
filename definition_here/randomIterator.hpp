@@ -210,7 +210,7 @@ class VectorIterator : public ft::iterator<ft::random_access_iterator_tag, T> {
 			}
 
 	                operator VectorIterator<const T> () const
-       		         { return (VectorIterator<const T>(this->_elem)); }
+       		         { return (VectorIterator<const T>(this->_p)); }
 
 };
 /*
@@ -272,6 +272,14 @@ class ConstVectorIterator {
 			template<typename T, typename T1>
 			typename ft::VectorIterator<T>::different_type 
  			operator==(const ft::VectorIterator<T> ite1, const ft::VectorIterator<T1> ite2) {return ite1.getter() == ite2.getter();} 
+
+		   	template <typename T>
+    			typename ft::VectorIterator<T>::difference_type
+ 			operator-(const ft::VectorIterator<T> vec1, const ft::VectorIterator<T> vec2)
+   			{
+       				return (vec1.getter() - vec2.getter());
+   			}
+
 
 }
 

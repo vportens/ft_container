@@ -4,6 +4,7 @@
 # include <memory>
 # include <stdexcept>
 # include "randomIterator.hpp"
+	#include <iostream>
 # include "utils.hpp"
 
 namespace ft
@@ -163,13 +164,12 @@ class vector {
 						{
 							allocator_type().destroy(_first + i);
 						}
+						_size = n;
 					}
 					else
 					{
-						if (val)
-							return ;
+						insert(_first + _size, n - _size, val);
 					}
-						// insert to do here
 
 				}
 				
@@ -296,7 +296,144 @@ class vector {
 /*	Insert
 **	Insert an element at the position give by ite pos
 */
+			iterator insert (iterator position, const value_type&val)
+			{
+				size_t n = &(*position) - _first;
+				//std::cout << "position du ite: " << n<< std::endl;
+				//std::cout << "          " << n << std::endl;
+			
+				if (_capacity >= _size + 1)
+				{
+					int i = 0;
+					while (_size -i > n)
+					{
+						_alloc.construct(_first + _size - i, *(_first + _size -i-1));
+						i++;
+					}
+					_alloc.construct(_first + _size - i , val);
+					_size++;
 
+
+				}
+				else
+				{
+					int i = 0;
+					if (_capacity != 0)
+						reserve(_capacity *2);
+					else
+						reserve(1);
+					while (_size -i > n)
+					{
+						_alloc.construct(_first + _size - i, *(_first + _size -i-1));
+						i++;
+					}
+					_alloc.construct(_first + _size - i , val);
+					_size++;
+
+				}
+				return (_first + n);
+			}
+
+			
+			void	insert (iterator position, size_type n, const value_type& val)
+			{
+				size_t last = &(*position) - _first;
+				if (_capacity >= _size + n)
+				{
+					int i = 0;
+					while ( _size -i > last)	
+					{
+						_alloc.construct(_first + _size - i + n - 1, *(_first + _size -i - 1));
+						i++;
+					}	
+					size_type j = 0;
+					while (j < n)
+					{
+						_alloc.construct(_first + _size - i + n - 1, val);
+						i++;
+						j++;
+
+					}
+					_size += n;	
+				}
+				else
+				{
+					if (_capacity != 0)
+						reserve(_capacity * 2);
+					if (_capacity < _size + n)
+						reserve(_size + n);
+					int i = 0;
+					while (_size -i > last)	
+					{
+						_alloc.construct(_first + _size - i + n-1, *(_first + _size -i - 1));
+						i++;
+					}	
+					size_type j = 0;
+					while (j < n)
+					{
+						_alloc.construct(_first + _size - i + n-1, val);
+						i++;
+						j++;
+
+					}
+					_size += n;	
+			
+				
+				}	
+			}
+
+
+			template<class InputIterator>
+			void insert (iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = u_nullptr) {
+				size_t lastone = &(*position) - _first;
+				size_type n = ft::distance(first, last);
+				if (_capacity >= _size + n)
+				{
+					int i = 0;
+					while ( _size -i > lastone)	
+					{
+						_alloc.construct(_first + _size - i + n - 1, *(_first + _size -i - 1));
+						i++;
+					}	
+					size_type j = 0;
+					while (j < n)
+					{
+
+						last -= 1;
+						_alloc.construct(_first + _size - i + n - 1, *last);
+						i++;
+						j++;
+
+					}
+					_size += n;	
+				}
+				else
+				{
+					reserve(_capacity * 2);
+					if (_capacity < _size + n)
+						reserve(_size + n);
+					int i = 0;
+					while (_size -i > lastone)	
+					{
+						_alloc.construct(_first + _size - i + n-1, *(_first + _size -i - 1));
+						i++;
+					}	
+					size_type j = 0;
+					while (j < n)
+					{
+						last -= 1;
+						_alloc.construct(_first + _size - i + n-1, *last);
+						i++;
+						j++;
+
+					}
+					_size += n;	
+			
+				
+				}	
+
+
+			}
 
 
 /*	Swap
@@ -330,7 +467,7 @@ class vector {
 			void	clear() {
 				for (size_type i = 0; i < _size; i++)
 					_alloc.destroy(_first + i);
-			//	_size = 0;
+			_size = 0;
 			}
 
 /*---------------------------------------Element Access-----------------------------------------*/

@@ -85,8 +85,71 @@ void	test_assign(){
 	std::cout << "capacity after assigne " << test.capacity() << std::endl;
 
 
+	
+
 
 }
+
+void	test_insert() {
+	std::vector<int> vec(3, 100);
+	std::vector<int>::iterator ite;
+
+	ite = vec.end();
+	ite = vec.insert(ite, 60);
+
+	for (int i = 0; i < vec.size(); i++)
+		std::cout << " " << vec[i];
+	std::cout << std::endl;
+	std::cout << "after insert, capacity: " << vec.capacity() << std::endl;
+	std::cout << "after insert, size: " << vec.size() << std::endl;
+	std::cout << "ou poite ite: " << *ite<< std::endl;
+
+	ft::vector<int> myvec(3, 100);
+	ft::vector<int>::iterator myite;
+
+	myite = myvec.end();
+	myite = myvec.insert(myite, 60);
+	for (int i = 0; i < myvec.size(); i++)
+		std::cout << " " << myvec[i];
+	std::cout << std::endl;
+	std::cout << "after insert, capacity: " << myvec.capacity() << std::endl;
+	std::cout << "after insert, size: " << myvec.size() << std::endl;
+	std::cout << "ou poite ite: " << *myite<< std::endl;
+
+
+	std::vector<int> vec2(3, 100);	
+	std::vector<int>::iterator ite2;
+
+	ite2 = vec2.begin();
+	vec2.insert(ite2, 10, 300);	
+
+	for (int i = 0; i < vec2.size(); i++)
+		std::cout << " " << vec2[i];
+	std::cout << std::endl;
+	std::cout << "after insert, capacity: " << vec2.capacity() << std::endl;
+	std::cout << "after insert, size: " << vec2.size() << std::endl;
+
+
+	ft::vector<int> myvec2(3, 100);
+	ft::vector<int>::iterator myite2;
+
+	myite2 = myvec2.begin();
+	myvec2.insert(myite2,10 ,  300);
+	for (int i = 0; i < myvec2.size(); i++)
+		std::cout << " " << myvec2[i];
+	std::cout << std::endl;
+	std::cout << "after insert, capacity: " << myvec2.capacity() << std::endl;
+	std::cout << "after insert, size: " << myvec2.size() << std::endl;
+
+	std::vector<int> myvec3;
+
+	std::vector<int>::iterator ite3;
+	ite3 = myvec3.end();
+	std::cout << *ite3 << std::endl;
+
+	
+}
+
 
 int main()
 {
@@ -177,6 +240,7 @@ int main()
 
 
 	test_assign();
+	test_insert();
 
 	return (0);
 }
