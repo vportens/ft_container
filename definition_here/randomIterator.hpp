@@ -137,7 +137,7 @@ class VectorIterator : public ft::iterator<ft::random_access_iterator_tag, T> {
   			bool		operator!=(const VectorIterator& cpy) const {return _p != cpy._p;}
 
 			reference	operator*() const {return *_p;}
-			reference	operator->() const {return *_p;}
+			pointer		operator->() {return &(operator*());}
 /*--------------------output----------------*/
  // 			T&		operator*() {return _p;}
 			
@@ -145,7 +145,7 @@ class VectorIterator : public ft::iterator<ft::random_access_iterator_tag, T> {
 /*------------------Bidirectional---------------*/
 			VectorIterator operator--(int) {
 				VectorIterator tmp(*this);
-				operator-();
+				operator--();
 				return tmp;
 			}
 
@@ -153,6 +153,12 @@ class VectorIterator : public ft::iterator<ft::random_access_iterator_tag, T> {
 				--_p;
 				return *this;
 			}
+
+		//	VectorIterator&	operator--(VectorIterator& stc) {
+		//		VectorIterator tmp = stc;		
+		//		operator--();
+		//		return *tmp;
+		//	}
 
 			
 		//	T&	operator--(
@@ -209,8 +215,11 @@ class VectorIterator : public ft::iterator<ft::random_access_iterator_tag, T> {
 
 			}
 
-	                operator VectorIterator<const T> () const
-       		         { return (VectorIterator<const T>(this->_p)); }
+	     //           operator VectorIterator<const T> () const
+       	//	         { return (VectorIterator<const T>(this->_p)); }
+
+	        //        operator VectorIterator<const T> () const
+       		  //       { return (VectorIterator<const T>(this->_p)); }
 
 };
 /*
