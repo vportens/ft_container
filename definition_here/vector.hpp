@@ -475,7 +475,7 @@ class vector {
 /*	Operator[]
 **	Access to vector val in position n.
 */
-	reference operator[] (size_type n) {return (*(_first + n));} //check buserror
+	reference operator[] (size_type n) const {return (*(_first + n));} //check buserror
 
 /*	At
 **	Return the reference to the element at position n in vector
@@ -530,6 +530,12 @@ class vector {
 		}
 		return (true);
 	}
+
+	template<typename T, typename Allocator>
+ 	bool operator!=(const ft::vector<T, Allocator>& vec1, const ft::vector<T, Allocator>& vec2) {
+		return (!(vec1 == vec2));
+	}
+
 
 	template<typename T, typename Allocator>
  	bool operator>(const ft::vector<T, Allocator>& vec1, const ft::vector<T, Allocator>& vec2) {
