@@ -445,6 +445,7 @@ class vector {
 
 			iterator erase (iterator position) {
 				iterator cur = position;
+				iterator start = cur;
 				if (position == end()-1)
 				{
 					_size--;
@@ -455,11 +456,11 @@ class vector {
 					_alloc.destroy(&(*position));
 					while (cur != end())
 					{
-						cur = cur + 1;
+						_alloc.construc(cur,*(cur + 1));
 						cur++;
 					}
 				}
-				return (cur);
+				return (start);
 			}
 
 
@@ -487,7 +488,6 @@ class vector {
 					pos = cur;	
 					pos++;
 					cur++;
-					std::cout << "lol" << std::endl;
 				}
 				return (start);
 			}
