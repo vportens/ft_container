@@ -518,5 +518,76 @@ class vector {
 
 
 };
+
+	template<typename T, typename Allocator>
+ 	bool operator==(const ft::vector<T, Allocator>& vec1, const ft::vector<T, Allocator>& vec2) {
+		if (vec1.size() != vec2.size())
+			return (false);
+		for (size_t i = 0; i < vec1.size(); i++)
+		{
+			if (vec1[i] != vec2[i])
+				return (false);
+		}
+		return (true);
+	}
+
+	template<typename T, typename Allocator>
+ 	bool operator>(const ft::vector<T, Allocator>& vec1, const ft::vector<T, Allocator>& vec2) {
+		size_t i = 0;
+		while (i < vec1.size() && i < vec2.size())
+		{
+			if (vec1[i] > vec2[i])
+				return (true);
+			if (vec2[i] > vec1[i])
+				return (false);
+			i++;
+		}	
+		return (false);
+	}
+
+	template<typename T, typename Allocator>
+ 	bool operator<(const ft::vector<T, Allocator>& vec1, const ft::vector<T, Allocator>& vec2) {
+		size_t i = 0;
+		while (i < vec1.size() && i < vec2.size())
+		{
+			if (vec1[i] < vec2[i])
+				return (true);
+			if (vec2[i] < vec1[i])
+				return (false);
+			i++;
+		}	
+		return (false);
+	}
+
+	template<typename T, typename Allocator>
+ 	bool operator>=(const ft::vector<T, Allocator>& vec1, const ft::vector<T, Allocator>& vec2) {
+		size_t i = 0;
+		while (i < vec1.size() && i < vec2.size())
+		{
+			if (vec1[i] >= vec2[i])
+				return (true);
+			if (vec2[i] > vec1[i])
+				return (false);
+			i++;
+		}	
+		return (false);
+	}
+
+	template<typename T, typename Allocator>
+ 	bool operator<=(const ft::vector<T, Allocator>& vec1, const ft::vector<T, Allocator>& vec2) {
+		size_t i = 0;
+		while (i < vec1.size() && i < vec2.size())
+		{
+			if (vec1[i] <= vec2[i])
+				return (true);
+			if (vec2[i] < vec1[i])
+				return (false);
+			i++;
+		}	
+		return (false);
+	}
+
+
+
 }
 #endif
