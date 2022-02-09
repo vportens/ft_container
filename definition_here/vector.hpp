@@ -442,6 +442,56 @@ class vector {
 			}
 
 
+
+			iterator erase (iterator position) {
+				iterator cur = position;
+				if (position == end()-1)
+				{
+					_size--;
+					_alloc.destroy(&(*position));
+				}
+				else
+				{
+					_alloc.destroy(&(*position));
+					while (cur != end())
+					{
+						cur = cur + 1;
+						cur++;
+					}
+				}
+				return (cur);
+			}
+
+
+			iterator erase(iterator first, iterator last) {
+				iterator start;
+				if (last == end())
+					start = last;
+				else
+					start = last+1;
+				iterator cur = start;
+				iterator pos = first;
+				iterator nend = end();
+				int i = 1;
+				while (first != last)
+				{
+					i++;
+					_alloc.destroy(&(*first));
+					first++;
+				} 
+				if (first != end())
+					_alloc.destroy(&(*first));
+				_size -= i -1;
+				while (cur != nend)
+				{
+					pos = cur;	
+					pos++;
+					cur++;
+					std::cout << "lol" << std::endl;
+				}
+				return (start);
+			}
+
 /*	Swap
 **	Swap two vector (contenue)
 */
