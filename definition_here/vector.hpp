@@ -117,6 +117,12 @@ class vector {
 
 				}
 
+
+			~vector() {
+				clear();
+				_alloc.deallocate(_first, _capacity);
+			}
+
 /*-----------------------------------------------iterator--------------------------------------------------*/
 
 /*	Begin
@@ -144,12 +150,21 @@ class vector {
 		}
 
 		reverse_iterator rbegin() {
-			return (reverse_iterator(_first + _size));
+			return (reverse_iterator(end()));
 		}
 
 		const_iterator rbegin()const  {
 			return (reverse_iterator(_first + _size));
 		}
+
+		reverse_iterator rend() {
+			return (reverse_iterator(_first));
+		}
+
+		const_iterator rend()const  {
+			return (reverse_iterator(_first));
+		}
+		
 
 /*---------------------------------------------capacity--------------------------------------------------------------*/
 
@@ -209,7 +224,7 @@ class vector {
 
 				void	reserve(size_type n) {
 					if (n > max_size())
-						throw (std::invalid_argument("reserve overflow max size"));
+						throw (std::invalid_argument("vector::reserve"));
 					if (n <= _capacity)
 						return ;
 					pointer	start = _first;
