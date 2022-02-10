@@ -250,11 +250,11 @@ class vector {
 */
 			template <class InputIterator>
 				void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = u_nullptr) {
-					clear();
 					int i = 0;
 					size_t n = ft::distance(first, last);
 					if (n <= _size)
 					{
+						clear();
 						for (size_t i = 0; i < n; i++)
 						{
 							_alloc.construct(_first + i, *first);
@@ -264,6 +264,7 @@ class vector {
 						return ;
 					
 					}
+					clear();
 					_first = _alloc.allocate(n);
 					_size = n;
 					_capacity = n;
