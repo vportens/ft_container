@@ -94,9 +94,17 @@ void	test_insert() {
 	std::vector<int> vec(3, 100);
 	std::vector<int>::iterator ite;
 
+	std::vector<int> vec26(3, 100);
+	std::vector<int>::iterator ite26;
+
 	ite = vec.end();
 	ite = vec.insert(ite, 60);
 
+
+	ite26 = vec26.end();
+	ite26 = vec26.insert(ite26, 60);
+
+	std::cout << "tests : " << (ite26 < ite) << "houlalalalallallalaal:" << std::endl;
 	for (int i = 0; i < vec.size(); i++)
 		std::cout << " " << vec[i];
 	std::cout << std::endl;
@@ -147,6 +155,8 @@ void	test_insert() {
 	ite3 = myvec3.end();
 	std::cout << *ite3 << std::endl;
 
+
+	
 	
 }
 
@@ -228,6 +238,7 @@ int main()
 	ft::vector<double> tt;
 	std::vector<int> r;
 
+	test_insert();
 	std::cout << "difference entre test[0] et test.front()" << std::endl;
 	std::cout << test[0] << std::endl;
 	std::cout << test.front() << std::endl;
@@ -240,7 +251,6 @@ int main()
 
 
 	test_assign();
-	test_insert();
 
 	return (0);
 }
