@@ -17,18 +17,6 @@ struct random_access_iterator_tag : public bidirectional_iterator_tag {};
 template<typename Iterator>
 struct iterator_traits;
 
-template<typename Tp>
-struct iterator_traits<Tp*> {
-
-	public :
-		typedef random_access_iterator_tag	iterator_category;	
-		typedef Tp		value_type;	
-		typedef std::ptrdiff_t		difference_type;	
-		typedef Tp*		pointer;	
-		typedef Tp&		reference;
-}; //to do
-
-/*
 template<class Iterator>
 struct iterator_traits {
 	
@@ -40,7 +28,17 @@ struct iterator_traits {
 		typedef typename Iterator::reference		reference;	
 
 }; //to do
-*/
+
+template<typename Tp>
+struct iterator_traits<Tp*> {
+
+	public :
+		typedef random_access_iterator_tag	iterator_category;	
+		typedef Tp		value_type;	
+		typedef std::ptrdiff_t		difference_type;	
+		typedef Tp*		pointer;	
+		typedef Tp&		reference;
+}; //to do
 
 
 
@@ -77,26 +75,25 @@ template<class T, class Distance = std::ptrdiff_t,
 		class Pointer = T*, class Reference = T&>
 class VectorIterator : public ft::iterator<ft::random_access_iterator_tag, T> {
 
-		protected :
-		typedef typename ft::iterator_traits<T> _trait;
-		private :
-
-  			T* _p;
 
 		protected :
 			
 		public :
 
 	
-	//	typedef Category		iterator_category;	
-		typedef T		value_type;	
-		typedef Distance		difference_type;	
-		typedef Pointer		pointer;	
-		typedef Reference		reference;	
-		typedef const T*		const_pointer;	
-		typedef const T&		const_reference;
+		typedef typename ft::iterator<random_access_iterator_tag, T>::iterator_category 	iterator_category;	
+		typedef typename ft::iterator<random_access_iterator_tag, T>::value_type		value_type;	
+		typedef typename ft::iterator<random_access_iterator_tag, T>::difference_type		difference_type;	
+		typedef typename ft::iterator<random_access_iterator_tag, T>::pointer			pointer;	
+		typedef typename ft::iterator<random_access_iterator_tag, T>::reference			reference;	
+	//	typedef const T*		const_pointer;	
+	//	typedef const T&		const_reference;
 
+		private :
 
+  			pointer _p;
+
+		public :
 			VectorIterator(): _p(NULL) {}
 
 			VectorIterator(pointer value) : _p(value) {}
@@ -138,6 +135,7 @@ class VectorIterator : public ft::iterator<ft::random_access_iterator_tag, T> {
 
 			reference	operator*() const {return *_p;}
 			pointer		operator->() const {return &(operator*());}
+//			const_pointer		operator->() const {return &(operator*());}
 /*--------------------output----------------*/
  // 			T&		operator*() {return _p;}
 			
@@ -265,6 +263,9 @@ class ConstVectorIterator {
 				}	
 				return (i);
 			}
+
+//			template<typename T>
+//			T		ft::VectorIterator<T>::operator->(const ft::VectorIterator<T> ite) {return ite.getter();}
 
 			template<typename T>
  			bool operator==(const ft::VectorIterator<T> ite1, const ft::VectorIterator<T> ite2) {return (ite1.getter() == ite2.getter());}

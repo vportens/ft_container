@@ -4,6 +4,7 @@
 # include <memory>
 # include <stdexcept>
 # include "randomIterator.hpp"
+# include "reverse_iterator.hpp"
 	#include <iostream>
 # include "utils.hpp"
 
@@ -23,8 +24,8 @@ class vector {
 					typedef	typename allocator_type::const_pointer			const_pointer;
 					typedef	ft::VectorIterator<value_type> 				iterator; //to define;
 					typedef	ft::VectorIterator<value_type>				const_iterator;
-				//	typedef	ft::VectorReverseIterator<iterator> 		reverse_iterator;
-				//	typedef	ft::VectorReverseIterator<const_iterator> 		const_reverse_iterator;
+					typedef	ft::reverse_iterator<iterator> 		reverse_iterator;
+					typedef	ft::reverse_iterator<const_iterator> 		const_reverse_iterator;
 					typedef	std::ptrdiff_t			difference_type; 
 					typedef	unsigned long					size_type;
 		private :
@@ -142,6 +143,13 @@ class vector {
 
 		}
 
+		reverse_iterator rbegin() {
+			return (reverse_iterator(_first + _size));
+		}
+
+		const_iterator rbegin()const  {
+			return (reverse_iterator(_first + _size));
+		}
 
 /*---------------------------------------------capacity--------------------------------------------------------------*/
 
@@ -526,7 +534,8 @@ class vector {
 /*	Operator[]
 **	Access to vector val in position n.
 */
-	reference operator[] (size_type n) const {return (*(_first + n));} //check buserror
+	reference operator[] (size_type n) {return (*(_first + n));} //check buserror
+	const_reference operator[] (size_type n) const {return (*(_first + n));} //check buserror
 
 /*	At
 **	Return the reference to the element at position n in vector
