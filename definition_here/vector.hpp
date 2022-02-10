@@ -466,11 +466,11 @@ class vector {
 
 
 			iterator erase(iterator first, iterator last) {
-				size_t n  = ft::distance(begin(), last);
+				size_t n  = ft::distance(begin(), last) -1;
 				size_t start_c = ft::distance(begin(), first);
-				size_t diff = n - start_c;
+				size_t diff = n - start_c + 1;
 					
-				while (n < _size-1)
+				while (n < _size -1)
 				{
 					*(_first + start_c) = *(_first + n + 1);
 					n++;
