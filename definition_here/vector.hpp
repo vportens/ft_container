@@ -445,7 +445,7 @@ class vector {
 
 			iterator erase (iterator position) {
 				iterator cur = position;
-				iterator start = cur;
+				size_t n = ft::distance(begin(), position);
 				if (position == end()-1)
 				{
 					_size--;
@@ -453,43 +453,38 @@ class vector {
 				}
 				else
 				{
-					_alloc.destroy(&(*position));
-					while (cur != end())
+					while (n < _size-1)
 					{
-						_alloc.construc(cur,*(cur + 1));
-						cur++;
+						*(_first + n) = *(_first + n + 1);
+						n++;
 					}
+					_alloc.destroy(&(*(_first + n)));
+					_size--;
 				}
-				return (start);
+				return (cur);
 			}
 
 
 			iterator erase(iterator first, iterator last) {
-				iterator start;
-				if (last == end())
-					start = last;
-				else
-					start = last+1;
-				iterator cur = start;
-				iterator pos = first;
-				iterator nend = end();
-				int i = 1;
-				while (first != last)
+				size_t n  = ft::distance(begin(), last);
+				size_t start_c = ft::distance(begin(), first);
+				size_t diff = n - start_c;
+					
+				while (n < _size-1)
 				{
-					i++;
-					_alloc.destroy(&(*first));
-					first++;
-				} 
-				if (first != end())
-					_alloc.destroy(&(*first));
-				_size -= i -1;
-				while (cur != nend)
-				{
-					pos = cur;	
-					pos++;
-					cur++;
+					*(_first + start_c) = *(_first + n + 1);
+					n++;
+					start_c++;
 				}
-				return (start);
+				size_t i = 0;
+				while (i < diff)
+				{
+					_alloc.destroy(&(*(end() - i)));
+					i++;
+				}
+				_size -= diff;
+				return (first);
+	
 			}
 
 /*	Swap
