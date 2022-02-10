@@ -24,17 +24,22 @@ template <class Iterator>
 		reverse_iterator() : _p(NULL) {}
 		explicit reverse_iterator(pointer value ) : _p(value) {}
 		explicit reverse_iterator(Iterator value) : _p(value.getter()) {}
-		template <class U> reverse_iterator(const reverse_iterator<U>& u): _p(u._p) {}
+		template <class U> reverse_iterator(const reverse_iterator<U>& u): _p(u.base()) {}
 
 
 		iterator_type base()const {
-			return (_p -1);
+			return (_p);
 		}	
 		
 		pointer getter()const {
 			return (_p);
 		}
-		reference operator*() const {return *_p;}
+		reference operator*() const {
+			pointer tmp = _p;
+
+			return (*(--tmp));
+
+		}
 		pointer operator->() const {return &(operator*());}
 		reverse_iterator& operator++() {
 			--_p;
@@ -113,7 +118,7 @@ template <class Iterator>
 
 	template <class Iterator>
 	reverse_iterator<Iterator> operator+(typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator>& x) {
-		return (x.getter() + n);
+		return (x  + n);
 	}
 }
 
