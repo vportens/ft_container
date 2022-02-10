@@ -368,6 +368,8 @@ class vector {
 			void	insert (iterator position, size_type n, const value_type& val)
 			{
 				size_t last = &(*position) - _first;
+				if (position == end())
+					last -=1;
 				if (_capacity >= _size + n)
 				{
 					int i = 0;
