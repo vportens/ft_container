@@ -429,7 +429,7 @@ class vector {
 					while (j < n)
 					{
 
-						last -= 1;
+						last--;
 						_alloc.construct(_first + _size - i + n - 1, *last);
 						i++;
 						j++;
@@ -451,7 +451,7 @@ class vector {
 					size_type j = 0;
 					while (j < n)
 					{
-						last -= 1;
+						last--;
 						_alloc.construct(_first + _size - i + n-1, *last);
 						i++;
 						j++;

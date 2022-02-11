@@ -6,15 +6,15 @@ namespace ft
 
 template <class Iterator>
 	class reverse_iterator : public
-		iterator<typename iterator_traits<Iterator>::iterator_category,
-		typename iterator_traits<Iterator>::value_type, typename iterator_traits<Iterator>::difference_type,
-		typename iterator_traits<Iterator>::pointer, typename iterator_traits<Iterator>::reference> {
+		std::iterator<typename std::iterator_traits<Iterator>::iterator_category,
+		typename std::iterator_traits<Iterator>::value_type, typename std::iterator_traits<Iterator>::difference_type,
+		typename std::iterator_traits<Iterator>::pointer, typename std::iterator_traits<Iterator>::reference> {
 
 	public:
 		typedef Iterator iterator_type;
-		typedef typename iterator_traits<Iterator>::difference_type 	difference_type;
-		typedef typename iterator_traits<Iterator>::reference		reference;
-		typedef typename iterator_traits<Iterator>::pointer		pointer;
+		typedef typename std::iterator_traits<Iterator>::difference_type 	difference_type;
+		typedef typename std::iterator_traits<Iterator>::reference		reference;
+		typedef typename std::iterator_traits<Iterator>::pointer		pointer;
 
 	private:
 		pointer  _p;
@@ -26,6 +26,10 @@ template <class Iterator>
 		explicit reverse_iterator(Iterator value) : _p(value.getter()) {}
 		template <class U> reverse_iterator(const reverse_iterator<U>& u): _p(u.base()) {}
 
+		reverse_iterator& operator=(const reverse_iterator& cpy) {
+		_p = cpy._p;
+		return *this;
+}
 
 		iterator_type base()const {
 			return (_p);
@@ -44,6 +48,10 @@ template <class Iterator>
 		reverse_iterator& operator++() {
 			--_p;
 			return (*this);
+		}
+
+		reference operator[](int n) {
+			return (*(_p - n -1));
 		}
 		reverse_iterator operator++(int) {
 			reverse_iterator tmp(*this);
@@ -78,7 +86,7 @@ template <class Iterator>
 			return (*this);
 		}
 		reference operator[](difference_type n) const {
-			return (*(_p + n));
+			return (*(_p - n-1));
 		}
 	};
 	template <class Iterator>
