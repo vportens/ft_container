@@ -35,8 +35,8 @@ template <class Iterator>
 			return (_p);
 		}	
 		
-		 operator reverse_iterator<const T> () const
-       		         { return (reverse_iterator<const T>(this->_p)); }
+		 operator reverse_iterator<const Iterator> () const
+       		         { return (reverse_iterator<const Iterator>(this->_p)); }
 		pointer getter()const {
 			return (_p);
 		}
