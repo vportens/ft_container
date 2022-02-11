@@ -43,19 +43,20 @@ template <class Iterator>
 			return (_p);
 		}
 		reference operator*() const {
-			pointer tmp = _p;
+			iterator_type tmp = _p;
 
 			return (*(--tmp));
 
 		}
 		pointer operator->() const {return &(operator*());}
+
 		reverse_iterator& operator++() {
 			--_p;
 			return (*this);
 		}
 
 		reference operator[](int n) {
-			return (*(_p - n -1));
+			return (base()[- n -1]);
 		}
 		reverse_iterator operator++(int) {
 			reverse_iterator tmp(*this);
@@ -165,12 +166,12 @@ template <class Iterator>
 
 	template <class Iterator>
 	typename reverse_iterator<Iterator>::difference_type operator-(const reverse_iterator<Iterator>& x,const reverse_iterator<Iterator>& y) {
-		return (x.base() - y.base());
+		return (x.base() + y.base());
 	}
 
 	template <class Iterator, class T>
 	typename reverse_iterator<Iterator>::difference_type operator-(const reverse_iterator<Iterator>& x,const reverse_iterator<T>& y) {
-		return (x.base() - y.base());
+		return (x.base() + y.base());
 	}
 
 
@@ -178,6 +179,12 @@ template <class Iterator>
 	reverse_iterator<Iterator> operator+(typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator>& x) {
 		return (x - n);
 	}
+
+
+	template<class Iterator>
+	reverse_iterator<Iterator> opera
+
+
 }
 
 #endif
