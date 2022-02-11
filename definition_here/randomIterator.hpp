@@ -220,8 +220,7 @@ class ConstVectorIterator {
 
 
 			template<typename T>
-			typename ft::VectorIterator<T>::difference_type
-			operator+(typename ft::VectorIterator<T>::difference_type n, typename ft::VectorIterator<T>&	array) {
+			typename ft::VectorIterator<T> operator+(typename ft::VectorIterator<T>::difference_type n, typename ft::VectorIterator<T>&	array) {
 				return (array+n);
 			}
 
@@ -236,13 +235,15 @@ class ConstVectorIterator {
 				return (t1.getter() - t2.getter());
 			}
 
-
+			template<typename T, typename  T1>
+			typename ft::VectorIterator<T>::difference_type operator-(ft::VectorIterator<T> t1, ft::VectorIterator<T1> t2) {
+				return (t1.getter() - t2.getter());
+			}
 
 			//template<typename T>
 			//typename ft::VectorIterator<T>::difference_type
 			template<typename T>
-			typename ft::VectorIterator<T>::difference_type
-			operator>(const ft::VectorIterator<T> t1, const ft::VectorIterator<T> t2) {
+			bool operator>(const ft::VectorIterator<T> t1, const ft::VectorIterator<T> t2) {
 
 				return (t1.getter() > t2.getter());
 			}
@@ -250,8 +251,7 @@ class ConstVectorIterator {
 			//template<typename T, typename T1>
 			//typename ft::VectorIterator<T>::difference_type
 			template<typename T, typename T1>
-			typename ft::VectorIterator<T>::difference_type
-			operator>(const ft::VectorIterator<T> t1, const ft::VectorIterator<T1> t2) {
+			bool operator>(const ft::VectorIterator<T> t1, const ft::VectorIterator<T1> t2) {
 				return (t1.getter() > t2.getter());
 			}
 			
@@ -259,16 +259,14 @@ class ConstVectorIterator {
 			//template<typename T>
 			//typename ft::VectorIterator<T>::difference_type 
 			template<typename T>
-			typename ft::VectorIterator<T>::difference_type
-			operator<(const ft::VectorIterator<T> t1, const ft::VectorIterator<T> t2) {
+			bool operator<(const ft::VectorIterator<T> t1, const ft::VectorIterator<T> t2) {
 				return (t1.getter() < t2.getter());
 			}
 
 			//template<typename T, typename T1>
 			//typename ft::VectorIterator<T>::difference_type
 			template<typename T, typename T1>
-			typename ft::VectorIterator<T>::difference_type
-			operator<(const ft::VectorIterator<T> t1, const ft::VectorIterator<T1> t2) {
+			bool operator<(const ft::VectorIterator<T> t1, const ft::VectorIterator<T1> t2) {
 				return (t1.getter() < t2.getter());
 			}
 	
