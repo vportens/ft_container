@@ -67,7 +67,7 @@ class VectorIterator : public std::iterator<std::random_access_iterator_tag, T> 
 
   			bool		operator!=(const VectorIterator& cpy) const {return _p != cpy._p;}
 
-			reference	operator*() const {return *_p;}
+			reference	operator*() const {return (*_p);}
 			pointer		operator->() {return &(operator*());}
 	//		const_pointer		operator->() const {return &(operator*());}
 /*--------------------output----------------*/
@@ -89,14 +89,14 @@ class VectorIterator : public std::iterator<std::random_access_iterator_tag, T> 
 			
 		//	T&	operator--(
 /*--------------------RandomAccess--------------------------*/	
-			VectorIterator	operator+(difference_type n){
+			VectorIterator	operator+(difference_type n)const {
 				return (_p + n);
 				VectorIterator	ret;
 				ret._p = _p + n;
 				return (ret);	
 			}
 		
-			VectorIterator operator-(difference_type n) {
+			VectorIterator operator-(difference_type n) const {
 				return (_p - n);
 				VectorIterator	ret;
 				ret._p = _p - n;
@@ -223,7 +223,7 @@ class ConstVectorIterator {
 
 			template<typename T>
 			typename ft::VectorIterator<T> operator+(typename ft::VectorIterator<T>::difference_type n, typename ft::VectorIterator<T>&	array) {
-				return (array+n);
+				return (&(*array)+n);
 			}
 
 			template<typename T>
@@ -233,12 +233,12 @@ class ConstVectorIterator {
 			}
 
 			template<typename T>
-			typename ft::VectorIterator<T>::difference_type operator-(ft::VectorIterator<T> t1, ft::VectorIterator<T> t2) {
+			typename ft::VectorIterator<T>::difference_type operator-(const ft::VectorIterator<T> t1, const ft::VectorIterator<T> t2) {
 				return (t1.getter() - t2.getter());
 			}
 
 			template<typename T, typename  T1>
-			typename ft::VectorIterator<T>::difference_type operator-(ft::VectorIterator<T> t1, ft::VectorIterator<T1> t2) {
+			typename ft::VectorIterator<T>::difference_type operator-(const ft::VectorIterator<T> t1,const  ft::VectorIterator<T1> t2) {
 				return (t1.getter() - t2.getter());
 			}
 
