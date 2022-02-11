@@ -17,7 +17,7 @@ template <class Iterator>
 		typedef typename std::iterator_traits<Iterator>::pointer		pointer;
 
 	private:
-		pointer  _p;
+		Iterator _p;
 
 	public :
 
@@ -166,18 +166,18 @@ template <class Iterator>
 
 	template <class Iterator>
 	typename reverse_iterator<Iterator>::difference_type operator-(const reverse_iterator<Iterator>& x,const reverse_iterator<Iterator>& y) {
-		return (x.base() + y.base());
+		return (x.base() - y.base());
 	}
 
 	template <class Iterator, class T>
 	typename reverse_iterator<Iterator>::difference_type operator-(const reverse_iterator<Iterator>& x,const reverse_iterator<T>& y) {
-		return (*x - *y);
+		return (x.base() - y.base());
 	}
 
 
 	template <class Iterator>
 	typename reverse_iterator<Iterator>::difference_type operator+(const reverse_iterator<Iterator>& x,const reverse_iterator<Iterator>& y) {
-		return (x.base() - y.base());
+		return (x.base() + y.base());
 	}
 
 	template <class Iterator, class T>
