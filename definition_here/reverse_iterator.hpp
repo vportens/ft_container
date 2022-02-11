@@ -171,7 +171,7 @@ template <class Iterator>
 
 	template <class Iterator, class T>
 	typename reverse_iterator<Iterator>::difference_type operator-(const reverse_iterator<Iterator>& x,const reverse_iterator<T>& y) {
-		return (x.getter()          + y.getter());
+		return (*x - *y);
 	}
 
 
