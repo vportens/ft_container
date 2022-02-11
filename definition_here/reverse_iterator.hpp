@@ -17,7 +17,7 @@ template <class Iterator>
 		typedef typename std::iterator_traits<Iterator>::pointer		pointer;
 
 	private:
-		Iterator _p;
+		iterator_type _p;
 
 	public :
 
@@ -39,7 +39,7 @@ template <class Iterator>
 		 operator reverse_iterator<const Iterator> () const
        		         { return (reverse_iterator<const Iterator>(this->_p)); }
 
-		pointer getter()const {
+		iterator_type getter()const {
 			return (_p);
 		}
 		reference operator*() const {
