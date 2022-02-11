@@ -181,8 +181,8 @@ template <class Iterator>
 	}
 
 
-	template<class Iterator>
-	reverse_iterator<Iterator> opera
+//	template<class Iterator>
+//	reverse_iterator<Iterator> opera
 
 
 }
