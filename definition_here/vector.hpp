@@ -552,7 +552,7 @@ class vector {
 **	Access to vector val in position n.
 */
 	reference operator[] (size_type n) {return (*(_first + n));} //check buserror
-//	const_reference operator[] (size_type n) const {return (*(_first + n));} //check buserror
+	const_reference operator[] (size_type n) const {return (*(_first + n));} //check buserror
 
 /*	At
 **	Return the reference to the element at position n in vector
