@@ -23,7 +23,7 @@ class vector {
 					typedef	typename allocator_type::pointer				pointer;
 					typedef	typename allocator_type::const_pointer			const_pointer;
 					typedef	ft::VectorIterator<value_type> 				iterator; //to define;
-					typedef	ft::VectorIterator<value_type>				const_iterator;
+					typedef	ft::VectorIterator<const value_type>				const_iterator;
 					typedef	ft::reverse_iterator<iterator> 		reverse_iterator;
 					typedef	ft::reverse_iterator<const_iterator> 		const_reverse_iterator;
 					typedef	std::ptrdiff_t			difference_type; 
@@ -439,6 +439,7 @@ class vector {
 				}
 				else
 				{
+
 					reserve(_capacity * 2);
 					if (_capacity < _size + n)
 						reserve(_size + n);
@@ -551,7 +552,7 @@ class vector {
 **	Access to vector val in position n.
 */
 	reference operator[] (size_type n) {return (*(_first + n));} //check buserror
-	const_reference operator[] (size_type n) const {return (*(_first + n));} //check buserror
+//	const_reference operator[] (size_type n) const {return (*(_first + n));} //check buserror
 
 /*	At
 **	Return the reference to the element at position n in vector
