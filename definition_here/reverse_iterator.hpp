@@ -73,9 +73,10 @@ template <class Iterator>
 			return(tmp);
 		}
 		reverse_iterator operator+ (difference_type n) const {
-			reverse_iterator ret;
-			ret._p = _p - n;
-			return (ret);
+			return (reverse_iterator(_p - n));
+
+		//	ret._p = _p - n;
+			//return (ret);
 		}
 		reverse_iterator& operator+=(difference_type n) {
 			_p = _p - n;
@@ -187,7 +188,7 @@ template <class Iterator>
 
 	template <class Iterator>
 	reverse_iterator<Iterator> operator+(typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator>& x) {
-		return (x - n);
+		return (x + n);
 	}
 
 

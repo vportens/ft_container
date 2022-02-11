@@ -90,12 +90,14 @@ class VectorIterator : public std::iterator<std::random_access_iterator_tag, T> 
 		//	T&	operator--(
 /*--------------------RandomAccess--------------------------*/	
 			VectorIterator	operator+(difference_type n){
+				return (_p + n);
 				VectorIterator	ret;
 				ret._p = _p + n;
 				return (ret);	
 			}
 		
 			VectorIterator operator-(difference_type n) {
+				return (_p - n);
 				VectorIterator	ret;
 				ret._p = _p - n;
 				return (ret);
@@ -225,9 +227,9 @@ class ConstVectorIterator {
 			}
 
 			template<typename T>
-			typename ft::VectorIterator<T>::difference_type
+			typename ft::VectorIterator<T>
 			operator-(typename ft::VectorIterator<T>::difference_type n, typename ft::VectorIterator<T>& array) {
-				return (array - n);
+				return (&(*array) - n);
 			}
 
 			template<typename T>
