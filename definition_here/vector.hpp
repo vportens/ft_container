@@ -269,16 +269,18 @@ class vector {
 					
 					}
 					clear();
+					pointer prec_start = _first;
+					size_type prec_capa = _capacity;
 					_first = _alloc.allocate(n);
 					_size = n;
 					_capacity = n;
 					while (first != last)
 					{
-						_first[i] = *first;	
+						_first[i] = *first;
 						first++;
-						i++;	
+						i++;
 					}
-					
+					_alloc.deallocate(prec_start, prec_capa);		
 				}
 
 /*	Assign, fill
@@ -411,7 +413,6 @@ class vector {
 
 					}
 					_size += n;	
-					std::cout << "PASSE PAR ICI" << std::endl;
 			
 				
 				}	
@@ -522,8 +523,8 @@ class vector {
 */
 			void	swap(vector& x)
 			{
-			//	if (x == *this)
-			//		return ;
+				if (x == *this)
+					return ;
 			//	if (x._alloc != _alloc)
 			//		return ;
 				pointer	p_tmp = x._first;
