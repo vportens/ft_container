@@ -233,6 +233,7 @@ class vector {
 					pointer	cur_prec = start;
 					pointer	cur;
 					size_type nbr = _size;
+
 					size_type pres_capa = _capacity;
 					_first = _alloc.allocate( n );
 					cur = _first;
@@ -410,6 +411,7 @@ class vector {
 
 					}
 					_size += n;	
+					std::cout << "PASSE PAR ICI" << std::endl;
 			
 				
 				}	
