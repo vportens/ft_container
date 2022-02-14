@@ -11,6 +11,7 @@
 		"memory": "cpp",
 		"numeric": "cpp",
 		"ranges": "cpp",
-		"type_traits": "cpp"
+		"type_traits": "cpp",
+		"memory_resource": "cpp"
 	}
 }

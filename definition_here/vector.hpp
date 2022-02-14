@@ -243,7 +243,7 @@ class vector {
 						cur_prec++;
 					}
 					_capacity = n;
-					_alloc.deallocate(start, pres_capa);
+					_alloc.deallocate(cur_prec - nbr, pres_capa);
 				}
 
 /*------------------------------------------Modifiers----------------------------------------------*/
