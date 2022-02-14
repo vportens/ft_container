@@ -519,20 +519,22 @@ class vector {
 			{
 			//	if (x == *this)
 			//		return ;
-				if (x._alloc != _alloc)
-					return ;
+			//	if (x._alloc != _alloc)
+			//		return ;
 				pointer	p_tmp = x._first;
 				size_type c_tmp = x._capacity;
 				size_type s_tmp = x._size;
-				
+				allocator_type alloc_tmp = x._alloc;
 
 				x._first = _first;
 				x._capacity = _capacity;
 				x._size = _size;
+				x._alloc = _alloc;
 
 				_first = p_tmp;
 				_capacity= c_tmp;
 				_size = s_tmp;
+				_alloc = alloc_tmp;
 				return ;
 				
 					
