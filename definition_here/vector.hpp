@@ -111,6 +111,8 @@ class vector {
 
 
 				vector& operator=(const vector& cpy) {
+					if (cpy == *this)
+						return (*this);
 					clear();
 					insert(end(), cpy.begin(), cpy.end());
 					return (*this);
@@ -319,7 +321,7 @@ class vector {
 			void	pop_back() {
 				if (_size == 0)
 					return ;
-				_alloc.destroy(_first + _size -1);
+				_alloc.destroy(_first + _size); //ici j'ai enlever un -1
 				_size--;
 			}
 
