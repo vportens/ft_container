@@ -233,6 +233,7 @@ class vector {
 					pointer	cur_prec = start;
 					pointer	cur;
 					size_type nbr = _size;
+					size_type pres_capa = _capacity;
 					_first = _alloc.allocate( n );
 					cur = _first;
 					for (size_type i = 0; i < nbr; i++)
@@ -242,7 +243,7 @@ class vector {
 						cur_prec++;
 					}
 					_capacity = n;
-					_alloc.deallocate(start, nbr);
+					_alloc.deallocate(start, capacity);
 				}
 
 /*------------------------------------------Modifiers----------------------------------------------*/
