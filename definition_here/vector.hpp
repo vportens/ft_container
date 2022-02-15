@@ -121,6 +121,8 @@ class vector {
 
 
 			~vector() {
+				if (_capacity == 0)
+					return ;
 				clear();
 				_alloc.deallocate(_first, _capacity);
 			}
@@ -131,11 +133,11 @@ class vector {
 **	Returns an iterator pointing to the first elements
 // */
  		iterator begin(){
- 			return (iterator(_first));
+ 			return (_first);
  		}
 
 		const_iterator begin() const {
-			return (const_iterator(_first));
+			return (_first);
 		}
 
 
@@ -245,9 +247,9 @@ class vector {
 					}
 					_capacity = n;
 					size_type i = 0;
-					while (i <pres_capa)
+					while (i < _size)
 					{
-					_alloc.destroy(start +i);
+						_alloc.destroy(start +i);
 					i++;
 					}
 					_alloc.deallocate(start, pres_capa);
@@ -360,16 +362,17 @@ class vector {
 				else
 				{
 					int i = 0;
-					if (_capacity != 0)
-						reserve(_capacity *2);
-					else
+					if (_capacity == 0)
 						reserve(1);
+					else
+						reserve(_capacity *2);
 					while (_size -i > n)
 					{
 						_alloc.construct(_first + _size - i, *(_first + _size -i-1));
 						i++;
 					}
-					_alloc.destroy(_first + _size - i);
+					if ((_first + _size - i))
+						_alloc.destroy(_first + _size - i);
 					_alloc.construct(_first + _size - i , val);
 					_size++;
 
@@ -405,17 +408,25 @@ class vector {
 						reserve(_capacity * 2);
 					if (_capacity < _size + n)
 						reserve(_size + n);
-					int i = 0;
+					size_t i = 0;
 					while (_size -i > last)	
 					{
-						_alloc.destroy(_first + _size - i + n - 1);
+						
+		//				if ((_first + _size - i + n - 1)!= NULL)
+						if (_size - last > n)
+						{
+							if (i >= n)
+							_alloc.destroy(_first + _size - i + n - 1);
+						}
 						_alloc.construct(_first + _size - i + n-1, *(_first + _size -i - 1));
 						i++;
 					}	
 					size_type j = 0;
 					while (j < n)
 					{
-						_alloc.destroy(_first + _size - i + n - 1);
+		//				if ((_first + _size - i + n - 1)!= NULL)
+						if (last + n < _size)
+							_alloc.destroy(_first + _size - i + n - 1);
 						_alloc.construct(_first + _size - i + n-1, val);
 						i++;
 						j++;
