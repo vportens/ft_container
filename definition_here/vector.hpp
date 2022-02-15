@@ -244,6 +244,12 @@ class vector {
 						cur_prec++;
 					}
 					_capacity = n;
+					size_type i = 0;
+					while (i <pres_capa)
+					{
+					_alloc.destroy(start +i);
+					i++;
+					}
 					_alloc.deallocate(start, pres_capa);
 				}
 
@@ -310,7 +316,7 @@ class vector {
 **		Add new element at the end of the vector.
 */
 			void	push_back(const value_type& val) {
-				if (_size == 0)
+				if (_capacity == 0)
 					reserve(1);
 				else if (_size == _capacity)
 					reserve(_capacity * 2);
@@ -363,6 +369,7 @@ class vector {
 						_alloc.construct(_first + _size - i, *(_first + _size -i-1));
 						i++;
 					}
+					_alloc.destroy(_first + _size - i);
 					_alloc.construct(_first + _size - i , val);
 					_size++;
 
@@ -401,12 +408,14 @@ class vector {
 					int i = 0;
 					while (_size -i > last)	
 					{
+						_alloc.destroy(_first + _size - i + n - 1);
 						_alloc.construct(_first + _size - i + n-1, *(_first + _size -i - 1));
 						i++;
 					}	
 					size_type j = 0;
 					while (j < n)
 					{
+						_alloc.destroy(_first + _size - i + n - 1);
 						_alloc.construct(_first + _size - i + n-1, val);
 						i++;
 						j++;
@@ -426,8 +435,9 @@ class vector {
 				if (_capacity >= _size + n)
 				{
 					int i = 0;
-					while ( _size -i > lastone)	
+					while ( _size -i > lastone)
 					{
+						_alloc.destroy(_first + _size - i + n - 1);
 						_alloc.construct(_first + _size - i + n - 1, *(_first + _size -i - 1));
 						i++;
 					}	
@@ -436,6 +446,7 @@ class vector {
 					{
 
 						last--;
+						_alloc.destroy(_first + _size - i + n - 1);
 						_alloc.construct(_first + _size - i + n - 1, *last);
 						i++;
 						j++;
@@ -452,6 +463,7 @@ class vector {
 					int i = 0;
 					while (_size -i > lastone)	
 					{
+						_alloc.destroy(_first + _size - i + n - 1);
 						_alloc.construct(_first + _size - i + n-1, *(_first + _size -i - 1));
 						i++;
 					}	
@@ -459,6 +471,7 @@ class vector {
 					while (j < n)
 					{
 						last--;
+						_alloc.destroy(_first + _size - i + n - 1);
 						_alloc.construct(_first + _size - i + n-1, *last);
 						i++;
 						j++;
@@ -508,7 +521,7 @@ class vector {
 					start_c++;
 				}
 				size_t i = 0;
-				while (i < diff)
+				while (i <= diff)
 				{
 					_alloc.destroy(&(*(end() - i)));
 					i++;
