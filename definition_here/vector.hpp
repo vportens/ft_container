@@ -113,7 +113,8 @@ class vector {
 				vector& operator=(const vector& cpy) {
 					if (cpy == *this)
 						return (*this);
-					clear();
+					if (_size != 0)
+						clear();
 					insert(end(), cpy.begin(), cpy.end());
 					return (*this);
 
@@ -276,7 +277,8 @@ class vector {
 						return ;
 					
 					}
-					clear();
+					if (_size != 0)
+						clear();
 					pointer prec_start = _first;
 					size_type prec_capa = _capacity;
 					_first = _alloc.allocate(n);
@@ -284,7 +286,7 @@ class vector {
 					_capacity = n;
 					while (first != last)
 					{
-						_first[i] = *first;
+						_alloc.construct(_first + i,  *first);
 						first++;
 						i++;
 					}
@@ -445,9 +447,10 @@ class vector {
 				size_type n = ft::distance(first, last);
 				if (_capacity >= _size + n)
 				{
-					int i = 0;
+					size_type i = 0;
 					while ( _size -i > lastone)
 					{
+						if (i >= n)
 						_alloc.destroy(_first + _size - i + n - 1);
 						_alloc.construct(_first + _size - i + n - 1, *(_first + _size -i - 1));
 						i++;
@@ -471,10 +474,11 @@ class vector {
 					reserve(_capacity * 2);
 					if (_capacity < _size + n)
 						reserve(_size + n);
-					int i = 0;
-					while (_size -i > lastone)	
+					size_type i = 0;
+					while (_size -i > lastone)
 					{
-						_alloc.destroy(_first + _size - i + n - 1);
+						if (i >= n)
+							_alloc.destroy(_first + _size - i + n - 1);
 						_alloc.construct(_first + _size - i + n-1, *(_first + _size -i - 1));
 						i++;
 					}	
@@ -482,7 +486,8 @@ class vector {
 					while (j < n)
 					{
 						last--;
-						_alloc.destroy(_first + _size - i + n - 1);
+						if (lastone + n < _size)
+							_alloc.destroy(_first + _size - i + n - 1);
 						_alloc.construct(_first + _size - i + n-1, *last);
 						i++;
 						j++;

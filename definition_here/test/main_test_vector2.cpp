@@ -217,7 +217,7 @@ int main()
 		std::cout << insert_bis[i] << ' ';
 	std::cout << '\n';
 
-
+/*
 	//ERASE
 	std::cout << "\nERASE\n";
 	vector<std::string>	erase_in_me;
@@ -252,12 +252,14 @@ int main()
 	//SWAP
 	std::cout << "\nSWAP\n";
 	BOB.swap(MIKE);
-	/*
+	*/
+	/* pas moi
 	std::cout << "Size of BOB " << BOB.size() << std::endl;
 	std::cout << "Capacity of BOB " << BOB.capacity() << std::endl;
 	std::cout << "Size of MIKE " << MIKE.size() << std::endl;
 	std::cout << "Capacity of MIKE " << MIKE.capacity() << std::endl;
-	*/
+	*/ // pas moi
+/*
 	std::cout << "Size of JOHN " << JOHN.size() << std::endl;
 	if (JOHN.capacity() >= JOHN.size())
 		std::cout << "Capacity of JOHN is sufficient\n";
@@ -278,12 +280,14 @@ int main()
 	std::cout << std::endl;
 
 	MIKE.swap(JOHN);
-	/*
+	*/
+	/* pas moi
 	std::cout << "Size of JOHN " << JOHN.size() << std::endl;
 	std::cout << "Capacity of JOHN " << JOHN.capacity() << std::endl;
 	std::cout << "Size of MIKE " << MIKE.size() << std::endl;
 	std::cout << "Capacity of MIKE " << MIKE.capacity() << std::endl;
-	*/
+	*/ //pas moi
+/*
 	std::cout << "Size of JOHN " << JOHN.size() << std::endl;
 	if (JOHN.capacity() >= JOHN.size())
 		std::cout << "Capacity of JOHN is sufficient\n";
@@ -307,13 +311,14 @@ int main()
 	std::cout << "\nCLEAR\n";
 	JOHN.clear();
 	MIKE.clear();
-	/*
+	*/
+	/* pas moi
 	std::cout << "Size of JOHN " << JOHN.size() << std::endl;
 	std::cout << "Capacity of JOHN " << JOHN.capacity() << std::endl;
 	std::cout << "Size of MIKE " << MIKE.size() << std::endl;
 	std::cout << "Capacity of MIKE " << MIKE.capacity() << std::endl;
-	*/
-	std::cout << "Size of JOHN " << JOHN.size() << std::endl;
+	*/ //pas moi
+/*	std::cout << "Size of JOHN " << JOHN.size() << std::endl;
 	if (JOHN.capacity() >= JOHN.size())
 		std::cout << "Capacity of JOHN is sufficient\n";
 	else
@@ -334,14 +339,15 @@ int main()
 
 	//NON MEMBER Functions
 	std::cout << "\nNON MEMBER functions\n";
-	swap(BOB, MIKE);
-	/*
+	swap(BOB, MIKE); 
+	*/
+	/* pas moi 
 	std::cout << "Size of BOB " << BOB.size() << std::endl;
 	std::cout << "Capacity of BOB " << BOB.capacity() << std::endl;
 	std::cout << "Size of MIKE " << MIKE.size() << std::endl;
 	std::cout << "Capacity of MIKE " << MIKE.capacity() << std::endl;
-	*/
-	std::cout << "Size of JOHN " << JOHN.size() << std::endl;
+	*/ //pas moi
+/*	std::cout << "Size of JOHN " << JOHN.size() << std::endl;
 	if (JOHN.capacity() >= JOHN.size())
 		std::cout << "Capacity of JOHN is sufficient\n";
 	else
@@ -372,6 +378,6 @@ int main()
 		std::cout << *it << " ";
 	std::cout << '\n';
 
-	std::cout << std::endl;
+	std::cout << std::endl; */
 	return (0);
 }
