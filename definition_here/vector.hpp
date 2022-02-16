@@ -230,6 +230,8 @@ class vector {
 				void	reserve(size_type n) {
 					if (n > max_size())
 						throw (std::invalid_argument("vector::reserve"));
+					else
+					{
 					if (n <= _capacity)
 						return ;
 					pointer	start = _first;
@@ -254,6 +256,7 @@ class vector {
 					i++;
 					}
 					_alloc.deallocate(start, pres_capa);
+					}
 				}
 
 /*------------------------------------------Modifiers----------------------------------------------*/
@@ -408,8 +411,9 @@ class vector {
 				}
 				else
 				{
-					size_type tmp = _size;
-					if (_size * 2 < _size + n)
+					if (_size *2 > max_size())
+						reserve(max_size());
+					else if (_size * 2 < _size + n)
 						reserve(n + _size);
 					else
 						reserve(_size * 2);
@@ -473,10 +477,12 @@ class vector {
 				}
 				else
 				{
-
-					reserve(_capacity * 2);
-					if (_capacity < _size + n)
+					if (_size * 2 > max_size())
+						reserve(max_size());
+					else if (_size * 2 < _size + n)
 						reserve(_size + n);
+					else
+						reserve(_size * 2);
 					size_type i = 0;
 					while (_size -i > lastone)
 					{
