@@ -98,7 +98,7 @@ class vector {
 **
 */
 
-					vector (const vector& cpy) : _alloc(cpy._alloc), _capacity(cpy._capacity), _size(cpy._size) {
+					vector (const vector& cpy) : _alloc(cpy._alloc), _capacity(cpy._size), _size(cpy._size) {
 						_first = _alloc.allocate(_capacity);
 						pointer cur = _first;
 						for (size_type i = 0; i < _size; i++)
@@ -134,11 +134,11 @@ class vector {
 **	Returns an iterator pointing to the first elements
 // */
  		iterator begin(){
- 			return (_first);
+ 			return (iterator(_first));
  		}
 
 		const_iterator begin() const {
-			return (_first);
+			return (const_iterator(_first));
 		}
 
 
@@ -146,11 +146,11 @@ class vector {
 **	Returns an iterator pointing to the past end elements
 */
 		iterator end() {
-			return (_first + _size);
+			return (iterator(_first + _size));
 		}
 
 		const_iterator end() const {
-			return (_first + _size);
+			return (const_iterator(_first + _size));
 
 		}
 
@@ -367,7 +367,7 @@ class vector {
 					if (_capacity == 0)
 						reserve(1);
 					else
-						reserve(_capacity *2);
+						reserve(_size *2);
 					while (_size -i > n)
 					{
 						_alloc.construct(_first + _size - i, *(_first + _size -i-1));
@@ -385,6 +385,8 @@ class vector {
 			
 			void	insert (iterator position, size_type n, const value_type& val)
 			{
+				if (n == 0)
+					return ;
 				size_t last = &(*position) - _first;
 				if (_capacity >= _size + n)
 				{
@@ -406,10 +408,11 @@ class vector {
 				}
 				else
 				{
-					if (_capacity != 0)
-						reserve(_capacity * 2);
-					if (_capacity < _size + n)
-						reserve(_size + n);
+					size_type tmp = _size;
+					if (_size * 2 < _size + n)
+						reserve(n + _size);
+					else
+						reserve(_size * 2);
 					size_t i = 0;
 					while (_size -i > last)	
 					{
@@ -698,7 +701,12 @@ class vector {
 			return (!(vec1 > vec2));
 		}
 
+	template<class T, class Allocator>
+	void	swap(vector<T, Allocator>& x, vector<T, Allocator>& y)
+	{
+		x.swap(y);	
 
+	}
 
 }
 #endif
