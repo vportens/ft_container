@@ -15,10 +15,10 @@ class map{
 		typedef Allocator 		allocator_type;
 		typedef typename Allocator::reference 		reference;
 		typedef typename Allocator::const_reference	 const_reference;
-		typedef ft::VectorIterator<value_type>		iterator; // See 23.1
-		typedef  ft::VectorIterator<const value_type>		const_iterator; // See 23.1
+		typedef ft::Binary_tree<value_type, key_compare>::iterator		iterator; // See 23.1
+		typedef  ft::Binary_tree<const value_type, key_compare>::const_iterator		const_iterator; // See 23.1
 		typeddef unsigned long		size_type; // See 23.1
-		typedef ft::VectorIterator<iterator> 		difference_type;// See 23.1
+		typedef ft::iterator_traits<iterator> 		difference_type;// See 23.1
 		typedef typename Allocator::pointer pointer;
 		typedef typename Allocator::const_pointer const_pointer;
 		typedef ft::reverse_iterator<iterator> reverse_iterator;
@@ -37,6 +37,13 @@ class map{
 			}
 		};
 
+	private :
+			allocator_type	_alloc;
+			Compare		_comp;
+			Binary_tree<value_type, Compare>	_bt;
+
+
+		public :
 		
 /*-------------------------------construtors/destroy----------------------------*/
 		explicite map(const Compare& comp = Compare(), const Allocator& = Allocator());
