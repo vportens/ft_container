@@ -38,6 +38,17 @@ struct node{
 		return (*this);
 	}
 
+	node*	operator=(const node* cpy) {
+		if (this == cpy)
+			return (this);
+		value = cpy->value;
+		red = cpy->red;
+		back = cpy->back;
+		right = cpy->right;
+		left = cpy->left;
+		return (this);
+	}
+
 	bool	operator==(const node& cmp) {
 		if (value == cmp.value)
 			return (true);
@@ -50,42 +61,60 @@ struct node{
 
 	}
 	
+
+
 	void	left_rotation()
 	{
-//		ft::node<int> *tmp_p = new ft::node<int>(*(back));
-	//	ft::node<int> *tmp_gp = new ft::node<int>(*(tmp_p));
-		ft::node<int> *tmp_p = back;
-		ft::node<int> *tmp_gp = (back->back);
-		tmp_p->left = tmp_gp;
-		tmp_p->back = 0;
-		tmp_gp->back = tmp_p;
-		tmp_gp->right = this;
-		this->back = tmp_gp;
+		ft::node<int>	*tmp_son = right;
+		ft::node<int>	*tmp_gson = right->left;
 
+		tmp_son->back = back;
+		if (back)
+		{
+			if (back->value > value)
+				back->left = tmp_son;
+			else
+				back->right = tmp_son;
+		}
+		tmp_son->left = this;
+		back = tmp_son;
+		right = tmp_gson;
+		if (tmp_gson)
+			tmp_gson->back = this;
 
 	}
 
 	void	right_rotation()
 	{
-//		ft::node<int> *tmp_p = new ft::node<int>(*(back));
-	//	ft::node<int> *tmp_gp = new ft::node<int>(*(tmp_p));
-		ft::node<int> *tmp_p = back;
-		ft::node<int> *tmp_gp = (back->back);
-		tmp_p->right= tmp_gp;
-		tmp_p->back = 0;
-		tmp_gp->back = tmp_p;
-		tmp_gp->left= this;
-		this->back = tmp_gp;
+		ft::node<int>	*tmp_son = left;
+		ft::node<int>	*tmp_gson;
+		if (left)
+			tmp_gson = left->right;
 
+		tmp_son->back = back;
+		if (back)
+		{
+			if (back->value > value)
+				back->left = tmp_son;
+			else
+				back->right= tmp_son;
+		}
+		tmp_son->right= this;
+		back = tmp_son;
+		left = tmp_gson;
+		if (tmp_gson)
+			tmp_gson->back = this;
 
 	}
 
-	void	insert(node* t)
+	void	insert_to_good_place(node *t)
 	{
 		if (this->back == 0)
 		{
 			if (!this->value)
+			{
 				*this = *t;
+			}
 			else
 			{
 				if (!right && this->value < t->value)
@@ -107,10 +136,8 @@ struct node{
 		}
 		if (back)
 		{
-			std::cout <<"back exist" <<std::endl;
 			if (value < back->value)
 			{
-				std::cout << "left" << std::endl;
 				if (t->value < value)
 				{
 					if (!left)
@@ -135,7 +162,6 @@ struct node{
 				}
 				else
 				{
-					std::cout << "plop" << std::endl;
 					return (back->insert(t));
 				}
 				return ;
@@ -177,7 +203,118 @@ struct node{
 			}
 		}
 		return ;
+
 	}
+
+	int rule(node *t)
+	{
+		if (t->back && t->back->red)
+			return 1;
+
+		ft::node<int> *first;
+
+		first = t;
+		while (first->back)
+		{
+			if (first->back->red && first->red)
+			{
+				fix_color(first);
+				return (0);
+			}
+			first = first->back;
+		}
+		if (first->red)
+		{
+			fix_color(first);
+			return (0);
+		}
+		return (0);
+
+	}
+
+	void	fix_color(node* t)
+	{
+		if (!t->back)
+		{
+			t->red = 0;
+			return ;	
+		}
+		else if (t->back)
+		{
+			ft::node<int> *parent = t->back;
+			if (parent->back)
+			{
+				ft::node<int> *gp = parent->back;
+				ft::node<int> *oncle;
+				if (parent->value < gp->value)
+					oncle = gp->right;
+				else
+					oncle = gp->left;
+				if (oncle && oncle->red) //case 1
+				{
+					if (gp->red)
+						gp->red = 0;
+					else
+						gp->red = 1;
+					if (parent->red)
+						parent->red = 0;
+					else
+						parent->red = 1;
+					oncle->red = 0;
+				}
+				else if (!oncle || oncle->red == 0)
+				{
+					if ((gp->value < parent->value && parent->value > t->value)) //|| (gp->value > parent->value && parent->value < t->value)) // case 2
+					{
+						parent->right_rotation();	
+					}
+					else if (gp->value > parent->value && parent->value < t->value)
+						parent->left_rotation();
+					else if (gp->value < parent->value && parent->value < t->value) // casse 3
+					{
+						gp->left_rotation();
+						if (gp->red)
+							gp->red = 0;
+						else
+							gp->red = 1;
+						if (parent->red)
+							parent->red = 0;
+						else
+							parent->red = 1;
+					}
+					else if (gp->value > parent->value && parent->value > t->value)
+					{
+						gp->right_rotation();
+						if (gp->red)
+							gp->red = 0;
+						else
+							gp->red = 1;
+						if (parent->red)
+							parent->red = 0;
+						else
+							parent->red = 1;
+
+					}
+					rule(parent);
+				}
+			}
+	
+		}
+	}
+
+	void	insert(node* t)
+	{
+		t->red = 1;
+		insert_to_good_place(t);
+		while (rule(t))
+		{
+			std::cout << "go to fix" << std::endl;
+			t->print_tree();
+			fix_color(t);
+		}
+	}
+		
+
 	
 	void	print_tree(){
 		if (this->back != 0)
@@ -186,6 +323,10 @@ struct node{
 		for (int i = 0; i < 60; i++)
 			std::cout << " ";
 		std::cout << this;
+		if (this->red)
+			std::cout << "red";
+		else 
+			std::cout << "black";
 		std::cout << std::endl;
 
 //fichelle echelle 1
@@ -208,10 +349,28 @@ struct node{
 		for (int i = 0; i < 30; i++)
 			std::cout<< " ";
 		std::cout << left;	   ////////////left
+		if (left)
+		{
+		if (left->red)
+			std::cout << "red";
+		else
+			std::cout << "black";
+		}
 		for (int i = 0; i < 59; i++)
 			std::cout<< " ";
-		std::cout << this->right << std::endl;	 ////////////////right
+		std::cout << this->right ;	 ////////////////right
+		if (right)
+		{
+		 if (right->red)
+			std::cout << "red";
+		else
+			std::cout << "black";
+		}
+		std::cout << std::endl;
 
+
+		if (!left && !right)
+			return ;
 //fichelle echelle 2
 		for (int i = 0; i < 15; i++)
 			std::cout << " ";
@@ -246,29 +405,81 @@ struct node{
 		
 		for (int i = 0; i < 15; i++)
 			std::cout << " ";
+		
+		if (left)
+		{
+		if (left->left)
+		{
 		std::cout << left->left;
+		 if (left->left->red)
+			std::cout << "red";
+		else
+			std::cout << "black";
+		}
 		for	(int i = 0; i < 30; i++) 
 		{
 			if (i == 0 && !left->left)
 				i = 5;
 			std::cout << " ";
 		}
+		if (left->right)
+		{
 		std::cout << left->right;
-
+		 if (left->right->red)
+			std::cout << "red";
+		else
+			std::cout << "black";
+		}
+		}
 		for (int i = 0; i < 30; i++)
 		{
 			if (i == 0 && !left->right)
 				i = 3;
 			std::cout << " ";
 		}
+		if (right)
+		{
+		 if (right->left)
+		 {
 		std::cout << right->left;
+		 if (right->left->red)
+			std::cout << "red";
+		else
+			std::cout << "black";
+		 }
 		for (int i = 0; i < 30; i++)
 		{
 			if (i == 0 && !right->right)
 				i = 3;
 			std::cout << " ";
 		}
-		std::cout << right->right<< std::endl;
+		if (right->right)
+		{
+		std::cout << right->right;
+		 if (right->right->red)
+			std::cout << "red";
+		else
+			std::cout << "black";
+		}
+		}
+		std::cout << std::endl;
+
+		if (!left || !right)
+		{
+			if (!left)
+			{
+				if (!right->left && !right->right)
+					return;
+			}
+			if (!right) 
+			{
+					if (!left->left && !left->right)
+						return ;
+
+			}
+		}
+		if (!left->left && !left->right && !right->left && !right->right)
+			return ;
 
 //end of step 3
 
@@ -338,49 +549,101 @@ struct node{
 		for (int i = 0; i < 8; i++)
 			std::cout << " ";
 		if (sll->left)
+		{
 		std::cout << sll->left->value; 
+		if (sll->left->red)
+			std::cout << "red";
+		else
+			std::cout << "black";
+		}
+
 		else 
 			std::cout << " ";
 		for (int i = 0; i < 12; i++)
 			std::cout << " ";
 		if (sll->right)
+		{
 		std::cout << sll->right->value; 
+		if (sll->right->red)
+			std::cout << "red";
+		else
+			std::cout << "black";
+		}
 		else 
 			std::cout << " ";
 		for (int i = 0; i < 16; i++)
 			std::cout << " ";
 		if (slr->left)
+		{
 		std::cout << slr->left->value; 
+		if (slr->left->red)
+			std::cout << "red";
+		else
+			std::cout << "black";
+		}
 		else 
 			std::cout << " ";
 		for (int i = 0; i < 12; i++)
 			std::cout << " ";
 		if (slr->right)
+		{
 		std::cout << slr->right->value; 
+		if (slr->right->red)
+			std::cout << "red";
+		else 
+			std::cout << "black";
+		}
 		else 
 			std::cout << "r";
 		for (int i = 0; i < 16; i++)
 			std::cout << " ";
 		if (srl->left)
+		{
 		std::cout << srl->left->value; 
+		if (srl->left->red)
+			std::cout << "red";
+		else 
+			std::cout << "black";
+	
+		}
 		else 
 			std::cout << " ";
 		for (int i = 0; i < 12; i++)
 			std::cout << " ";
 		if (srl->right)
+		{
 		std::cout << srl->right->value; 
+		if (srl->right->red)
+			std::cout << "red";
+		else
+			std::cout << "black";
+
+		}
 		else 
 			std::cout << " ";
 			for (int i = 0; i < 16; i++)
 			std::cout << " ";
 		if (srr->left)
+		{
 		std::cout << srr->left->value; 
+		if (srr->left->red)
+			std::cout << "red";
+		else	
+			std::cout << "black";
+		}
 		else 
 			std::cout << " ";
 		for (int i = 0; i < 12; i++)
 			std::cout << " ";
 		if (srr->right)
+		{
 		std::cout << srr->right->value; 
+		if (srr->right->red)
+			std::cout << "red";
+		else
+			std::cout << "black";
+		}
+	
 		else 
 			std::cout << " ";
 		std::cout << std::endl;
