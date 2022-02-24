@@ -3,15 +3,16 @@
 
 int main()
 {
-	ft::node<int>*	gp = new ft::node<int>(2);	
-	ft::node<int>*	pere = new ft::node<int>(1);	
-	ft::node<int>*	mere = new ft::node<int>(9);	
-	ft::node<int>*	oncle_bob = new ft::node<int>(44);	
-	ft::node<int>*	mec_chiant= new ft::node<int>(5);	
-	ft::node<int>*	oscart = new ft::node<int>(6);	
-	ft::node<int>*	max= new ft::node<int>(99999);	
-	ft::node<int>*	maxmax= new ft::node<int>(9999999);	
-	ft::node<int>*	pmax= new ft::node<int>(33);	
+	ft::node<float>*	gp = new ft::node<float>(2);	
+	ft::node<float>*	pere = new ft::node<float>(1);	
+	ft::node<float>*	mere = new ft::node<float>(9.48);	
+	ft::node<float>*	oncle_bob = new ft::node<float>(44);	
+	ft::node<float>*	mec_chiant= new ft::node<float>(5);	
+	ft::node<float>*	oscart = new ft::node<float>(6);	
+	ft::node<float>*	max= new ft::node<float>(99999);	
+	ft::node<float>*	maxmax= new ft::node<float>(9999999);	
+	ft::node<float>*	pmax= new ft::node<float>(33);	
+	ft::node<float>*	tran = new ft::node<float>(8);	
 
 
 	gp->print_tree();
@@ -58,18 +59,17 @@ int main()
 	gp->print_tree();
 	pere->insert(maxmax);
 	gp->print_tree();
-	//pere->insert(pmax);
+	pere->insert(tran);
+	gp->print_tree();
+	pere->insert(pmax);
+	gp->print_tree();
+
 	//std::cout << mec_chiant->right << std::endl;
 //	mec_chiant->left_rotation();
 
 //	pere->print_tree();
 //	mec_chiant->right_rotation();
-	pere->print_tree();
 
-	std::cout << "test" << std::endl;
-	//mere->right_rotation();
-
-	std::cout << "test" << std::endl;
 
 	pere->print_tree();
 	

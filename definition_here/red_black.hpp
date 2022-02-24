@@ -56,7 +56,6 @@ struct node{
 	}
 
 	std::ostream&	operator<<(std::ostream& out) {
-		std::cout << "bite" << std::endl;
 		out << &value;
 
 	}
@@ -65,8 +64,8 @@ struct node{
 
 	void	left_rotation()
 	{
-		ft::node<int>	*tmp_son = right;
-		ft::node<int>	*tmp_gson = right->left;
+		ft::node<value_type>	*tmp_son = right;
+		ft::node<value_type>	*tmp_gson = right->left;
 
 		tmp_son->back = back;
 		if (back)
@@ -86,8 +85,8 @@ struct node{
 
 	void	right_rotation()
 	{
-		ft::node<int>	*tmp_son = left;
-		ft::node<int>	*tmp_gson;
+		ft::node<value_type>	*tmp_son = left;
+		ft::node<value_type>	*tmp_gson;
 		if (left)
 			tmp_gson = left->right;
 
@@ -168,7 +167,6 @@ struct node{
 			}
 			else
 			{
-				std::cout << "right" << std::endl;
 				if (t->value > value)
 				{
 					if (!right)
@@ -182,7 +180,6 @@ struct node{
 				}
 				else if (t->value < value && back->value < t->value)
 				{
-					std::cout << "oscar" << std::endl;
 					if (!left)
 					{
 						left = t;
@@ -190,7 +187,6 @@ struct node{
 					}
 					else
 					{
-						std::cout << "1" << std::endl;
 						return (left->insert(t));
 					}
 					return ;
@@ -211,7 +207,7 @@ struct node{
 		if (t->back && t->back->red)
 			return 1;
 
-		ft::node<int> *first;
+		ft::node<value_type> *first;
 
 		first = t;
 		while (first->back)
@@ -241,11 +237,11 @@ struct node{
 		}
 		else if (t->back)
 		{
-			ft::node<int> *parent = t->back;
+			ft::node<value_type> *parent = t->back;
 			if (parent->back)
 			{
-				ft::node<int> *gp = parent->back;
-				ft::node<int> *oncle;
+				ft::node<value_type> *gp = parent->back;
+				ft::node<value_type> *oncle;
 				if (parent->value < gp->value)
 					oncle = gp->right;
 				else
@@ -395,13 +391,13 @@ struct node{
 		std::cout << "|" << std::endl;
 //	
 		if (this->left)
-			ft::node<int> *left = new ft::node<int>(this->left);
+			ft::node<value_type> *left = new ft::node<value_type>(this->left);
 		else
-			ft::node<int> *left = new ft::node<int>();	
+			ft::node<value_type> *left = new ft::node<value_type>();	
 		if (this->right)
-			ft::node<int> *right= new ft::node<int>(this->right);
+			ft::node<value_type> *right= new ft::node<value_type>(this->right);
 		else
-			ft::node<int> *right= new ft::node<int>();
+			ft::node<value_type> *right= new ft::node<value_type>();
 		
 		for (int i = 0; i < 15; i++)
 			std::cout << " ";
@@ -504,19 +500,19 @@ struct node{
 		std::cout  << std::endl;
 
 		
-		ft::node<int> *srr = new ft::node<int>();
+		ft::node<value_type> *srr = new ft::node<value_type>();
 		if (right->right)
 			*srr = *(right->right);
 
-		ft::node<int> *srl = new ft::node<int>();
+		ft::node<value_type> *srl = new ft::node<value_type>();
 		if (right->left)
 			*srl = *(right->left);
 		
-		ft::node<int> *slr = new ft::node<int>();
+		ft::node<value_type> *slr = new ft::node<value_type>();
 		if ((left->right))
 			 *slr = *(left->right);
 
-		ft::node<int> *sll = new ft::node<int>();
+		ft::node<value_type> *sll = new ft::node<value_type>();
 		if ((left->left))
 			*sll = *(left->left);
 
