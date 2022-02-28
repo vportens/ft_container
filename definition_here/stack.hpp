@@ -9,15 +9,15 @@ template <class T, class Container = ft::vector<T> >
 class stack {
 
 	public:
-	typedef typename Container::value_type	value_type;
-	typedef typename Container::size_type	size_type;
+	typedef T	value_type;
+	typedef size_t	size_type;
 	typedef		 Container	container_type;
 
 	protected:
 		Container c;
 	
 	public:
-		explicit stack(const Container& = Container());
+		explicit stack(const Container&cpy = Container()) :c(cpy){};
 
 	bool empty() const {return c.empty();}
 	size_type size() const {return c.size();}
@@ -40,7 +40,9 @@ class stack {
 
 template <class T, class Container>
 bool	operator>(const stack<T, Container> &x, const stack<T, Container> &y){
-	return (!(x<y));
+	if (x<y || x == y)
+		return (false);
+	return (true);
 }
 
 
