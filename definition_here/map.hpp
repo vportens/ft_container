@@ -15,14 +15,14 @@ class map{
 		typedef Allocator 		allocator_type;
 		typedef typename Allocator::reference 		reference;
 		typedef typename Allocator::const_reference	 const_reference;
-		typedef ft::Binary_tree<value_type, key_compare>::iterator		iterator; // See 23.1
-		typedef  ft::Binary_tree<const value_type, key_compare>::const_iterator		const_iterator; // See 23.1
-		typeddef unsigned long		size_type; // See 23.1
+//		typedef ft::Binary_tree<value_type, key_compare>::iterator		iterator; // See 23.1
+//		typedef  ft::Binary_tree<const value_type, key_compare>::const_iterator		const_iterator; // See 23.1
+		typedef unsigned long		size_type; // See 23.1
 		typedef ft::iterator_traits<iterator> 		difference_type;// See 23.1
 		typedef typename Allocator::pointer pointer;
 		typedef typename Allocator::const_pointer const_pointer;
-		typedef ft::reverse_iterator<iterator> reverse_iterator;
-		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
+//		typedef ft::reverse_iterator<iterator> reverse_iterator;
+//		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
 		class value_compare : public binary_function<value_type, value_type, bool> {
 			friend class map;
@@ -56,7 +56,7 @@ class map{
 
 /*----------------------------------------interator---------------------------------*/
 
-		iterator	begin();
+/*		iterator	begin();
 		const_iterator	begin() const;
 		iterator	end();
 		const_iterator	end() const;
@@ -64,11 +64,14 @@ class map{
 		const_reverse_iterator	rbegin() const;
 		reverse_iterator	rend();	
 		const_reverse_iterator	rend() const;	
+*/
 
 /*-------------------------------------capacity---------------------------------------*/
 		bool empty() const;
 		size_type size() const;
-		size_type max_size() const;
+		size_type max_size() const {
+
+		};
 
 /*---------------------------------------element access------------------------------------*/
 		T& ioerator[](const key_type& x);

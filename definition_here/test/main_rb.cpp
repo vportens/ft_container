@@ -1,5 +1,6 @@
 #include "../red_black.hpp"
 #include <iostream>
+#include "../utils.hpp"
 
 int main()
 {
@@ -73,4 +74,10 @@ int main()
 
 	pere->print_tree();
 	
+	ft::pair<char, int> test;
+	test = ft::make_pair<char, int>('c', 10);
+	std::cout << "pair test: " << test.first << ", " << test.second << std::endl;
+
+	ft::node<ft::pair<char, int> > test2(test);
+	(&test2)->print_tree();
 }

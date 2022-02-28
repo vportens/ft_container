@@ -25,7 +25,14 @@ struct node{
 
 	node(const node& cpy) : red(cpy.red), value(cpy.value), back(cpy.back), right(cpy.right), left(cpy.left) {}
 
-	virtual ~node() {}
+	virtual ~node() {
+	//	if (this->left)
+	//		destroy(this->left);
+//
+	//	if (this->right)
+	//		destroy(this->right);
+	//	destroy(this);
+	}
 
 	node&	operator=(const node& cpy) {
 		if (*this == cpy)
@@ -47,6 +54,12 @@ struct node{
 		right = cpy->right;
 		left = cpy->left;
 		return (this);
+	}
+
+	void	destroy(node* truc)
+	{
+		delete truc;
+
 	}
 
 	bool	operator==(const node& cmp) {
@@ -304,7 +317,7 @@ struct node{
 		insert_to_good_place(t);
 		while (rule(t))
 		{
-			std::cout << "go to fix" << std::endl;
+//			std::cout << "go to fix" << std::endl;
 			t->print_tree();
 			fix_color(t);
 		}
@@ -506,8 +519,9 @@ struct node{
 
 		ft::node<value_type> *srl = new ft::node<value_type>();
 		if (right->left)
+		{
 			*srl = *(right->left);
-		
+		}
 		ft::node<value_type> *slr = new ft::node<value_type>();
 		if ((left->right))
 			 *slr = *(left->right);
@@ -642,7 +656,14 @@ struct node{
 	
 		else 
 			std::cout << " ";
-		std::cout << std::endl;
+		
+/*		delete left;
+		delete right;
+		delete srr;
+		delete slr;
+		delete srl;
+		delete sll;
+	*/	std::cout << std::endl;
 	
 	}
 };
