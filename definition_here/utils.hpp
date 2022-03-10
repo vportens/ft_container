@@ -128,11 +128,19 @@ namespace ft
 			pair& operator=(const pair& pr) {
 				if (*this == pr)
 					return (*this);
-				first = pr.first;
-				second = pr.second;
+				this->first = pr.first;
+				this->second = pr.second;
 				return (*this);
 			}
 		};
+
+		template<class T1, class T2>
+		std::ostream&	operator<<(std::ostream& out, const pair<T1, T2>& src)
+		{
+			out << "first: " << src.first << " second: " << src.second << std::endl; 
+			return out;
+		}
+
 
 		template <class T1, class T2>
 		bool operator== (const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)

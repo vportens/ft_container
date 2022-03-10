@@ -12,27 +12,24 @@ struct node{
 	typedef T	value_type;
 	value_type	value;
 	bool		red;
+	bool		not_set;
 	node*		back;
 	node*		left;
-	node*		right;	
+	node*		right;
 
 //	node() : value(), red(0), back(0), left(0), right(0) {}
 
-	node(node* back = 0, node* left = 0,node* right = 0 ) : red(0), back(back), left(left), right(right), value() {}
+	node(node* back = 0, node* left = 0,node* right = 0 ) : not_set(0), red(0), back(back), left(left), right(right), value() {}
 
 	
-	node(const value_type& val, node* back = 0, node* left = 0,node* right = 0) :red(0), back(back), left(left), right(right), value(val) {}
-
-	node(const node& cpy) : red(cpy.red), value(cpy.value), back(cpy.back), right(cpy.right), left(cpy.left) {}
-
-	virtual ~node() {
-	//	if (this->left)
-	//		destroy(this->left);
-//
-	//	if (this->right)
-	//		destroy(this->right);
-	//	destroy(this);
+	node(const value_type& val, node* back = 0, node* left = 0,node* right = 0) :not_set(1), red(0), back(NULL), left(NULL), right(NULL) {
+		value = val;
+		std::cout << "pute " << std::endl;
 	}
+
+	node(const node& cpy) : not_set(cpy.not_set), red(cpy.red), value(cpy.value), back(cpy.back), right(cpy.right), left(cpy.left) {}
+
+	virtual ~node() {}
 
 	node&	operator=(const node& cpy) {
 		if (*this == cpy)
@@ -40,6 +37,7 @@ struct node{
 		value = cpy.value;
 		red = cpy.red;
 		back = cpy.back;
+		not_set = cpy.not_set;
 		right = cpy.right;
 		left = cpy.left;
 		return (*this);
@@ -50,16 +48,11 @@ struct node{
 			return (this);
 		value = cpy->value;
 		red = cpy->red;
+		not_set = cpy->not_set;
 		back = cpy->back;
 		right = cpy->right;
 		left = cpy->left;
 		return (this);
-	}
-
-	void	destroy(node* truc)
-	{
-		delete truc;
-
 	}
 
 	bool	operator==(const node& cmp) {
@@ -121,11 +114,16 @@ struct node{
 
 	void	insert_to_good_place(node *t)
 	{
+		std::cout << "test end, entre to insert_to_good_place" << std::endl;
+	//	std::cout << "what inside the node: " << t->value << std::endl;
 		if (this->back == 0)
 		{
-			if (!this->value)
+		std::cout << "vack"<< std::endl;
+			if (!not_set)
 			{
+				std::cout << "go to the place that sould" << std::endl;
 				*this = *t;
+				std::cout << "yes" << std::endl;
 			}
 			else
 			{
@@ -146,6 +144,7 @@ struct node{
 			}
 			return ;
 		}
+		std::cout << "here?" << std::endl;
 		if (back)
 		{
 			if (value < back->value)
@@ -314,11 +313,12 @@ struct node{
 	void	insert(node* t)
 	{
 		t->red = 1;
-		insert_to_good_place(t);
+		this->insert_to_good_place(t);
+		std::cout << "test end" << std::endl;
 		while (rule(t))
 		{
-//			std::cout << "go to fix" << std::endl;
-			t->print_tree();
+			std::cout << "go to fix" << std::endl;
+	//		t->print_tree();
 			fix_color(t);
 		}
 	}
@@ -519,9 +519,8 @@ struct node{
 
 		ft::node<value_type> *srl = new ft::node<value_type>();
 		if (right->left)
-		{
 			*srl = *(right->left);
-		}
+		
 		ft::node<value_type> *slr = new ft::node<value_type>();
 		if ((left->right))
 			 *slr = *(left->right);
@@ -656,14 +655,7 @@ struct node{
 	
 		else 
 			std::cout << " ";
-		
-/*		delete left;
-		delete right;
-		delete srr;
-		delete slr;
-		delete srl;
-		delete sll;
-	*/	std::cout << std::endl;
+		std::cout << std::endl;
 	
 	}
 };
@@ -675,6 +667,7 @@ std::ostream&	operator<<(std::ostream& out, const ft::node<T>* t){
 		return (out << "nill");
 	return (out << t->value);
 }
+
 
 
 
