@@ -80,6 +80,40 @@ namespace ft
 			return (tmp);
 		}
 
+		btree_iterator& operator--(void) {
+			T * start = _node;
+
+			if (_node->left)
+			{
+				start = _node->left;
+				while (start->right)
+					start = start->right;
+				_node = start;
+				return (*this);
+			}
+			else
+			{
+				while (start->back && (!_comp(start->value.first, _node->value.first)))
+				{
+					start = start->back;
+				}
+				if (!start->back && (!_comp(start->value.first, _node->value.first)))
+					return (*this);
+				else {
+					_node = start;
+					return (*this);
+				}
+			}
+			return (*this);
+		}
+
+		btree_iterator operator--(int)
+		{
+			btree_iterator tmp(*this);
+			operator--();
+			return tmp;
+		}
+
 		reference operator*(){
 			return _node->value;	
 			}

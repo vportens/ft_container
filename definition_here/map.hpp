@@ -59,7 +59,7 @@ class map{
 //		template <class InputIterator>
 //		map(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator& = Allocator());
 		map(const map<Key, T, Compare, Allocator>& x) : _alloc(x._alloc), _comp(x._comp), _root(NULL) {
-//			insert->(x.begin(), x.end());
+//			insert(x.begin(), x.end());
 
 		}
 /*

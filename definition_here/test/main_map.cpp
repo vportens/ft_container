@@ -50,5 +50,14 @@ int main()
 	std::cout << "test operator = iterator, befor: " << *test_egal << std::endl;
 	test_egal = m.end();
 	std::cout << "test operator = iterator, after: " << *test_egal << std::endl;
+
+	while (test_egal != m.begin())
+	{
+		std::cout << "test_egal decrementation, test_egal: " << *test_egal << std::endl;
+		--test_egal;
+	}
+	std::cout << "test_egal decrementation, test_egal: " << *test_egal << std::endl;
+
+	
 }
 
