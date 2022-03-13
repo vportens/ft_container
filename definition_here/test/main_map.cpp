@@ -33,5 +33,23 @@ int main()
 
 	for (std::map<char *, int>::iterator it = real.begin(); it != real.end(); it++)
 		std::cout << it->first << ", " << it->second << std::endl;
+
+	ft::map<char *, int>::iterator it = m.begin();
+	std::cout << "test iterator begin: ";
+	(*it);
+	std::cout << std::endl;
+
+
+	++it;
+	std::cout << "test iterator begin++: ";
+	(*it);
+	std::cout << std::endl;
+
+	++it;
+	std::cout << "test iterator begin++: ";
+	(*it);
+	std::cout << std::endl;
+
+
 }
 

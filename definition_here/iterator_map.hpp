@@ -14,18 +14,66 @@ namespace ft
 			typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::reference reference;
 
 		T * _node;
-		T * _prec_node;
 		compare _comp;
 
-		btree_iterator(const compare& comp = compare()) : _node(), _prec_node(), _comp(comp) {}
+		btree_iterator(const compare& comp = compare()) : _node(), _comp(comp) {}
 
-		btree_iterator(const btree_iterator& btree_it) : _node(btree_it._node), _prec_node(btree_it.node), _comp() {}
+		btree_iterator(const btree_iterator& btree_it) : _node(btree_it._node), _comp() {}
 
-		btree_iterator(T *node_cpy, T * prec_node_cpy, const compare& comp = compare()) : _node(node_cpy), _prec_node(prec_node_cpy), _comp(comp) {}
+		btree_iterator(T *node_cpy, const compare& comp = compare()) : _node(node_cpy), _comp(comp) {}
 
 		virtual ~btree_iterator() {}
 
-	};	
+		btree_iterator& operator++(void) {
+			T * start = _node;
+
+			if (_node->right)
+			{
+				start = _node->right;
+				while (start->left)
+					start = start->left;
+				_node = start;
+				return (*this);
+			}
+			else
+			{
+				if (_node->back)
+				{
+					start = _node->back;
+					while (start->back && (_comp(start->value.first, _node->value.first)))
+					{
+						start = start->back;
+					}
+					if (!start->back && (_comp(start->value.first, _node->value.first)))
+						return (*this);
+					else {
+						_node = start;
+						return (*this);
+					}
+				}
+				else
+					return (*this);
+			}
+			return (*this);
+		}
+
+		void operator*(){
+			std::cout << _node->value.first;
+			return ;	
+			}
+
+		void	operator<<(btree_iterator &test){
+		if (test == NULL)
+		{
+			(std::cout << "nill");
+			return ;
+		}
+		(std::cout << test._node);
+			return ;
+		}
+	};
+
+
 }
 
 #endif

@@ -20,7 +20,7 @@ class map{
 		typedef Allocator 		allocator_type;
 		typedef typename Allocator::reference 		reference;
 		typedef typename Allocator::const_reference	 const_reference;
-		typedef typename ft::btree_iterator<value_type, key_compare>::iterator		iterator; // See 23.1
+		typedef typename ft::btree_iterator<ft::node<value_type>, key_compare>		iterator; // See 23.1
 //		typedef  ft::Binary_tree<const value_type, key_compare>::const_iterator		const_iterator; // See 23.1
 		typedef unsigned long		size_type; // See 23.1
 //		typedef ft::iterator_traits<iterator> 		difference_type;// See 23.1
@@ -49,7 +49,7 @@ class map{
 			alloc_node			_alloc_node;
 			
 	public :
-			node<value_type>*	_root;
+			ft::node<value_type>*	_root;
 
 		public :
 		
@@ -72,8 +72,18 @@ class map{
 */
 /*----------------------------------------interator---------------------------------*/
 
-/*		iterator	begin();
-		const_iterator	begin() const;
+		iterator	begin() {
+			node<value_type> *start;
+
+			if (!_root)
+				return iterator();
+			start = _root;
+			while (start->left)
+				start = start->left;
+			return (iterator(start));
+
+		}
+/*		const_iterator	begin() const;
 		iterator	end();
 		const_iterator	end() const;
 		reverse_iterator	rbegin();
