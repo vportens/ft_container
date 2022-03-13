@@ -21,12 +21,12 @@ class map{
 		typedef typename Allocator::reference 		reference;
 		typedef typename Allocator::const_reference	 const_reference;
 		typedef typename ft::btree_iterator<ft::node<value_type>, key_compare>		iterator; // See 23.1
-//		typedef  ft::Binary_tree<const value_type, key_compare>::const_iterator		const_iterator; // See 23.1
+		typedef typename ft::btree_const_iterator<ft::node<value_type>, key_compare>		const_iterator; // See 23.1
 		typedef unsigned long		size_type; // See 23.1
-//		typedef ft::iterator_traits<iterator> 		difference_type;// See 23.1
+		typedef ft::iterator_traits<iterator> 		difference_type;// See 23.1
 		typedef typename Allocator::pointer pointer;
 		typedef typename Allocator::const_pointer const_pointer;
-//		typedef ft::reverse_iterator<iterator> reverse_iterator;
+		typedef ft::reverse_iterator<iterator> reverse_iterator;
 //		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 		typedef std::allocator<ft::node<ft::pair<Key, T> > > alloc_node;
 
@@ -83,7 +83,21 @@ class map{
 			return (iterator(start));
 
 		}
-//		const_iterator	begin() const;
+
+		const_iterator	begin() const {
+			node<value_type> *start;
+
+			if (!_root)
+				return const_iterator();
+			start = _root;
+			while (start->left)
+				start = start->left;
+			return (const_iterator(start));
+
+
+
+		}
+
 		iterator	end() {
 			node<value_type> *start;
 
@@ -94,8 +108,20 @@ class map{
 				start = start->right;
 			return (iterator(start));
 		}
-/*		const_iterator	end() const;
-		reverse_iterator	rbegin();
+
+		const_iterator	end() const {
+			node<value_type> *start;
+
+			if (!_root)
+				return const_iterator();
+			start = _root;
+			while (start->right)
+				start = start->right;
+			return (const_iterator(start));
+
+		}
+
+/*		reverse_iterator	rbegin();
 		const_reverse_iterator	rbegin() const;
 		reverse_iterator	rend();	
 		const_reverse_iterator	rend() const;	
