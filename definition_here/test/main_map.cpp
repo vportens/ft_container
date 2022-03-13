@@ -11,9 +11,9 @@ int main()
 	ft::pair<char *, int> test;
 	ft::pair<char *, int> test1;
 	ft::pair<char *, int> test2;
-	char *  str = "bonjour";
-	char *  str1 = "aurevoir";
-	char *  str2 = "baise";
+	char   str[] = "bonjour";
+	char   str1[] = "aurevoir";
+	char   str2[] = "baise";
 
 	test = ft::make_pair(str, 3);
 	test1 = ft::make_pair(str1, 7);
@@ -22,10 +22,16 @@ int main()
 	m.insert(test1);
 	m.insert(test2);
 	m.printmap();
-
+	std::cout << m << std::endl;
 
 	std::map<char *, int> real;
 
-	std::cout << m << std::endl;
+	real.insert(std::pair<char *,int>(str, 3) );
+	real.insert(std::pair<char *,int>(str1, 7) );
+	real.insert(std::pair<char *,int>(str2, 9) );
+
+
+	for (std::map<char *, int>::iterator it = real.begin(); it != real.end(); it++)
+		std::cout << it->first << ", " << it->second << std::endl;
 }
 

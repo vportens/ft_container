@@ -5,6 +5,7 @@
 #include "utils.hpp"
 #include "red_black.hpp"
 #include "randomIterator.hpp"
+#include "iterator_map.hpp"
 
 
 namespace ft
@@ -19,7 +20,7 @@ class map{
 		typedef Allocator 		allocator_type;
 		typedef typename Allocator::reference 		reference;
 		typedef typename Allocator::const_reference	 const_reference;
-//		typedef ft::Binary_tree<value_type, key_compare>::iterator		iterator; // See 23.1
+		typedef typename ft::btree_iterator<value_type, key_compare>::iterator		iterator; // See 23.1
 //		typedef  ft::Binary_tree<const value_type, key_compare>::const_iterator		const_iterator; // See 23.1
 		typedef unsigned long		size_type; // See 23.1
 //		typedef ft::iterator_traits<iterator> 		difference_type;// See 23.1

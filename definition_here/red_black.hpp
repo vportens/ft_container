@@ -24,7 +24,6 @@ struct node{
 	
 	node(const value_type& val, node* back = 0, node* left = 0,node* right = 0) :not_set(1), red(0), back(NULL), left(NULL), right(NULL) {
 		value = val;
-		std::cout << "pute " << std::endl;
 	}
 
 	node(const node& cpy) : not_set(cpy.not_set), red(cpy.red), value(cpy.value), back(cpy.back), right(cpy.right), left(cpy.left) {}
@@ -114,16 +113,11 @@ struct node{
 
 	void	insert_to_good_place(node *t)
 	{
-		std::cout << "test end, entre to insert_to_good_place" << std::endl;
-	//	std::cout << "what inside the node: " << t->value << std::endl;
 		if (this->back == 0)
 		{
-		std::cout << "vack"<< std::endl;
 			if (!not_set)
 			{
-				std::cout << "go to the place that sould" << std::endl;
 				*this = *t;
-				std::cout << "yes" << std::endl;
 			}
 			else
 			{
@@ -144,7 +138,6 @@ struct node{
 			}
 			return ;
 		}
-		std::cout << "here?" << std::endl;
 		if (back)
 		{
 			if (value < back->value)
