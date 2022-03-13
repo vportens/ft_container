@@ -35,21 +35,20 @@ int main()
 		std::cout << it->first << ", " << it->second << std::endl;
 
 	ft::map<char *, int>::iterator it = m.begin();
-	std::cout << "test iterator begin: ";
-	(*it);
-	std::cout << std::endl;
+	std::cout << "test iterator begin: " << (*it) << std::endl;
 
 
 	++it;
-	std::cout << "test iterator begin++: ";
-	(*it);
-	std::cout << std::endl;
+	std::cout << "test iterator begin++: " << (*it) << std::endl;
 
-	++it;
-	std::cout << "test iterator begin++: ";
-	(*it);
-	std::cout << std::endl;
+	it++;
+	std::cout << "test iterator begin++: " << (*it) <<  std::endl;
 
 
+	ft::map<char *, int>::iterator test_egal = m.begin();
+
+	std::cout << "test operator = iterator, befor: " << *test_egal << std::endl;
+	test_egal = m.end();
+	std::cout << "test operator = iterator, after: " << *test_egal << std::endl;
 }
 

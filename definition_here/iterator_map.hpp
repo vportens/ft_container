@@ -7,7 +7,7 @@ namespace ft
 	class btree_iterator : public ft::iterator<ft::bidirectional_iterator_tag, T>
 	{
 		public :
-			typedef T value_type;
+			typedef typename T::value_type value_type;
 			typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::iterator_category iterator_category;
 			typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::difference_type difference_type;
 			typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::pointer pointer;
@@ -24,6 +24,23 @@ namespace ft
 
 		virtual ~btree_iterator() {}
 
+		btree_iterator& operator=(const btree_iterator& cpy) {
+			if (*this == cpy)
+				return (*this);
+			_node = cpy._node;
+			_comp = cpy._comp;
+			return (*this);
+		}
+
+		bool operator==(const btree_iterator& it) {
+			return (_node == it._node);
+		}
+
+		
+		bool operator!=(const btree_iterator& it) {
+			return (_node != it._node);
+		}
+		
 		btree_iterator& operator++(void) {
 			T * start = _node;
 
@@ -57,12 +74,17 @@ namespace ft
 			return (*this);
 		}
 
-		void operator*(){
-			std::cout << _node->value.first;
-			return ;	
+		btree_iterator	operator++(int){
+			btree_iterator tmp(*this);
+			operator++();
+			return (tmp);
+		}
+
+		reference operator*(){
+			return _node->value;	
 			}
 
-		void	operator<<(btree_iterator &test){
+		void	operator<<(reference &test){
 		if (test == NULL)
 		{
 			(std::cout << "nill");

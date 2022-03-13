@@ -83,9 +83,18 @@ class map{
 			return (iterator(start));
 
 		}
-/*		const_iterator	begin() const;
-		iterator	end();
-		const_iterator	end() const;
+//		const_iterator	begin() const;
+		iterator	end() {
+			node<value_type> *start;
+
+			if (!_root)
+				return iterator();
+			start = _root;
+			while (start->right)
+				start = start->right;
+			return (iterator(start));
+		}
+/*		const_iterator	end() const;
 		reverse_iterator	rbegin();
 		const_reverse_iterator	rbegin() const;
 		reverse_iterator	rend();	
