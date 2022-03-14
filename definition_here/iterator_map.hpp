@@ -1,6 +1,8 @@
 #ifndef ITERATOR_MAP_HPP
 #define ITERATOR_MAP_HPP
 
+#include "reverse_iterator.hpp"
+
 namespace ft
 {
 	template <typename T, class compare >
@@ -23,6 +25,10 @@ namespace ft
 		btree_iterator(T *node_cpy, const compare& comp = compare()) : _node(node_cpy), _comp(comp) {}
 
 		virtual ~btree_iterator() {}
+
+		T*	getter() {
+			return (_node);
+		}
 
 		btree_iterator& operator=(const btree_iterator& cpy) {
 			if (*this == cpy)
@@ -163,6 +169,10 @@ namespace ft
 			_node = cpy._node;
 			_comp = cpy._comp;
 			return (*this);
+		}
+
+		T * getter() {
+			return (_node);
 		}
 
 		bool operator==(const btree_const_iterator& it) {

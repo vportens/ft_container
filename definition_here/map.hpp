@@ -27,7 +27,7 @@ class map{
 		typedef typename Allocator::pointer pointer;
 		typedef typename Allocator::const_pointer const_pointer;
 		typedef ft::reverse_iterator<iterator> reverse_iterator;
-//		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 		typedef std::allocator<ft::node<ft::pair<Key, T> > > alloc_node;
 
 		class value_compare : public std::binary_function<value_type, value_type, bool> {
@@ -53,6 +53,7 @@ class map{
 
 		public :
 		
+
 /*-------------------------------construtors/destroy----------------------------*/
 		explicit map(const Compare& comp = Compare(), const Allocator& alloc= Allocator()) : _alloc(alloc), _comp(comp), _root() {}
 
@@ -121,18 +122,45 @@ class map{
 
 		}
 
-/*		reverse_iterator	rbegin();
-		const_reverse_iterator	rbegin() const;
-		reverse_iterator	rend();	
-		const_reverse_iterator	rend() const;	
-*/
+		reverse_iterator	rbegin() {
+			return reverse_iterator(end());
+		}
+
+		const_reverse_iterator	rbegin() const{
+			return const_reverse_iterator(end());
+		}
+
+		reverse_iterator	rend() {
+			return reverse_iterator(begin());
+		}
+
+		const_reverse_iterator	rend() const {
+			return const_reverse_iterator(begin());
+		}
 
 /*-------------------------------------capacity---------------------------------------*/
 /*
-		bool empty() const;
-		size_type size() const;
-		size_type max_size() const {
+		bool empty() const {
+			if (!_root)
+				return (true);
+			return (false);
+		}
 
+		size_type size() const {
+			if (empty())
+				return (0);
+			int i = 1;
+			ft::map<Key, T>::iterator size = begin();
+			while (size != end())
+			{
+				size++;
+				i++;
+			}
+			return i;
+		}
+
+		size_type max_size() const {
+			return (alloc_node().max_size());
 		};
 
 */
@@ -143,19 +171,35 @@ class map{
 */
 /*-------------------------------------------------modifier----------------------------------*/
 
-		void insert(const value_type& x) {
+		ft::pair<iterator, bool> insert(const value_type& x) {
 			ft::node<value_type> * node_to_insert = _alloc_node.allocate(1);
+
 			_alloc_node.construct(node_to_insert, x);
 
-			std::cout << "test first, second" << node_to_insert->value.first << " " << node_to_insert->value.second << std::endl;
 			if (!_root)
+			{
 				_root = node_to_insert;
+				return (ft::make_pair(begin(), true));
+			}
 			else
 			{
+				iterator find = begin();
+				while (find != end())
+				{
+					if (find._node->value.first == x.first)
+						return (ft::make_pair(find, false));
+					find++;
+				}
+				if (find._node->value.first == x.first)
+					return (ft::make_pair(find, false));
 				_root->insert(node_to_insert);
 				while (_root->back)
 					_root = _root->back;
+				iterator ret(node_to_insert);
+				return (ft::make_pair(ret, true));
 			}
+			iterator ret(node_to_insert);
+			return (ft::make_pair(ret, true));
 		}
 
 

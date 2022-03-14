@@ -54,6 +54,8 @@ struct node{
 		return (this);
 	}
 
+
+
 	bool	operator==(const node& cmp) {
 		if (value == cmp.value)
 			return (true);

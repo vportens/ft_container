@@ -58,6 +58,15 @@ int main()
 	}
 	std::cout << "test_egal decrementation, test_egal: " << *test_egal << std::endl;
 
-	
+	// reverse iterator
+
+	ft::map<char *,int>::reverse_iterator rev_test;
+
+	rev_test = m.rbegin();
+	while (rev_test != m.rend())
+	{
+		std::cout << "test rev ite: " << *rev_test << std::endl;
+		rev_test++;
+	}
 }
 
