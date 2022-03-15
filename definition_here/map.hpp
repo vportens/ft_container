@@ -17,11 +17,12 @@ class map{
 		typedef T			 mapped_type;
 		typedef ft::pair<Key, T>	 value_type;
 		typedef Compare 		key_compare;
+		typedef ft::node<value_type>	node_type;
 		typedef Allocator 		allocator_type;
 		typedef typename Allocator::reference 		reference;
 		typedef typename Allocator::const_reference	 const_reference;
-		typedef typename ft::btree_iterator<ft::node<value_type>, key_compare>		iterator; // See 23.1
-		typedef typename ft::btree_iterator<const ft::node< value_type>, key_compare>		const_iterator; // See 23.1
+		typedef typename ft::btree_iterator<value_type, node_type>		iterator; // See 23.1
+		typedef typename ft::btree_iterator<const value_type, node_type> const_iterator; // See 23.1
 		typedef unsigned long		size_type; // See 23.1
 		typedef ft::iterator_traits<iterator> 		difference_type;// See 23.1
 		typedef typename Allocator::pointer pointer;

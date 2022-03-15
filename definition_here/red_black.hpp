@@ -38,9 +38,9 @@ struct node{
 
 	virtual ~node() {}
 
-//	operator node<const T> const() {
-//		return (node<const T>(value,back, left, right));
-//	}
+	operator node<const T> const() {
+		return (node<const T>(value,back, left, right));
+	}
 
 
 	node&	operator=(node& cpy) {
