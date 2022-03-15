@@ -18,27 +18,54 @@ namespace ft
 		T * _node;
 		compare _comp;
 
+	//	btree_iterator(T *lala, compare const &lsl) : _node(lala), _comp(lsl) {}
+
 		btree_iterator(const compare& comp = compare()) : _node(), _comp(comp) {}
 
-		btree_iterator(const btree_iterator& btree_it) : _node(btree_it._node), _comp() {}
+//		btree_iterator(const btree_iterator& btree_it) : _node(btree_it._node), _comp() {}
+		template<typename U, typename U2> btree_iterator(const btree_iterator<const U, U2>& btree_it) :   _comp(btree_it._comp) {
+			ft::node<value_type> *  node = btree_it._node;
+			_node = node;
+		//	_node = const_cast<U*>(btree_it._node);
+		}
 
-		btree_iterator(T *node_cpy, const compare& comp = compare()) : _node(node_cpy), _comp(comp) {}
+
+//		btree_iterator(const ft::btree_const_iterator<T,  compare>& it) : _node(it._node), _comp() {}
+
+		btree_iterator(T *node_cpy, const compare& comp = compare()) : _node(node_cpy),  _comp(comp) {
+	//		this->_node = node_cpy;
+		}
 
 		virtual ~btree_iterator() {}
 
-		T*	getter() {
-			return (_node);
+	
+
+
+	    operator btree_iterator<const T, const compare> () const
+       		{ return ((btree_iterator<T, const compare>)(this->_node, _comp)); }
+
+
+	    operator btree_iterator<T, const compare> () 
+       		{ return ((btree_iterator<T, const compare>)(this->_node, _comp)); }
+
+		 btree_iterator<T, compare>& operator=(const btree_iterator<const T, compare>& cpy) {
+
+			_node = cpy._node;
+			_comp = cpy._comp;
+			return (*this);
 		}
 
-		btree_iterator& operator=(const btree_iterator& cpy) {
+
+/*		btree_iterator& operator=(const btree_const_iterator& cpy) {
 			if (*this == cpy)
 				return (*this);
 			_node = cpy._node;
 			_comp = cpy._comp;
 			return (*this);
 		}
+	*/
 
-		bool operator==(const btree_iterator& it) {
+		bool operator==(btree_iterator& it) {
 			return (_node == it._node);
 		}
 
@@ -47,6 +74,8 @@ namespace ft
 			return (_node != it._node);
 		}
 		
+
+	
 		btree_iterator& operator++(void) {
 			T * start = _node;
 
@@ -120,13 +149,13 @@ namespace ft
 			return tmp;
 		}
 
-		reference operator*(){
+		reference operator*() const {
 			return _node->value;
 		}
 
 
 		pointer operator->() const {
-			return (&this->_node->value);
+			return (const_cast<pointer>(&this->_node->value));
 		}
 
 		void	operator<<(reference &test){
@@ -140,6 +169,26 @@ namespace ft
 		}
 	};
 
+
+			template<typename T, typename compare>
+			typename ft::btree_iterator<T, compare>::difference_type
+ 			operator==(const ft::btree_iterator<T, compare> ite1, const ft::btree_iterator<T, compare> ite2) {return (ite1._node() == ite2._node());}
+
+			template<typename T, typename compare, typename T1>
+			typename ft::btree_iterator<T, compare>::difference_type
+ 			operator==(const ft::btree_iterator<T, compare> ite1, const ft::btree_iterator<T1, compare> ite2) {return ite1._node() == ite2._node();} 
+
+
+			template<typename T, typename compare>
+			typename ft::btree_iterator<T, compare>::difference_type
+ 			operator!=(const ft::btree_iterator<T, compare> ite1, const ft::btree_iterator<T, compare> ite2) {return (ite1._node() != ite2._node());}
+
+			template<typename T,typename compare,  typename T1>
+			typename ft::btree_iterator<T, compare>::difference_type
+ 			operator!=(const ft::btree_iterator<T, compare> ite1, const ft::btree_iterator<T1, compare> ite2) {return ite1._node() != ite2._node();} 
+
+
+/*
 	template <typename T, class compare >
 	class btree_const_iterator : public ft::iterator<ft::bidirectional_iterator_tag, T>
 	{
@@ -159,7 +208,7 @@ namespace ft
 
 		btree_const_iterator(T *node_cpy, const compare& comp = compare()) : _node(node_cpy), _comp(comp) {}
 
-		btree_const_iterator(const btree_iterator<T,  compare>& it) : _node(it._node), _comp() {}
+//		btree_const_iterator(const btree_iterator& it) : _node(it._node), _comp() {}
 
 		virtual ~btree_const_iterator() {}
 
@@ -275,6 +324,8 @@ namespace ft
 			return ;
 		}
 	};
+
+	*/
 
 }
 

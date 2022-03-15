@@ -126,8 +126,8 @@ namespace ft
 			pair(const first_type& a, const second_type& b) : first(a), second(b) {}
 
 			pair& operator=(const pair& pr) {
-				if (*this == pr)
-					return (*this);
+	//			if (*this == pr)
+	//				return (*this);
 				this->first = pr.first;
 				this->second = pr.second;
 				return (*this);

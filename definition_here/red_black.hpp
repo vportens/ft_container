@@ -19,18 +19,31 @@ struct node{
 
 //	node() : value(), red(0), back(0), left(0), right(0) {}
 
-	node(node* back = 0, node* left = 0,node* right = 0 ) : not_set(0), red(0), back(back), left(left), right(right), value() {}
+	node() : not_set(0), red(0), back(back), left(left), right(right), value() {}
 
+	node(const value_type& val) : value(val), red(0), not_set(1), back(0), left(0), right(0) {}
 	
-	node(const value_type& val, node* back = 0, node* left = 0,node* right = 0) :not_set(1), red(0), back(NULL), left(NULL), right(NULL) {
+	node(const value_type& val, node* back, node* left,node* right ) :red(0), not_set(1), back(back), left(left), right(right) {
 		value = val;
 	}
 
-	node(const node& cpy) : not_set(cpy.not_set), red(cpy.red), value(cpy.value), back(cpy.back), right(cpy.right), left(cpy.left) {}
+	node(const node& cpy) {
+		red = cpy.red;
+		not_set = cpy.not_set;
+		value = cpy.value;
+		back = cpy.back;
+		right = cpy.right;
+		left = cpy.left;
+	}
 
 	virtual ~node() {}
 
-	node&	operator=(const node& cpy) {
+//	operator node<const T> const() {
+//		return (node<const T>(value,back, left, right));
+//	}
+
+
+	node&	operator=(node& cpy) {
 		if (*this == cpy)
 			return (*this);
 		value = cpy.value;
@@ -40,6 +53,18 @@ struct node{
 		right = cpy.right;
 		left = cpy.left;
 		return (*this);
+	}
+
+	node*	operator=(node* cpy) {
+		if (this == cpy)
+			return (this);
+		this->value = cpy->value;
+		this->red = cpy->red;
+		this->not_set = cpy->not_set;
+		this->back = cpy->back;
+		this->right = cpy->right;
+		this->left = cpy->left;
+		return (this);
 	}
 
 	node*	operator=(const node* cpy) {
@@ -93,7 +118,7 @@ struct node{
 	void	right_rotation()
 	{
 		ft::node<value_type>	*tmp_son = left;
-		ft::node<value_type>	*tmp_gson;
+		ft::node<value_type>	*tmp_gson = NULL;
 		if (left)
 			tmp_gson = left->right;
 
@@ -625,7 +650,7 @@ struct node{
 		}
 		else 
 			std::cout << " ";
-			for (int i = 0; i < 16; i++)
+		for (int i = 0; i < 16; i++)
 			std::cout << " ";
 		if (srr->left)
 		{
@@ -656,12 +681,35 @@ struct node{
 };
 
 
+			template<typename T>
+			typename ft::node<T>::difference_type
+ 			operator==(const ft::node<T> ite1, const ft::node<T> ite2) {return (ite1.value == ite2.value);}
+
+			template<typename T, typename T1>
+			typename ft::node<T>::difference_type
+ 			operator==(const ft::node<T> ite1, const ft::node<T1> ite2) {return ite1.value == ite2.value;} 
+
+
+			template<typename T>
+			typename ft::node<T>::difference_type
+ 			operator!=(const ft::node<T> ite1, const ft::node<T> ite2) {return (ite1.value != ite2.value);}
+
+			template<typename T, typename T1>
+			typename ft::node<T>::difference_type
+ 			operator!=(const ft::node<T> ite1, const ft::node<T1> ite2) {return ite1.value != ite2.value;} 
+
+
+
+
+
 template<typename T>
 std::ostream&	operator<<(std::ostream& out, const ft::node<T>* t){
 	if (t == NULL)
 		return (out << "nill");
 	return (out << t->value);
 }
+
+
 
 
 

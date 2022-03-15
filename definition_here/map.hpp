@@ -21,7 +21,7 @@ class map{
 		typedef typename Allocator::reference 		reference;
 		typedef typename Allocator::const_reference	 const_reference;
 		typedef typename ft::btree_iterator<ft::node<value_type>, key_compare>		iterator; // See 23.1
-		typedef typename ft::btree_const_iterator<ft::node<value_type>, key_compare>		const_iterator; // See 23.1
+		typedef typename ft::btree_iterator<const ft::node< value_type>, key_compare>		const_iterator; // See 23.1
 		typedef unsigned long		size_type; // See 23.1
 		typedef ft::iterator_traits<iterator> 		difference_type;// See 23.1
 		typedef typename Allocator::pointer pointer;
@@ -57,10 +57,10 @@ class map{
 /*-------------------------------construtors/destroy----------------------------*/
 		explicit map(const Compare& comp = Compare(), const Allocator& alloc= Allocator()) : _alloc(alloc), _comp(comp), _root() {}
 
-//		template <class InputIterator>
-//		map(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator& = Allocator());
+		template <class InputIterator>
+		map(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator& = Allocator());
 		map(const map<Key, T, Compare, Allocator>& x) : _alloc(x._alloc), _comp(x._comp), _root(NULL) {
-//			insert(x.begin(), x.end());
+			insert(x.begin(), x.end());
 
 		}
 /*
@@ -139,7 +139,7 @@ class map{
 		}
 
 /*-------------------------------------capacity---------------------------------------*/
-/*
+
 		bool empty() const {
 			if (!_root)
 				return (true);
@@ -150,10 +150,11 @@ class map{
 			if (empty())
 				return (0);
 			int i = 1;
-			ft::map<Key, T>::iterator size = begin();
-			while (size != end())
+			iterator start = begin();
+			iterator last = (end());
+			while (start!= last)
 			{
-				size++;
+				start++;
 				i++;
 			}
 			return i;
@@ -163,7 +164,7 @@ class map{
 			return (alloc_node().max_size());
 		};
 
-*/
+
 /*---------------------------------------element access------------------------------------*/
 /*
 		T& iterator[](const key_type& x);
@@ -206,22 +207,34 @@ class map{
 		void	printmap() {
 			_root->print_tree();
 		}
-/*
+
 		iterator		insert(iterator position, const value_type& x) {
-			
+			(void)position;
+			ft::pair<iterator, bool> ret;
+			ret = insert(x);
+			return ret.first;
 
 		}
 
 		template	<class InputIterator>
-		void		insert(InputIterator first, InputIterator last);
+		void		insert(InputIterator first, InputIterator last){
+			ft::node<value_type>* node;
+			while (first != last)
+			{
+				node = first._node;
+				this->_root->insert(node);
+				first++;
+			}
+			_root->insert((first._node));
+		}
 
-		void	erase(iterator position);
+/*		void	erase(iterator position);
 		size_type	erase(const key_type& x);
 		void	erase(iterator first, iterator last);
-		void	swap(map<Key, T, Compare, Allocator>&);
-		void clear();
+		void	swap(map<Key, T, Compare, Allocator>&); */
+		void clear(){}
 
-		*/
+		
 
 /*---------------------------------observers--------------------------------------*/
 /*
