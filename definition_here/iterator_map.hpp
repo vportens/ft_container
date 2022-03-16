@@ -30,7 +30,7 @@ namespace ft
 
 		btree_iterator(node *x, node* y) : _node(x), _back(y) {}
 		
-		btree_iterator<pair, node> (const btree_iterator<const pair, node> &cpy)  : _node(cpy._node), _back(cpy._back) {}
+		btree_iterator<pair, node> (const btree_iterator<pair, node> &cpy)  : _node(cpy._node), _back(cpy._back) {}
 		
 	//	btree_iterator<pair, node> (const btree_iterator<pair, node> &cpy)  : _node(cpy._node){}
 
@@ -59,7 +59,7 @@ namespace ft
 		}
 	*/
 
-		bool operator==(btree_iterator& it) {
+		bool operator==(const btree_iterator& it) {
 			return (_node == it._node);
 		}
 
