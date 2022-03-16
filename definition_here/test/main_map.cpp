@@ -5,6 +5,7 @@
 
 int main()
 {
+	std::cout << "bonjour main" << std::endl;
 	ft::map<char *, int> m;
 
 	
@@ -18,19 +19,38 @@ int main()
 	test = ft::make_pair(str, 3);
 	test1 = ft::make_pair(str1, 7);
 	test2 = ft::make_pair(str2, 9);
+
+
+	std::cout << "all pair made" << std::endl;
+
 	m.insert(test);
+	std::cout << "first insert done" << std::endl;
+
+	std::cout << "test end" << std::endl;
+	ft::map<char *, int>::iterator last(m.end());
+	std::cout << "copy constructor done" << std::endl;
+	std::cout << "end :" << last << std::endl;
+
 	m.insert(test1);
+
+
+	std::cout << "second insert done" << std::endl;
 	m.insert(test2);
+	std::cout << "last insert done" << std::endl;
+	std::cout << "all insert done" << std::endl;
+
 	m.printmap();
 	std::cout << m << std::endl;
 
 	std::map<char *, int> real;
 
+	std::cout << "test des iterator" << std::endl;
 	real.insert(std::pair<char *,int>(str, 3) );
 	real.insert(std::pair<char *,int>(str1, 7) );
 	real.insert(std::pair<char *,int>(str2, 9) );
 
 
+	std::cout << "test des iterator" << std::endl;
 	for (std::map<char *, int>::iterator it = real.begin(); it != real.end(); it++)
 		std::cout << it->first << ", " << it->second << std::endl;
 
@@ -49,24 +69,21 @@ int main()
 
 	std::cout << "test operator = iterator, befor: " << *test_egal << std::endl;
 	test_egal = m.end();
-	std::cout << "test operator = iterator, after: " << *test_egal << std::endl;
+	std::cout << "test operator = iterator, after: " << std::endl;//*test_egal << std::endl;
 
+	ft::map<char *,int>::iterator debut = m.begin();
+	//	std::cout << "test_egal decrementation, test_egal: " << *test_egal << std::endl;
+		--test_egal;
+		std::cout << "test_egal decrementation, test_egal: " << *test_egal << std::endl;
 	while (test_egal != m.begin())
 	{
-		std::cout << "test_egal decrementation, test_egal: " << *test_egal << std::endl;
 		--test_egal;
+		std::cout << "test_egal decrementation, test_egal: " << *test_egal << std::endl;
+	//	std::cout << "m.begin resemble a: " << *debut << std::endl;
 	}
-	std::cout << "test_egal decrementation, test_egal: " << *test_egal << std::endl;
 
 	// reverse iterator
 
-	ft::map<char *,int>::reverse_iterator rev_test;
 
-	rev_test = m.rbegin();
-	while (rev_test != m.rend())
-	{
-		std::cout << "test rev ite: " << *rev_test << std::endl;
-		rev_test++;
-	}
 }
 

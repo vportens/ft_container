@@ -19,12 +19,22 @@ struct node{
 
 //	node() : value(), red(0), back(0), left(0), right(0) {}
 
-	node() : not_set(0), red(0), back(back), left(left), right(right), value() {}
+	node() : not_set(0), red(0), back(NULL), left(NULL), right(NULL), value() {}
 
 	node(const value_type& val) : value(val), red(0), not_set(1), back(0), left(0), right(0) {}
 	
 	node(const value_type& val, node* back, node* left,node* right ) :red(0), not_set(1), back(back), left(left), right(right) {
 		value = val;
+	}
+
+	node(const node* cpy) {
+		red = cpy->red;
+		not_set = cpy->not_set;
+		value = cpy->value;
+		back = cpy->back;
+		right = cpy->right;
+		left = cpy->left;
+	
 	}
 
 	node(const node& cpy) {
@@ -92,6 +102,7 @@ struct node{
 
 	}
 	
+	value_type getter(){ return value;}
 
 
 	void	left_rotation()

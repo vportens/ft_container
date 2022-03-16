@@ -16,6 +16,7 @@ namespace ft
 			typedef typename ft::iterator<ft::bidirectional_iterator_tag, value_type>::reference reference;
 
 		node * _node;
+		node * _back;
 	//	compare _comp;
 
 	//	btree_iterator(T *lala, compare const &lsl) : _node(lala), _comp(lsl) {}
@@ -23,29 +24,31 @@ namespace ft
 
 //		btree_iterator(const btree_iterator& btree_it) : _node(btree_it._node), _comp() {}
 //		btree_iterator(const ft::btree_const_iterator<T,  compare>& it) : _node(it._node), _comp() {}
-		btree_iterator() : _node(NULL) {}
+		btree_iterator() : _node(NULL), _back(NULL) {}
 
 	//	btree_iterator (const btree_iterator &cpy)  : _node(cpy._node){}
 
 		
-		btree_iterator<pair, node> (const btree_iterator<const pair, node> &cpy)  : _node(cpy._node){}
+		btree_iterator<pair, node> (const btree_iterator<const pair, node> &cpy)  : _node(cpy._node), _back(cpy._back) {}
 		
 	//	btree_iterator<pair, node> (const btree_iterator<pair, node> &cpy)  : _node(cpy._node){}
 
-		btree_iterator (node *cpy) : _node(cpy) {}
+		btree_iterator (node *cpy) : _node(cpy), _back(cpy->back) {}
 
 		virtual ~btree_iterator() {}
 
 		btree_iterator &operator=(const btree_iterator &cpy) {
 			_node = cpy._node;
+			_back = cpy._back;
 			return (*this);
 		}
 
 		operator btree_iterator<const pair, node>() const {
-			return btree_iterator<const pair, node>(_node);
+			return btree_iterator<const pair, node>(_node, _back);
 		}
 
 
+	value_type getter(){ return _node->getter();}
 /*		btree_iterator& operator=(const btree_const_iterator& cpy) {
 			if (*this == cpy)
 				return (*this);
@@ -67,6 +70,37 @@ namespace ft
 
 	
 		btree_iterator& operator++(void) {
+
+			node *start = _node;
+
+			if (_node == NULL)
+				return (*this);
+			if (_node->right)
+			{
+				_back = _node;
+				_node = _node->right;
+				return (*this);
+			}
+			else {
+				node *prec = _node;
+				start = _node->back;
+				while (start && start->value < prec->value)
+					start = start->back;
+				if (start == NULL)
+				{
+					_back = prec;
+					_node = NULL;
+					return (*this);
+				}
+				else
+				{
+					_node = start;
+					_back = _node->back;
+					return (*this);
+				}
+			}
+			return (*this);
+			/*
 			node * start = _node;
 
 			if (_node->right)
@@ -75,6 +109,8 @@ namespace ft
 				while (start->left)
 					start = start->left;
 				_node = start;
+				if (_node->back)
+					_back = _node->back;
 				return (*this);
 			}
 			else
@@ -88,18 +124,31 @@ namespace ft
 						prec = start;
 						start = start->back;
 						
+						if (_node->back)
+							_back = _node->back;
 					}
 					if (!start->back && prec == start->right)
+					{
+						while(start->right)
+						{
+							start = start->right;
+						}
+						_back = start;
+						start = start->right;
+						_node = start;
 						return (*this);
+					}
 					else {
 						_node = start;
+						if (_node->back)
+							_back = _node->back;
 						return (*this);
 					}
 				}
 				else
 					return (*this);
 			}
-			return (*this);
+			return (*this); */
 		}
 
 		btree_iterator	operator++(int){
@@ -111,28 +160,59 @@ namespace ft
 		btree_iterator& operator--(void) {
 			node * start = _node;
 
+			if (_node == NULL && _back)
+			{
+				_node = _back;
+				_back = _back->back;
+				return (*this);
+			}
 			if (_node->left)
 			{
 				start = _node->left;
 				while (start->right)
 					start = start->right;
 				_node = start;
+				if (_node->back)
+					_back = _node->back;
 				return (*this);
 			}
 			else
 			{
 				node *prec = _node;
-				while (start->back && prec == start->left)
+				if (start->back == NULL)
+				{
+					return (*this);
+				}
+				start = start->back;
+				while (start->back && start->left == prec)
 				{
 					prec = start;
 					start = start->back;
 				}
-				if (!start->back && prec == start->left)
+				_node = start;
+				_back = start->back;
+				return (*this);
+			/*
+				if (start->back == NULL)
+					return (*this);
+				start = start->back;
+				node *prec = _node;
+				while (start->back && prec == start->right)
+				{
+					prec = start;
+					start = start->back;
+					if (_node->back)
+						_back = _node->back;
+				}
+				if (!start->back && prec == start->right)
 					return (*this);
 				else {
 					_node = start;
+					if (_node->back)
+						_back = _node->back;
 					return (*this);
 				}
+				*/
 			}
 			return (*this);
 		}
@@ -177,6 +257,12 @@ btree_iterator<T, node_type>::btree_iterator(node_type *src) { this->_node = src
 template <typename T, typename node_type>
 btree_iterator<T, node_type>::btree_iterator(const node_type &src) { this->_node = src; }
 */
+template<typename T1, typename T2>
+std::ostream& operator<<(std::ostream& out, ft::btree_iterator<T1, T2>& to_print){
+	out << "node value :" << to_print._node;
+	return out;
+}
+
 
 			template<typename T, typename compare>
 			typename ft::btree_iterator<T, compare>::difference_type

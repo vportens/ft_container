@@ -103,12 +103,15 @@ class map{
 		iterator	end() {
 			node<value_type> *start;
 
+			//return (iterator());
 			if (!_root)
 				return iterator();
 			start = _root;
 			while (start->right)
 				start = start->right;
-			return (iterator(start));
+			iterator last;
+			last._back = start;
+			return (last);
 		}
 
 		const_iterator	end() const {
@@ -119,7 +122,9 @@ class map{
 			start = _root;
 			while (start->right)
 				start = start->right;
-			return (const_iterator(start));
+			const_iterator last;
+			last._back = start;
+			return (last);
 
 		}
 
@@ -150,7 +155,7 @@ class map{
 		size_type size() const {
 			if (empty())
 				return (0);
-			int i = 1;
+			int i = 0;
 			iterator start = begin();
 			iterator last = (end());
 			while (start!= last)
@@ -186,14 +191,14 @@ class map{
 			else
 			{
 				iterator find = begin();
+				std::cout << find << std::endl;
+				iterator last = end();
 				while (find != end())
 				{
 					if (find._node->value.first == x.first)
 						return (ft::make_pair(find, false));
 					find++;
 				}
-				if (find._node->value.first == x.first)
-					return (ft::make_pair(find, false));
 				_root->insert(node_to_insert);
 				while (_root->back)
 					_root = _root->back;
@@ -226,7 +231,7 @@ class map{
 				this->_root->insert(node);
 				first++;
 			}
-			_root->insert((first._node));
+		//	_root->insert((first._node));
 		}
 
 /*		void	erase(iterator position);
