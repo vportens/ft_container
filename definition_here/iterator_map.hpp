@@ -25,7 +25,12 @@ namespace ft
 //		btree_iterator(const ft::btree_const_iterator<T,  compare>& it) : _node(it._node), _comp() {}
 		btree_iterator() : _node(NULL) {}
 
-		btree_iterator (const btree_iterator &cpy)  : _node(cpy._node){}
+	//	btree_iterator (const btree_iterator &cpy)  : _node(cpy._node){}
+
+		
+		btree_iterator<pair, node> (const btree_iterator<const pair, node> &cpy)  : _node(cpy._node){}
+		
+	//	btree_iterator<pair, node> (const btree_iterator<pair, node> &cpy)  : _node(cpy._node){}
 
 		btree_iterator (node *cpy) : _node(cpy) {}
 
@@ -35,9 +40,6 @@ namespace ft
 			_node = cpy._node;
 			return (*this);
 		}
-
-
-
 
 		operator btree_iterator<const pair, node>() const {
 			return btree_iterator<const pair, node>(_node);
@@ -178,20 +180,20 @@ btree_iterator<T, node_type>::btree_iterator(const node_type &src) { this->_node
 
 			template<typename T, typename compare>
 			typename ft::btree_iterator<T, compare>::difference_type
- 			operator==(const ft::btree_iterator<T, compare> ite1, const ft::btree_iterator<T, compare> ite2) {return (ite1._node() == ite2._node());}
+ 			operator==(const ft::btree_iterator<T, compare> ite1, const ft::btree_iterator<T, compare> ite2) {return (ite1._node == ite2._node);}
 
 			template<typename T, typename compare, typename T1>
 			typename ft::btree_iterator<T, compare>::difference_type
- 			operator==(const ft::btree_iterator<T, compare> ite1, const ft::btree_iterator<T1, compare> ite2) {return ite1._node() == ite2._node();} 
+ 			operator==(const ft::btree_iterator<T, compare> ite1, const ft::btree_iterator<T1, compare> ite2) {return ite1._node == ite2._node;} 
 
 
 			template<typename T, typename compare>
 			typename ft::btree_iterator<T, compare>::difference_type
- 			operator!=(const ft::btree_iterator<T, compare> ite1, const ft::btree_iterator<T, compare> ite2) {return (ite1._node() != ite2._node());}
+ 			operator!=(const ft::btree_iterator<T, compare> ite1, const ft::btree_iterator<T, compare> ite2) {return (ite1._node != ite2._node);}
 
 			template<typename T,typename compare,  typename T1>
 			typename ft::btree_iterator<T, compare>::difference_type
- 			operator!=(const ft::btree_iterator<T, compare> ite1, const ft::btree_iterator<T1, compare> ite2) {return ite1._node() != ite2._node();} 
+ 			operator!=(const ft::btree_iterator<T, compare> ite1, const ft::btree_iterator<T1, compare> ite2) {return ite1._node != ite2._node;} 
 
 
 /*
