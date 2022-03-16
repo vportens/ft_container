@@ -102,7 +102,6 @@ struct node{
 
 	}
 	
-	value_type getter(){ return value;}
 
 
 	void	left_rotation()
@@ -345,10 +344,8 @@ struct node{
 	{
 		t->red = 1;
 		this->insert_to_good_place(t);
-		std::cout << "test end" << std::endl;
 		while (rule(t))
 		{
-			std::cout << "go to fix" << std::endl;
 	//		t->print_tree();
 			fix_color(t);
 		}

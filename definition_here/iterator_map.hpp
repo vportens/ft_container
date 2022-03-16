@@ -28,6 +28,7 @@ namespace ft
 
 	//	btree_iterator (const btree_iterator &cpy)  : _node(cpy._node){}
 
+		btree_iterator(node *x, node* y) : _node(x), _back(y) {}
 		
 		btree_iterator<pair, node> (const btree_iterator<const pair, node> &cpy)  : _node(cpy._node), _back(cpy._back) {}
 		

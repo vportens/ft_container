@@ -59,7 +59,9 @@ class map{
 		explicit map(const Compare& comp = Compare(), const Allocator& alloc= Allocator()) : _alloc(alloc), _comp(comp), _root() {}
 
 		template <class InputIterator>
-		map(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator& = Allocator());
+		map(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator& alloc= Allocator()) : _alloc(alloc), _comp(comp), _root(NULL) {
+			insert(first, last);
+		}
 		map(const map<Key, T, Compare, Allocator>& x) : _alloc(x._alloc), _comp(x._comp), _root(NULL) {
 			insert(x.begin(), x.end());
 
@@ -191,7 +193,6 @@ class map{
 			else
 			{
 				iterator find = begin();
-				std::cout << find << std::endl;
 				iterator last = end();
 				while (find != end())
 				{
@@ -224,11 +225,9 @@ class map{
 
 		template	<class InputIterator>
 		void		insert(InputIterator first, InputIterator last){
-			ft::node<value_type>* node;
 			while (first != last)
 			{
-				node = first._node;
-				this->_root->insert(node);
+				insert(*first);
 				first++;
 			}
 		//	_root->insert((first._node));
