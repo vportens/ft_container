@@ -78,7 +78,13 @@ namespace ft
 			if (_node->right)
 			{
 				_back = _node;
-				_node = _node->right;
+				start = _node->right;
+				while (start->left)
+				{
+					_back = start;
+					start = start->left;
+				}
+				_node = start;
 				return (*this);
 			}
 			else {
