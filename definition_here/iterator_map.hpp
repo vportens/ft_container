@@ -49,7 +49,7 @@ namespace ft
 		}
 
 
-	value_type getter(){ return _node->getter();}
+	value_type getter(){ return _node;}
 /*		btree_iterator& operator=(const btree_const_iterator& cpy) {
 			if (*this == cpy)
 				return (*this);

@@ -44,6 +44,8 @@ int		main(void)
 	ft_insert(mp, T3(21, "fizz"));
 	ft_insert(mp, T3(38, "buzz"));
 	mp.printmap();
+	mp.erase(mp.begin()++, mp.end());
+	mp.printmap();
 	iterator cnt = mp.begin();
 	int i = 0;
 	while (cnt != mp.end())
@@ -57,6 +59,8 @@ int		main(void)
 	ft_insert(mp2, mp2.begin(), T3(1337, "beauty"));
 	ft_insert(mp2, mp2.end(), T3(1000, "Hello"));
 	ft_insert(mp2, mp2.end(), T3(1500, "World"));
+
+	mp2.printmap();
 
 	return (0);
 }

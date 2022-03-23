@@ -351,6 +351,205 @@ struct node{
 		}
 	}
 		
+	node *mini(node *x)
+	{
+		while (x->left != NULL)
+			x = x->left;
+		return (x);
+	}
+
+	void	swap_some(node *a, node *b)
+	{
+		if (a->back== NULL)
+			return;
+		else if (a == a->back->left)
+			a->back->left = b;
+		else
+			a->back->right = b;
+
+		if (b != NULL)
+			b->back= a->back;
+	}
+
+	void fix_delete_two(node *x)
+	{
+		node *s;
+	
+	std::cout << "step1" << std::endl;
+	std::cout << x << std::endl;
+		s->back = x;
+	std::cout << "step1" << std::endl;
+		s->red = 0;
+	std::cout << "step1" << std::endl;
+		s->left = NULL;
+	std::cout << "step1" << std::endl;
+		s->right= NULL;
+	std::cout << "step2" << std::endl;
+		if (x->left == NULL)
+		{
+			std::cout << "test 1" << std::endl;
+			x->left = s;
+			fix_delete(s);	
+		}
+		else
+		{
+			std::cout << "test 2" << std::endl;
+			x->right= s;
+			fix_delete(s);	
+		}
+	}
+
+	void fix_delete(node *x)
+	{
+		node *s;
+		
+		while (x->back != NULL && x->red == 0)
+		{
+			if (x == x->back->left)
+			{
+				s = x->back->right;
+				if (s->red == 1)
+				{
+					s->red = 0;
+					x->back->red = 1;
+					x->back->left_rotation();
+					s = x->back->right;
+				}
+				if (s->left->red == 0 && s->right->red == 0)
+				{
+					s->red = 1;
+					x = x->back;
+				}
+				else 
+				{
+					if (s->right->red == 0)
+					{
+						s->left->red = 0;
+						s->red = 1;
+						s->right_rotation();
+						s = x->back->right;
+					}
+					s->red = x->back->red;
+					x->back->red = 0;
+					s->right->red = 0;
+					x->back->left_rotation();
+					x->back = NULL;
+				}
+			}
+			else
+			{
+				s = x->back->left;
+				if (s->red == 1)
+				{
+					s->red = 0;
+					x->back->red= 1;
+					x->back->right_rotation();
+					s = x->back->left;
+				}
+				if (s->right->red == 0 && s->right->red == 0)
+				{
+					s->red = 1;
+					x = x->back;
+				}
+				else
+				{
+					if (s->left->red == 0)
+					{
+						s->right->red = 0;
+						s->red= 1;
+						s->left_rotation();
+						s = x->back->left;
+					}
+					s->red = x->back->red;
+					x->back->red = 0;
+					s->left->red = 0;
+					x->back->right_rotation();
+					x->back = NULL;
+				}
+			}
+			
+		}
+		x->red = 0;
+	}
+
+	void erase(node *to_erase)
+	{
+		node *z;
+		node *x;
+		node *y;
+		node *pres;
+
+		pres = to_erase->back;
+
+
+		int ogColor_y;
+
+		z = to_erase;
+		y = z;
+		ogColor_y = y->red;
+		// first if (z have on son)
+		std::cout << "plop" << std::endl;
+		if (z->left == NULL)
+		{
+			std::cout << "plop1" << std::endl;
+			x = z->right;
+			std::cout << "plop1 bis" << std::endl;
+			swap_some(z, z->right);
+			std::cout << "plop1 end" << std::endl;
+		}
+		else if (z->right == NULL)
+		{
+			std::cout << "plop2" << std::endl;
+			x = z->left;
+			swap_some(z, z->left);
+			std::cout << "plop2 end" << std::endl;
+		} // if two son, let do the big tour
+		else {
+			std::cout << "plop3" << std::endl;
+			y = mini(z->right);
+			ogColor_y = y->red;
+			x = y->right;
+			if (y->back == z)
+				x->back = y;
+			else
+			{
+				swap_some(y, y->right);
+				y->right = z->right;
+				y->right->back= y;
+			}
+			swap_some(z, y);
+			y->left = z->left;
+			y->left->back= y;
+			y->red= z->red;
+			std::cout << "plop3 end" << std::endl;
+		}
+		std::cout << "__________________________________________" << std::endl;
+		std::cout << z << std::endl;
+		std::cout << y << std::endl;
+	//	y->print_tree();	
+	
+		if (ogColor_y == 0)
+		{
+			std::cout << "probleme a fixdelete" << std::endl;
+			if (x == NULL)
+			{
+				std::cout << "test solution" << std::endl;
+				fix_delete_two(pres);
+			}
+			else
+			{
+			std::cout << "---" << std::endl;
+			std::cout << x << std::endl;
+			std::cout << "plop4" << std::endl;
+			fix_delete(x);
+			std::cout << "plop4" << std::endl;
+			x->print_tree();	
+			}
+		}			
+		delete z;
+
+
+	}
 
 	
 	void	print_tree(){

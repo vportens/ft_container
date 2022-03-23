@@ -244,12 +244,55 @@ class map{
 				insert(*first);
 				first++;
 			}
-		//	_root->insert((first._node));
 		}
 
-/*		void	erase(iterator position);
-		size_type	erase(const key_type& x);
-		void	erase(iterator first, iterator last);
+//		void	erase(iterator position);
+
+		void erase(ft::node<value_type> *to_erase) {
+			ft::node<value_type> *tmp;
+
+			if (to_erase == _root && to_erase->left == NULL && to_erase->right == NULL)
+			{
+				_root == NULL;
+				return ;
+			}
+
+			tmp = _root;
+			/*
+			while (tmp != NULL) 
+			{
+				if (tmp->first == x)
+					break ;
+				if (tmp->first > x)
+					tmp = tmp->left;
+				else
+					tmp = tmp->right;
+			}
+			if (tmp == NULL)
+				return (0);
+			*/
+			tmp->erase(tmp);
+			
+		}
+
+		void	erase(iterator first, iterator last)
+		{
+			iterator tmp;
+			while (first != last)
+			{
+				std::cout << "nbr de passage" << std::endl;
+				if (first._node->back == NULL && first._node->left == NULL && first._node->right == NULL)
+					_root = NULL;
+				else {
+				tmp = first;
+				first++;
+				std::cout << "go to erase" << std::endl;
+				tmp._node->erase(tmp._node);
+				}
+			}
+		}
+	
+	/*
 		void	swap(map<Key, T, Compare, Allocator>&); */
 		void clear(){}
 
