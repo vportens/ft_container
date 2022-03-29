@@ -3,7 +3,8 @@
 
 #include <map>
 #include "utils.hpp"
-#include "red_black.hpp"
+//#include "red_black.hpp"
+#include "rb_tree.hpp"
 #include "randomIterator.hpp"
 #include "iterator_map.hpp"
 
@@ -75,10 +76,15 @@ class map{
 			clear();
 		}
 
-/*
-		map<Key, T, Compare, Allocator>&x	operator=(const map<Key, T, Compare, Allocator>&x);
 
-*/
+		map<Key, T, Compare, Allocator>&	operator=(const map<Key, T, Compare, Allocator>&x)
+		{
+			clear();
+			insert(x.begin(), x.end());
+			return *this;
+		}
+
+
 /*----------------------------------------interator---------------------------------*/
 
 		iterator	begin() {
@@ -185,14 +191,24 @@ class map{
 
 		size_type max_size() const {
 			return (alloc_node().max_size());
-		};
+		}
 
 
 /*---------------------------------------element access------------------------------------*/
-/*
-		T& iterator[](const key_type& x);
 
-*/
+		T& operator[](const key_type& x) {
+			iterator tmp;
+
+			tmp = find(x);
+			if (tmp == end())
+			{
+				insert(ft::make_pair(x, mapped_type()));
+			}
+			tmp = find(x);
+			return ((*tmp).second);
+		}
+
+
 /*-------------------------------------------------modifier----------------------------------*/
 
 		ft::pair<iterator, bool> insert(const value_type& x) {
@@ -232,7 +248,7 @@ class map{
 		void	printmap() {
 			if (_root == NULL)
 				return ;
-			//_root->print_tree();
+			_root->print_tree();
 		}
 
 		iterator		insert(iterator position, const value_type& x) {
@@ -252,7 +268,9 @@ class map{
 			}
 		}
 
-//		void	erase(iterator position);
+		void	erase(iterator position) {
+			position._node->erase(position._node);
+		}
 
 		void erase(ft::node<value_type> *to_erase) {
 			ft::node<value_type> *tmp;
@@ -287,10 +305,10 @@ class map{
 			iterator tmp;
 			while (first != last)
 			{
-				std::cout << "nbr de passage" << std::endl;
+//				std::cout << "nbr de passage" << std::endl;
 				if (first._node->back == NULL && first._node->left == NULL && first._node->right == NULL)
 				{
-					std::cout << "last one" << std::endl;
+//					std::cout << "last one" << std::endl;
 					delete first._node;
 					_root = NULL;
 					return ;
@@ -298,7 +316,7 @@ class map{
 				else {
 				tmp = first;
 				first++;
-				std::cout << "go to erase" << std::endl;
+//				std::cout << "go to erase" << std::endl;
 
 				tmp._node->erase(tmp._node);
 				}
@@ -321,10 +339,33 @@ class map{
 */
 
 /*------------------------------map operation----------------------------------*/
-/*
-		iterator find(const key_type& x);
-		const_iterator find(const key_type& x) const;
-		size_type	count(const key_type& x) const;
+
+		iterator find(const key_type& x) {
+			iterator tmp = begin();
+			
+			while (tmp != end())
+			{
+				if (tmp._node->value.first == x)
+					return (tmp);
+				tmp++;
+			}
+			return tmp;
+
+		}
+		const_iterator find(const key_type& x) const {
+			const_iterator tmp = begin();
+			
+			while (tmp != end())
+			{
+				if (tmp._node->first == x)
+					return (tmp);
+				tmp++;
+			}
+			return tmp;
+
+
+		}
+/*		size_type	count(const key_type& x) const;
 		iterator	lower_bound(const key_type& x);
 		const_iterator	lower_bound(const key_type& x) const;
 		iterator	upper_bound(const key_type& x);
