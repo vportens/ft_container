@@ -1,4 +1,4 @@
-
+#include "../utils.hpp"
 #include <iostream>
 using namespace std;
 
@@ -53,7 +53,7 @@ class RedBlackTree {
   // Preorder
   void preOrderHelper(NodePtr node) {
     if (node != TNULL) {
-      cout << node->data << " ";
+      cout << node->data->first << " ";
       preOrderHelper(node->left);
       preOrderHelper(node->right);
     }
@@ -63,7 +63,7 @@ class RedBlackTree {
   void inOrderHelper(NodePtr node) {
     if (node != TNULL) {
       inOrderHelper(node->left);
-      cout << node->data << " ";
+      cout << node->data->first << " ";
       inOrderHelper(node->right);
     }
   }
@@ -73,7 +73,7 @@ class RedBlackTree {
     if (node != TNULL) {
       postOrderHelper(node->left);
       postOrderHelper(node->right);
-      cout << node->data << " ";
+      cout << node->data->first << " ";
     }
   }
 
@@ -377,7 +377,7 @@ class RedBlackTree {
   }
 
   // Inserting a node
-  void insert(int key) {
+  void insert(T key) {
     NodePtr node = new ft::Node<T>;
     node->parent = nullptr;
     node->data = key;
@@ -435,18 +435,37 @@ class RedBlackTree {
 }
 
 int main() {
-  ft::RedBlackTree<int> bst;
+
+	ft::pair<char *, int> test;
+	ft::pair<char *, int> test1;
+	ft::pair<char *, int> test2;
+	char   str[] = "bonjour";
+	char   str1[] = "aurevoir";
+	char   str2[] = "baise";
+
+	test = ft::make_pair(str, 3);
+	test1 = ft::make_pair(str1, 7);
+	test2 = ft::make_pair(str2, 9);
+
+
+  ft::RedBlackTree<ft::pair<char *, int> > bst;
+
+  /*
   bst.insert(55);
   bst.insert(40);
   bst.insert(65);
   bst.insert(60);
   bst.insert(75);
   bst.insert(57);
+*/
 
+	bst.insert(test);
+	bst.insert(test1);
+	bst.insert(test2);
   bst.printTree();
   cout << endl
      << "After deleting" << endl;
-  bst.deleteNode(40);
+//  bst.deleteNode(40);
   bst.printTree();
 }
 
