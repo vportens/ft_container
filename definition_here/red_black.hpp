@@ -360,8 +360,12 @@ struct node{
 
 	void	swap_some(node *a, node *b)
 	{
-		if (a->back== NULL)
-			return;
+		if (a->back == NULL)
+		{
+			if (b != NULL)
+				b->back= NULL;
+			return ;
+		}
 		else if (a == a->back->left)
 			a->back->left = b;
 		else
@@ -371,9 +375,9 @@ struct node{
 			b->back= a->back;
 	}
 
-	void fix_delete_two(node *x)
+	void fix_delete_two(node *x, int dir)
 	{
-		node *s;
+	node *s;
 	
 	std::cout << "step1" << std::endl;
 	std::cout << x << std::endl;
@@ -389,7 +393,7 @@ struct node{
 		{
 			std::cout << "test 1" << std::endl;
 			x->left = s;
-			fix_delete(s);	
+			fix_delete(s);
 		}
 		else
 		{
@@ -399,77 +403,90 @@ struct node{
 		}
 	}
 
-	void fix_delete(node *x)
+	void fix_delete(node *x, node *back)
 	{
 		node *s;
 		
-		while (x->back != NULL && x->red == 0)
+		std::cout << "entre in fix del" << std::endl;
+		while (back != NULL && (x == NULL || x->red == 0))
 		{
-			if (x == x->back->left)
+			std::cout << "here we go again" << std::endl;
+			if (x == back->left || (x == NULL && back->left == NULL))
 			{
-				s = x->back->right;
-				if (s->red == 1)
+				std::cout << "left" << std::endl;
+				s = back->right;
+				if (s != NULL && s->red == 1)
 				{
 					s->red = 0;
-					x->back->red = 1;
-					x->back->left_rotation();
-					s = x->back->right;
+					back->red = 1;
+					back->left_rotation();
+					s = back->right;
 				}
-				if (s->left->red == 0 && s->right->red == 0)
+				if ((s->left == NULL || s->left->red == 0) && (s->right == NULL || s->right->red == 0))
 				{
+					std::cout << "back->left == black && back->right == black" << std::endl;
 					s->red = 1;
-					x = x->back;
+					x = back;
+					back = back->back;
+					std::cout << "next step" << std::endl;
 				}
-				else 
+				else
 				{
-					if (s->right->red == 0)
+					std::cout << "nop" << std::endl;
+					if (s->right == NULL || s->right->red == 0)
 					{
 						s->left->red = 0;
 						s->red = 1;
 						s->right_rotation();
-						s = x->back->right;
+						s = back->right;
 					}
-					s->red = x->back->red;
-					x->back->red = 0;
+					s->red = back->red;
+					back->red = 0;
 					s->right->red = 0;
-					x->back->left_rotation();
-					x->back = NULL;
+					back->left_rotation();
+					back = NULL;
+					std::cout << "fin du premier cycle" << std::endl;
 				}
 			}
 			else
 			{
-				s = x->back->left;
+				s = back->left;
 				if (s->red == 1)
 				{
 					s->red = 0;
-					x->back->red= 1;
-					x->back->right_rotation();
-					s = x->back->left;
+					back->red= 1;
+					back->right_rotation();
+					s = back->left;
 				}
-				if (s->right->red == 0 && s->right->red == 0)
+				if ((s->right == NULL || s->right->red == 0) && (s->left == NULL || s->left->red == 0))
 				{
 					s->red = 1;
-					x = x->back;
+					x = back;
+					back = back->back;
 				}
 				else
 				{
-					if (s->left->red == 0)
+					if (s->left == NULL || s->left->red == 0)
 					{
 						s->right->red = 0;
 						s->red= 1;
 						s->left_rotation();
-						s = x->back->left;
+						s = back->left;
 					}
-					s->red = x->back->red;
-					x->back->red = 0;
+					s->red = back->red;
+					back->red = 0;
 					s->left->red = 0;
-					x->back->right_rotation();
-					x->back = NULL;
+					back->right_rotation();
+					back = NULL;
 				}
 			}
-			
+			std::cout << "check while condition" << std::endl;	
+			std::cout << "x == " << x << std::endl;
+			std::cout << "back == " << back << std::endl;
 		}
-		x->red = 0;
+		std::cout << "ennd" << std::endl;
+		if (x != NULL)
+			x->red = 0;
 	}
 
 	void erase(node *to_erase)
@@ -489,6 +506,11 @@ struct node{
 		ogColor_y = y->red;
 		// first if (z have on son)
 		std::cout << "plop" << std::endl;
+		if (z->back == NULL && z->left == NULL && z->right == NULL)
+		{
+			delete z;
+			return ;
+		}
 		if (z->left == NULL)
 		{
 			std::cout << "plop1" << std::endl;
@@ -526,27 +548,24 @@ struct node{
 		std::cout << "__________________________________________" << std::endl;
 		std::cout << z << std::endl;
 		std::cout << y << std::endl;
+		delete z;
 	//	y->print_tree();	
 	
 		if (ogColor_y == 0)
 		{
 			std::cout << "probleme a fixdelete" << std::endl;
-			if (x == NULL)
-			{
-				std::cout << "test solution" << std::endl;
-				fix_delete_two(pres);
-			}
-			else
-			{
 			std::cout << "---" << std::endl;
-			std::cout << x << std::endl;
+			std::cout << "x == " <<  x << std::endl;
+			std::cout << "pres == " <<  pres << std::endl;
 			std::cout << "plop4" << std::endl;
-			fix_delete(x);
+			fix_delete(x, pres);
 			std::cout << "plop4" << std::endl;
-			x->print_tree();	
-			}
-		}			
-		delete z;
+		/*	if (x != NULL)
+				x->print_tree();
+			else if (pres != NULL)
+				pres->print_tree();
+		*/
+		}
 
 
 	}
@@ -705,17 +724,29 @@ struct node{
 			if (!left)
 			{
 				if (!right->left && !right->right)
+				{
+					delete left;
+					delete right;
 					return;
+				}
 			}
 			if (!right) 
 			{
 					if (!left->left && !left->right)
+					{
+						delete left;
+						delete right;
 						return ;
+					}
 
 			}
 		}
 		if (!left->left && !left->right && !right->left && !right->right)
+		{
+			delete left;
+			delete right;
 			return ;
+		}
 
 //end of step 3
 
@@ -883,8 +914,16 @@ struct node{
 		else 
 			std::cout << " ";
 		std::cout << std::endl;
+
+		delete left;
+		delete right;
+		delete srr;
+		delete srl;
+		delete slr;
+		delete sll;
 	
 	}
+
 };
 
 

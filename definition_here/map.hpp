@@ -70,11 +70,12 @@ class map{
 			insert(x.begin(), x.end());
 
 		}
-/*
+
 		~map() {
 			clear();
 		}
 
+/*
 		map<Key, T, Compare, Allocator>&x	operator=(const map<Key, T, Compare, Allocator>&x);
 
 */
@@ -211,7 +212,10 @@ class map{
 				while (find != end())
 				{
 					if (find._node->value.first == x.first)
+					{
+						delete node_to_insert;
 						return (ft::make_pair(find, false));
+					}
 					find++;
 				}
 				_root->insert(node_to_insert);
@@ -226,7 +230,9 @@ class map{
 
 
 		void	printmap() {
-			_root->print_tree();
+			if (_root == NULL)
+				return ;
+			//_root->print_tree();
 		}
 
 		iterator		insert(iterator position, const value_type& x) {
@@ -253,6 +259,7 @@ class map{
 
 			if (to_erase == _root && to_erase->left == NULL && to_erase->right == NULL)
 			{
+				delete to_erase;
 				_root == NULL;
 				return ;
 			}
@@ -282,11 +289,17 @@ class map{
 			{
 				std::cout << "nbr de passage" << std::endl;
 				if (first._node->back == NULL && first._node->left == NULL && first._node->right == NULL)
+				{
+					std::cout << "last one" << std::endl;
+					delete first._node;
 					_root = NULL;
+					return ;
+				}
 				else {
 				tmp = first;
 				first++;
 				std::cout << "go to erase" << std::endl;
+
 				tmp._node->erase(tmp._node);
 				}
 			}
@@ -294,7 +307,9 @@ class map{
 	
 	/*
 		void	swap(map<Key, T, Compare, Allocator>&); */
-		void clear(){}
+		void clear(){
+			erase(begin(), end());
+		}
 
 		
 
