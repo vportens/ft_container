@@ -1,8 +1,6 @@
-#ifndef RB_TREE_HPP
-# define RB_TREE_HPP
-
+#include "utils.hpp"
 #include <iostream>
-using namespace std;
+
 
 namespace ft
 {
@@ -27,23 +25,113 @@ class nullptr_t
 template<typename T>
 struct Node {
 	typedef T value_type;
-	value_type data;
+	value_type value;
 
 	Node *parent;
 	Node *left;
 	Node *right;
 	int color;
+
+	Node(const value_type& val) : value(val),  parent(0), left(0), right(0), color(0){}
+
+	Node(const value_type& val, Node *par, Node *l, Node *r, int col) : value(val),  parent(par), left(l), right(r), color(col){}
+
+	Node() : value(), parent(0) , left(0), right(0), color(0) {}
+
+	Node(const Node& cpy) : value(cpy.value), parent(cpy.parent), left(cpy.left), right(cpy.right), color(cpy.color) {}
+
+	Node(const Node* cpy) {
+		value = cpy->value;
+		parent = cpy->parent;
+		left = cpy->left;
+		right = cpy->right;
+		color = cpy->color;
+	}
+
+/*	operator Node<const T> const() {
+		return (Node<const T>(value, parent, left, right, color));
+	}
+
+	operator Node<const T>* const() {
+		return (Node<const T>*(value, parent, left, right, color));
+	} */
+
+/*
+	Node(const Node* cpy) {
+		color = cpy->color;
+		value = cpy->value;
+		parent = cpy->parent;
+		right = cpy->right;
+		left = cpy->left;
+	
+	}
+
+	Node(const Node& cpy) {
+		color = cpy.color;
+		value = cpy.value;
+		parent = cpy.parent;
+		right = cpy.right;
+		left = cpy.left;
+	}
+*/
+
+	virtual ~Node() {}
+
+	operator Node<const T> const() {
+		return (Node<const T>(value,parent, left, right, color));
+	}
+
+
+	Node&	operator=(Node& cpy) {
+		if (*this == cpy)
+			return (*this);
+		value = cpy.value;
+		color = cpy.color;
+		parent = cpy.parent;
+		right = cpy.right;
+		left = cpy.left;
+		return (*this);
+	}
+
+	Node*	operator=(Node* cpy) {
+		if (this == cpy)
+			return (this);
+		this->value = cpy->value;
+		this->color = cpy->color;
+
+		this->parent = cpy->parent;
+		this->right = cpy->right;
+		this->left = cpy->left;
+		return (this);
+	}
+
+	Node*	operator=(const Node* cpy) {
+		if (this == cpy)
+			return (this);
+		value = cpy->value;
+		color = cpy->color;
+		parent= cpy->parent;
+		right = cpy->right;
+		left = cpy->left;
+		return (this);
+	}
+
+
 };
 
-typedef Node *NodePtr;
 
+template<typename T>
 class RedBlackTree {
-   private:
-  NodePtr root;
-  NodePtr TNULL;
 
+	typedef Node<T> *NodePtr;
+	public:
+
+	NodePtr root;
+	NodePtr TNULL;
+
+   private:
   void initializeNULLNode(NodePtr node, NodePtr parent) {
-    node->data = 0;
+    node->value = 0;
     node->parent = parent;
     node->left = nullptr;
     node->right = nullptr;
@@ -53,7 +141,7 @@ class RedBlackTree {
   // Preorder
   void preOrderHelper(NodePtr node) {
     if (node != TNULL) {
-      cout << node->data << " ";
+      std::cout << node->value->first << " ";
       preOrderHelper(node->left);
       preOrderHelper(node->right);
     }
@@ -63,7 +151,7 @@ class RedBlackTree {
   void inOrderHelper(NodePtr node) {
     if (node != TNULL) {
       inOrderHelper(node->left);
-      cout << node->data << " ";
+      std::cout << node->value->first << " ";
       inOrderHelper(node->right);
     }
   }
@@ -73,16 +161,16 @@ class RedBlackTree {
     if (node != TNULL) {
       postOrderHelper(node->left);
       postOrderHelper(node->right);
-      cout << node->data << " ";
+      std::cout << node->value->first << " ";
     }
   }
 
   NodePtr searchTreeHelper(NodePtr node, int key) {
-    if (node == TNULL || key == node->data) {
+    if (node == TNULL || key == node->value) {
       return node;
     }
 
-    if (key < node->data) {
+    if (key < node->value) {
       return searchTreeHelper(node->left, key);
     }
     return searchTreeHelper(node->right, key);
@@ -160,15 +248,15 @@ class RedBlackTree {
     v->parent = u->parent;
   }
 
-  void deleteNodeHelper(NodePtr node, int key) {
+  void deleteNodeHelper(NodePtr node, T key) {
     NodePtr z = TNULL;
     NodePtr x, y;
     while (node != TNULL) {
-      if (node->data == key) {
+      if (node->value == key) {
         z = node;
       }
 
-      if (node->data <= key) {
+      if (node->value <= key) {
         node = node->right;
       } else {
         node = node->left;
@@ -176,7 +264,7 @@ class RedBlackTree {
     }
 
     if (z == TNULL) {
-      cout << "Key not found in the tree" << endl;
+      std::cout << "Key not found in the tree" << std::endl;
       return;
     }
 
@@ -217,7 +305,7 @@ class RedBlackTree {
     while (k->parent->color == 1) {
       if (k->parent == k->parent->parent->right) {
         u = k->parent->parent->left;
-        if (u->color == 1) {
+        if (u->color == 1) {//rb_tree.cpp:39:18: error: a typedef cannot be a template
           u->color = 0;
           k->parent->color = 0;
           k->parent->parent->color = 1;
@@ -256,19 +344,19 @@ class RedBlackTree {
     root->color = 0;
   }
 
-  void printHelper(NodePtr root, string indent, bool last) {
+  void printHelper(NodePtr root, std::string indent, bool last) {
     if (root != TNULL) {
-      cout << indent;
+      std::cout << indent;
       if (last) {
-        cout << "R----";
+        std::cout << "R----";
         indent += "   ";
       } else {
-        cout << "L----";
+        std::cout << "L----";
         indent += "|  ";
       }
 
-      string sColor = root->color ? "RED" : "BLACK";
-      cout << root->data << "(" << sColor << ")" << endl;
+      std::string sColor = root->color ? "RED" : "BLACK";
+      std::cout << root->value << "(" << sColor << ")" << std::endl;
       printHelper(root->left, indent, false);
       printHelper(root->right, indent, true);
     }
@@ -276,7 +364,7 @@ class RedBlackTree {
 
    public:
   RedBlackTree() {
-    TNULL = new Node;
+    TNULL = new ft::Node<T>;
     TNULL->color = 0;
     TNULL->left = nullptr;
     TNULL->right = nullptr;
@@ -377,10 +465,11 @@ class RedBlackTree {
   }
 
   // Inserting a node
-  void insert(int key) {
-    NodePtr node = new Node;
+
+  void insert(NodePtr node) {
+//    NodePtr node = new ft::Node<T>;
     node->parent = nullptr;
-    node->data = key;
+//    node->value = key;
     node->left = TNULL;
     node->right = TNULL;
     node->color = 1;
@@ -390,7 +479,7 @@ class RedBlackTree {
 
     while (x != TNULL) {
       y = x;
-      if (node->data < x->data) {
+      if (node->value < x->value) {
         x = x->left;
       } else {
         x = x->right;
@@ -400,7 +489,7 @@ class RedBlackTree {
     node->parent = y;
     if (y == nullptr) {
       root = node;
-    } else if (node->data < y->data) {
+    } else if (node->value < y->value) {
       y->left = node;
     } else {
       y->right = node;
@@ -422,8 +511,12 @@ class RedBlackTree {
     return this->root;
   }
 
-  void deleteNode(int data) {
-    deleteNodeHelper(this->root, data);
+  void deleteNode(T value) {
+    deleteNodeHelper(this->root, value);
+  }
+
+  void deleteNode(NodePtr node) {
+	  deleteNodeHelper(this->root, node->value);
   }
 
   void printTree() {
@@ -431,22 +524,74 @@ class RedBlackTree {
       printHelper(this->root, "", true);
     }
   }
+
 };
 }
 
+/*
 int main() {
-  RedBlackTree bst;
-  bst.insert(55);
-  bst.insert(40);
-  bst.insert(65);
-  bst.insert(60);
-  bst.insert(75);
-  bst.insert(57);
 
-  bst.printTree();
-  cout << endl
+	ft::pair<char *, int> test;
+	ft::pair<char *, int> test1;
+	ft::pair<char *, int> test2;
+	ft::pair<char *, int> test3;
+	ft::pair<char *, int> test4;
+	ft::pair<char *, int> test5;
+	ft::pair<char *, int> test6;
+	ft::pair<char *, int> test7;
+	ft::pair<char *, int> test8;
+	ft::pair<char *, int> test9;
+	
+	char   str[] = "bonjour";
+	char   str1[] = "aurevoir";
+	char   str2[] = "tu fais";
+	char   str3[] = "quoi";
+	char   str4[] = "aujourd'hui";
+	char   str5[] = "yes";
+	char   str6[] = "davidGetta";
+	char   str7[] = "skusku";
+	char   str8[] = "vroumvroum";
+	char   str9[] = "skipadadoua";
+
+	test = ft::make_pair(str, 0);
+	test1 = ft::make_pair(str1, 1);
+	test2 = ft::make_pair(str2, 2);
+	test3 = ft::make_pair(str3, 3);
+	test4 = ft::make_pair(str4, 4);
+	test5 = ft::make_pair(str5, 5);
+	test6 = ft::make_pair(str6, 6);
+	test7 = ft::make_pair(str7, 7);
+	test8 = ft::make_pair(str8, 8);
+	test9 = ft::make_pair(str9, 9);
+
+
+  ft::RedBlackTree<ft::pair<char *, int> > bst;
+*/
+/*
+	bst.insert(55);
+	bst.insert(40);
+	bst.insert(65);
+	bst.insert(60);
+	bst.insert(75);
+	bst.insert(57);
+*/
+/*
+	bst.insert(test);
+	bst.insert(test1);
+	bst.insert(test2);
+	bst.insert(test3);
+	bst.insert(test4);
+	bst.insert(test5);
+	bst.insert(test6);
+	bst.insert(test7);
+	bst.insert(test8);
+	bst.insert(test9);
+
+	bst.printTree();
+	cout << endl
      << "After deleting" << endl;
-  bst.deleteNode(40);
+//  bst.deleteNode(40);
   bst.printTree();
 }
 
+*/

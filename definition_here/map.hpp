@@ -18,7 +18,7 @@ class map{
 		typedef T			 mapped_type;
 		typedef ft::pair<Key, T>	 value_type;
 		typedef Compare 		key_compare;
-		typedef ft::node<value_type>	node_type;
+		typedef ft::Node<value_type>	node_type;
 		typedef Allocator 		allocator_type;
 		typedef typename Allocator::reference 		reference;
 		typedef typename Allocator::const_reference	 const_reference;
@@ -30,7 +30,7 @@ class map{
 		typedef typename Allocator::const_pointer const_pointer;
 		typedef ft::reverse_iterator<iterator> reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
-		typedef std::allocator<ft::node<ft::pair<Key, T> > > alloc_node;
+		typedef std::allocator<ft::Node<ft::pair<Key, T> > > alloc_node;
 
 		class value_compare : public std::binary_function<value_type, value_type, bool> {
 			friend class map<key_type, mapped_type, key_compare, Allocator>;
@@ -51,23 +51,23 @@ class map{
 			alloc_node			_alloc_node;
 			
 	public :
-			ft::node<value_type>*	_root;
+			ft::RedBlackTree<value_type>	rb;
 
 		public :
 		
 
 /*-------------------------------construtors/destroy----------------------------*/
-		explicit map(const Compare& comp = Compare(), const Allocator& alloc= Allocator()) : _alloc(alloc), _comp(comp), _root() {}
+		explicit map(const Compare& comp = Compare(), const Allocator& alloc= Allocator()) : _alloc(alloc), _comp(comp), rb() {}
 
 		template <class InputIterator>
-		map(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator& alloc= Allocator()) : _alloc(alloc), _comp(comp), _root(NULL) {
+		map(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator& alloc= Allocator()) : _alloc(alloc), _comp(comp), rb() {
 			while (first != last)
 			{
 				insert(*first);
 				first++;
 			}
 		}
-		map(const map<Key, T, Compare, Allocator>& x) : _alloc(x._alloc), _comp(x._comp), _root(NULL) {
+		map(const map<Key, T, Compare, Allocator>& x) : _alloc(x._alloc), _comp(x._comp), rb() {
 			insert(x.begin(), x.end());
 
 		}
@@ -88,51 +88,57 @@ class map{
 /*----------------------------------------interator---------------------------------*/
 
 		iterator	begin() {
-			node<value_type> *start;
+			Node<value_type> *start;
 
-			if (!_root)
+			if (!rb.root)
 				return iterator();
-			start = _root;
-			while (start->left)
+			start = rb.root;
+		//	std::cout << "l'init ce passe bien" << std::endl;
+			while (start->left && start->left != nullptr && start->left != rb.TNULL)
+			{
 				start = start->left;
-			return (iterator(start));
+			}
+			return (iterator(start, rb));
 
 		}
 
 		const_iterator	begin() const {
-			node<value_type> *start;
+			Node<value_type> *start;
 
-			if (!_root)
+			if (!rb.root)
 				return const_iterator();
-			start = _root;
+			start = rb.root;
 			while (start->left)
 				start = start->left;
-			return (const_iterator(start));
+			return (const_iterator(start, rb.TNULL));
 
 
 
 		}
 
 		iterator	end() {
-			node<value_type> *start;
+			Node<value_type> *start;
 
 			//return (iterator());
-			if (!_root)
+			if (!rb.root)
 				return iterator();
-			start = _root;
+			start = rb.root;
 			while (start->right)
 				start = start->right;
-			iterator last;
-			last._back = start;
+//			if (start == rb.TNULL)
+//				std::cout << "last == TNULL" << std::endl;
+			iterator last(start, rb);
+	//		last._back = start;
+		
 			return (last);
 		}
 
 		const_iterator	end() const {
-			node<value_type> *start;
+			Node<value_type> *start;
 
-			if (!_root)
+			if (!rb.root)
 				return const_iterator();
-			start = _root;
+			start = rb.root;
 			while (start->right)
 				start = start->right;
 			const_iterator last;
@@ -160,7 +166,7 @@ class map{
 /*-------------------------------------capacity---------------------------------------*/
 
 		bool empty() const {
-			if (!_root)
+			if (!rb.root)
 				return (true);
 			return (false);
 		}
@@ -169,15 +175,15 @@ class map{
 			if (empty())
 				return (0);
 			int i = 0;
-			ft::node<value_type> *start;
-			ft::node<value_type> *last;
-			start = _root;
-			last = _root;
-			while (start->left)
+			ft::Node<value_type> *start;
+			ft::Node<value_type> *last;
+			start = rb.root;
+			last = rb.root;
+			while (start->left && start->left != nullptr && start->left != rb.TNULL)
 				start = start->left;
 			while (last->right)
 				last =last->right;
-			iterator lilstart = iterator(start);
+			iterator lilstart = iterator(start, rb.TNULL);
 			
 			iterator lilend = iterator();
 			lilend._back = last;
@@ -186,6 +192,7 @@ class map{
 				lilstart++;
 				i++;
 			}
+		
 			return i;
 		}
 
@@ -212,43 +219,43 @@ class map{
 /*-------------------------------------------------modifier----------------------------------*/
 
 		ft::pair<iterator, bool> insert(const value_type& x) {
-			ft::node<value_type> * node_to_insert = _alloc_node.allocate(1);
+			ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
 
 			_alloc_node.construct(node_to_insert, x);
 
-			if (!_root)
+			if (!rb.root)
 			{
-				_root = node_to_insert;
+				rb.root = node_to_insert;
 				return (ft::make_pair(begin(), true));
 			}
 			else
 			{
 				iterator find = begin();
-				iterator last = end();
+			//	iterator last = end();
 				while (find != end())
 				{
-					if (find._node->value.first == x.first)
+					if (find._node != rb.TNULL && find._node->value.first == x.first)
 					{
 						delete node_to_insert;
 						return (ft::make_pair(find, false));
 					}
+//					std::cout << "fuck" << std::endl;
 					find++;
 				}
-				_root->insert(node_to_insert);
-				while (_root->back)
-					_root = _root->back;
-				iterator ret(node_to_insert);
+				rb.insert(node_to_insert);
+				iterator ret(node_to_insert, rb);
 				return (ft::make_pair(ret, true));
 			}
-			iterator ret(node_to_insert);
+			iterator ret(node_to_insert, rb);
+
 			return (ft::make_pair(ret, true));
 		}
 
 
 		void	printmap() {
-			if (_root == NULL)
+			if (rb.root == NULL)
 				return ;
-			_root->print_tree();
+			rb.print_tree();
 		}
 
 		iterator		insert(iterator position, const value_type& x) {
@@ -269,20 +276,20 @@ class map{
 		}
 
 		void	erase(iterator position) {
-			position._node->erase(position._node);
+			rb.deleteNode(position._node);
 		}
 
-		void erase(ft::node<value_type> *to_erase) {
-			ft::node<value_type> *tmp;
+		void erase(ft::Node<value_type> *to_erase) {
+			ft::Node<value_type> *tmp;
 
-			if (to_erase == _root && to_erase->left == NULL && to_erase->right == NULL)
+			if (to_erase == rb.root && to_erase->left == NULL && to_erase->right == NULL)
 			{
 				delete to_erase;
-				_root == NULL;
+				rb.root == NULL;
 				return ;
 			}
 
-			tmp = _root;
+			
 			/*
 			while (tmp != NULL) 
 			{
@@ -296,7 +303,7 @@ class map{
 			if (tmp == NULL)
 				return (0);
 			*/
-			tmp->erase(tmp);
+			rb.deleteNode(to_erase);
 			
 		}
 
@@ -306,11 +313,11 @@ class map{
 			while (first != last)
 			{
 //				std::cout << "nbr de passage" << std::endl;
-				if (first._node->back == NULL && first._node->left == NULL && first._node->right == NULL)
+				if (first._node->parent == NULL && first._node->left == NULL && first._node->right == NULL)
 				{
 //					std::cout << "last one" << std::endl;
 					delete first._node;
-					_root = NULL;
+					rb.root = NULL;
 					return ;
 				}
 				else {
@@ -318,7 +325,7 @@ class map{
 				first++;
 //				std::cout << "go to erase" << std::endl;
 
-				tmp._node->erase(tmp._node);
+				rb.deleteNode(tmp._node);
 				}
 			}
 		}
@@ -326,7 +333,7 @@ class map{
 	/*
 		void	swap(map<Key, T, Compare, Allocator>&); */
 		void clear(){
-			erase(begin(), end());
+			//erase(begin(), end());
 		}
 
 		

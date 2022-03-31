@@ -439,31 +439,61 @@ int main() {
 	ft::pair<char *, int> test;
 	ft::pair<char *, int> test1;
 	ft::pair<char *, int> test2;
+	ft::pair<char *, int> test3;
+	ft::pair<char *, int> test4;
+	ft::pair<char *, int> test5;
+	ft::pair<char *, int> test6;
+	ft::pair<char *, int> test7;
+	ft::pair<char *, int> test8;
+	ft::pair<char *, int> test9;
+	
 	char   str[] = "bonjour";
 	char   str1[] = "aurevoir";
-	char   str2[] = "baise";
+	char   str2[] = "tu fais";
+	char   str3[] = "quoi";
+	char   str4[] = "aujourd'hui";
+	char   str5[] = "yes";
+	char   str6[] = "davidGetta";
+	char   str7[] = "skusku";
+	char   str8[] = "vroumvroum";
+	char   str9[] = "skipadadoua";
 
-	test = ft::make_pair(str, 3);
-	test1 = ft::make_pair(str1, 7);
-	test2 = ft::make_pair(str2, 9);
+	test = ft::make_pair(str, 0);
+	test1 = ft::make_pair(str1, 1);
+	test2 = ft::make_pair(str2, 2);
+	test3 = ft::make_pair(str3, 3);
+	test4 = ft::make_pair(str4, 4);
+	test5 = ft::make_pair(str5, 5);
+	test6 = ft::make_pair(str6, 6);
+	test7 = ft::make_pair(str7, 7);
+	test8 = ft::make_pair(str8, 8);
+	test9 = ft::make_pair(str9, 9);
 
 
   ft::RedBlackTree<ft::pair<char *, int> > bst;
 
-  /*
-  bst.insert(55);
-  bst.insert(40);
-  bst.insert(65);
-  bst.insert(60);
-  bst.insert(75);
-  bst.insert(57);
+/*
+	bst.insert(55);
+	bst.insert(40);
+	bst.insert(65);
+	bst.insert(60);
+	bst.insert(75);
+	bst.insert(57);
 */
 
 	bst.insert(test);
 	bst.insert(test1);
 	bst.insert(test2);
-  bst.printTree();
-  cout << endl
+	bst.insert(test3);
+	bst.insert(test4);
+	bst.insert(test5);
+	bst.insert(test6);
+	bst.insert(test7);
+	bst.insert(test8);
+	bst.insert(test9);
+
+	bst.printTree();
+	cout << endl
      << "After deleting" << endl;
 //  bst.deleteNode(40);
   bst.printTree();
