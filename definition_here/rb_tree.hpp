@@ -48,6 +48,11 @@ struct Node {
 		color = cpy->color;
 	}
 
+/*	template<typename U, typename T1>
+	bool	operator!=(const ft::Node<U>* x, const ft::Node<T1>* xa) const {
+		return (x != xa);
+	}
+	*/
 /*	operator Node<const T> const() {
 		return (Node<const T>(value, parent, left, right, color));
 	}
@@ -524,6 +529,10 @@ class RedBlackTree {
       printHelper(this->root, "", true);
     }
   }
+
+	operator RedBlackTree<const T>() const {
+		return RedBlackTree<const T>();
+	}
 
 };
 }
