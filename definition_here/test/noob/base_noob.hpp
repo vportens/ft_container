@@ -9,7 +9,8 @@
 # include <limits>
 # include <cstddef> // ptrdiff_t
 # include <sstream> // ostring
-# include "utils.hpp"
+# include "utils_noob.hpp"
+#include "rb_tree_nood.hpp"
 namespace ft {
 
 
@@ -88,15 +89,19 @@ struct	mapNode
 */
 
 template <typename T>
-mapNode<T>	*farRight(mapNode<T> *node) {
-	while (node->right != NULL)
+Node<T>	*farRight(Node<T> *node) {
+	if (!node || node == node->TNULL)
+		return node->TNULL;
+	while (node->right != node->TNULL)
 		node = node->right;
 	return (node);
 }
 
 template <typename T>
-mapNode<T>	*farLeft(mapNode<T> *node) {
-	while (node->left != NULL)
+Node<T>	*farLeft(Node<T> *node) {
+	if (!node || node == node->TNULL)
+		return node->TNULL;
+	while (node->left != node->TNULL)
 		node = node->left;
 	return (node);
 }

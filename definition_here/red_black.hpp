@@ -3,7 +3,7 @@
 
 #include <cstddef>
 #include <iostream>
-
+/*
 namespace ft
 {
 
@@ -551,7 +551,8 @@ struct node{
 				x->print_tree();
 			else if (pres != NULL)
 				pres->print_tree();
-		*/
+		*/ 
+	/*
 		}
 
 
@@ -952,5 +953,5 @@ std::ostream&	operator<<(std::ostream& out, const ft::node<T>* t){
 
 
 }
-
+*/
 #endif

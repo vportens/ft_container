@@ -1,28 +1,29 @@
-#include "../red_black.hpp"
+#include "../rb_tree_nood.hpp"
 #include <iostream>
 #include "../utils.hpp"
 
 int main()
 {
-	ft::node<float>*	gp = new ft::node<float>(2);	
-	ft::node<float>*	pere = new ft::node<float>(1);	
-	ft::node<float>*	mere = new ft::node<float>(9.48);	
-	ft::node<float>*	oncle_bob = new ft::node<float>(44);	
-	ft::node<float>*	mec_chiant= new ft::node<float>(5);	
-	ft::node<float>*	oscart = new ft::node<float>(6);	
-	ft::node<float>*	max= new ft::node<float>(99999);	
-	ft::node<float>*	maxmax= new ft::node<float>(9999999);	
-	ft::node<float>*	pmax= new ft::node<float>(33);	
-	ft::node<float>*	tran = new ft::node<float>(8);	
+	std::cout << "first insertion" << std::endl;
+/*	ft::Node<float>*	gp = new ft::Node<float>(2);	
+	ft::Node<float>*	pere = new ft::Node<float>(1);	
+	ft::Node<float>*	mere = new ft::Node<float>(9.48);	
+	ft::Node<float>*	oncle_bob = new ft::Node<float>(44);	
+	ft::Node<float>*	mec_chiant= new ft::Node<float>(5);	
+	ft::Node<float>*	oscart = new ft::Node<float>(6);	
+	ft::Node<float>*	max= new ft::Node<float>(99999);	
+	ft::Node<float>*	maxmax= new ft::Node<float>(9999999);	
+	ft::Node<float>*	pmax= new ft::Node<float>(33);	
+	ft::Node<float>*	tran = new ft::Node<float>(8);	
+*/
 
-
-	gp->print_tree();
+	gp->printTree();
 	std::cout << "first insertion" << std::endl;
 	gp->insert(pere);
 	std::cout << "yes" << std::endl;
-	gp->print_tree();
+	gp->printTree();
 	gp->insert(mere);
-	gp->print_tree();
+	gp->printTree();
 
 /*
 	pere->back = gp;
@@ -30,11 +31,11 @@ int main()
 	gp->left = pere;
 	gp->right = mere;
 
-	std::cout << "test init node start, value in: " << gp<< std::endl;
-	std::cout << "test init node left, value in: " << gp->left<< std::endl;
-	std::cout << "test init node right, value in: " << gp->right<< std::endl;
+	std::cout << "test init Node start, value in: " << gp<< std::endl;
+	std::cout << "test init Node left, value in: " << gp->left<< std::endl;
+	std::cout << "test init Node right, value in: " << gp->right<< std::endl;
 
-	std::cout << "test init node start, value in: " << pere->back<< std::endl;
+	std::cout << "test init Node start, value in: " << pere->back<< std::endl;
 
 
 
@@ -48,22 +49,22 @@ int main()
 	//pere->print_tree();
 
 	mere->insert(oncle_bob);
-	gp->print_tree();
+	gp->printTree();
 	pere->insert(mec_chiant);
-	gp->print_tree();
+	gp->printTree();
 	//std::cout << "insertion d'oscart" << std::endl;
 	pere->insert(oscart);
 
 	
-	gp->print_tree();
+	gp->printTree();
 	pere->insert(max);
-	gp->print_tree();
+	gp->printTree();
 	pere->insert(maxmax);
-	gp->print_tree();
+	gp->printTree();
 	pere->insert(tran);
-	gp->print_tree();
+	gp->printTree();
 	pere->insert(pmax);
-	gp->print_tree();
+	gp->printTree();
 
 	//std::cout << mec_chiant->right << std::endl;
 //	mec_chiant->left_rotation();
@@ -72,12 +73,12 @@ int main()
 //	mec_chiant->right_rotation();
 
 
-	pere->print_tree();
+	pere->printTree();
 	
 	ft::pair<char, int> test;
 	test = ft::make_pair<char, int>('c', 10);
 	std::cout << "pair test: " << test.first << ", " << test.second << std::endl;
 
-	ft::node<ft::pair<char, int> > test2(test);
-	(&test2)->print_tree();
+	ft::Node<ft::pair<char, int> > test2(test);
+	(&test2)->printTree();
 }

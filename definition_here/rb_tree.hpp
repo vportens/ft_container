@@ -4,8 +4,8 @@
 
 namespace ft
 {
-
-const // It is a const object...
+/*
+const // It is a const object...bite
 class nullptr_t 
 {
   public:
@@ -79,7 +79,7 @@ struct Node {
 		left = cpy.left;
 	}
 */
-
+/*
 	virtual ~Node() {}
 
 	operator Node<const T> const() {
@@ -535,6 +535,7 @@ class RedBlackTree {
 	}
 
 };
+*/
 }
 
 /*

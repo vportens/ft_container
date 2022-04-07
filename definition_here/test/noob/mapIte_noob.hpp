@@ -77,10 +77,16 @@ bool	mapIte<T, node_type>::operator!=(const mapIte<U, node_type> &rhs) const {
 
 template <typename T, typename node_type>
 mapIte<T, node_type> &mapIte<T, node_type>::operator++(void) {
-	if (this->_node->right != NULL)
+	if (this->_node->right != _node->TNULL)
+	{
+		std::cout << "++ dans ite alors qu'il a un truc a droite" << std::endl;
+
 		this->_node = farLeft(this->_node->right);
+
+	}
 	else
 	{
+		std::cout << "normalement par la" << std::endl;
 		node_type	*child = this->_node;
 
 		this->_node = this->_node->parent;
@@ -102,7 +108,7 @@ mapIte<T, node_type> mapIte<T, node_type>::operator++(int) {
 
 template <typename T, typename node_type>
 mapIte<T, node_type>& mapIte<T, node_type>::operator--(void) {
-	if (this->_node->left != NULL)
+	if (this->_node->left != _node->TNULL)
 		this->_node = farRight(this->_node->left);
 	else
 	{
@@ -127,7 +133,7 @@ mapIte<T, node_type> mapIte<T, node_type>::operator--(int) {
 
 template <typename T, typename node_type>
 typename mapIte<T, node_type>::reference mapIte<T, node_type>::operator*(void) const {
-	return (this->_node->data);
+	return (this->_node->value);
 }
 
 template <typename T, typename node_type>

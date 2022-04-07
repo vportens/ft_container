@@ -1,13 +1,13 @@
 #ifndef MAP_CLASS_HPP
 # define MAP_CLASS_HPP
 
-# include "base.hpp"
-# include "map_decl.hpp"
+# include "base_noob.hpp"
+# include "map_decl_noob.hpp"
 
 namespace ft {
 
 
-/*
+
 
 
 // ******************************** Modifiers ******************************* //
@@ -24,14 +24,14 @@ map<Key, T, Compare, Alloc>::erase(const key_type &k) {
 
 	if (element == this->end())
 		return (0);
-	this->_btree_rm(element._node);
+	_data->deleteNode(element._node->value);
 	return (1);
 }
 
 template<class Key, class T, class Compare, class Alloc>
 void	map<Key, T, Compare, Alloc>::erase(iterator first, iterator last) {
 	while (first != last)
-		this->_btree_rm((first++)._node);
+		_data->deleteNode((first++)._node->value);
 }
 
 
@@ -140,7 +140,7 @@ void	map<Key, T, Compare, Alloc>::_btree_rm(node_ptr rmNode) {
 	delete rmNode;
 }
 
-*/
+
 
 } // ******************************************************* ft namespace end //
 

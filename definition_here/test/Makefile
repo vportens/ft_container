@@ -8,7 +8,7 @@ INC_DIR        =    incs
 SRC_DIR     =    $(shell find . -type d)
 vpath %.cpp $(foreach dir, $(SRC_DIR), $(dir):)
 
-SRCS =   insert.cpp	\
+SRCS =   test_rb_map.cpp	\
 
 # --  Redirection in OBJS  -- #
 OBJS    = $(addprefix $(OBJ_DIR)/, $(SRCS:%.cpp=%.o))
