@@ -46,10 +46,12 @@ class mapIte {
 }; // ****************************************************** class mapIte end //
 
 template <typename T, typename node_type>
-mapIte<T, node_type>::mapIte(void) : _node(NULL) { return ; }
+mapIte<T, node_type>::mapIte(void) : _node(NULL)  { return ; }
 
 template <typename T, typename node_type>
-mapIte<T, node_type>::mapIte(node_type *src) { this->_node = src; }
+mapIte<T, node_type>::mapIte(node_type *src) { this->_node = src; 
+
+}
 
 template <typename T, typename node_type>
 mapIte<T, node_type>::mapIte(const mapIte &src) { *this = src; }
@@ -77,16 +79,20 @@ bool	mapIte<T, node_type>::operator!=(const mapIte<U, node_type> &rhs) const {
 
 template <typename T, typename node_type>
 mapIte<T, node_type> &mapIte<T, node_type>::operator++(void) {
+	if (_node == farRight(_node->getRoot()))
+	{
+		_node = _node->TNULL;
+		return (*this);
+	}
 	if (this->_node->right != _node->TNULL)
 	{
-		std::cout << "++ dans ite alors qu'il a un truc a droite" << std::endl;
+//		std::cout << "++ dans ite alors qu'il a un truc a droite" << std::endl;
 
 		this->_node = farLeft(this->_node->right);
-
 	}
 	else
 	{
-		std::cout << "normalement par la" << std::endl;
+//		std::cout << "normalement par la" << std::endl;
 		node_type	*child = this->_node;
 
 		this->_node = this->_node->parent;
@@ -108,8 +114,16 @@ mapIte<T, node_type> mapIte<T, node_type>::operator++(int) {
 
 template <typename T, typename node_type>
 mapIte<T, node_type>& mapIte<T, node_type>::operator--(void) {
+	if (_node->left == NULL && _node->right == NULL)
+	{
+		_node = farRight(_node->root->getRoot());
+		return (*this);
+	}
 	if (this->_node->left != _node->TNULL)
+	 {
 		this->_node = farRight(this->_node->left);
+		return (*this);
+	 }
 	else
 	{
 		node_type	*child = this->_node;

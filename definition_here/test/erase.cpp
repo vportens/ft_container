@@ -1,8 +1,8 @@
 #include <list>
-#include "../red_black.hpp"
-#include "../map.hpp"
+#include "noob/rb_tree_nood.hpp"
+#include "noob/map.hpp"
 #include <iostream>
-#include "../utils.hpp"
+#include "noob/utils_noob.hpp"
 
 #define T1 int
 #define T2 std::string
@@ -34,7 +34,7 @@ int		main(void)
 		lst.push_back(T3(i, std::string((lst_size - i), i + 65)));
 	ft::map<T1, T2> mp(lst.begin(), lst.end());
 //	printSize(mp);
-	mp.printmap();
+	mp.printTree();
 	std::cout << "1" << std::endl;
 	ft_erase(mp, ++mp.begin());
 

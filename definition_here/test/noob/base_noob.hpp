@@ -90,10 +90,14 @@ struct	mapNode
 
 template <typename T>
 Node<T>	*farRight(Node<T> *node) {
-	if (!node || node == node->TNULL)
+	if (!node)
+		return (NULL);
+	if (node == node->TNULL)
 		return node->TNULL;
 	while (node->right != node->TNULL)
+	{
 		node = node->right;
+	}
 	return (node);
 }
 

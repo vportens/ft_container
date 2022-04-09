@@ -63,9 +63,17 @@ class map {
 	map(typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first,
 			Ite last, const key_compare &comp = key_compare(),
 			const allocator_type &alloc = allocator_type()) : _data(), TNULL(), _key_cmp(comp), _alloc(alloc), _size(0) {
+	//			std::cout << "ready to go" << std::endl;
 					ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
 			this->TNULL = node_to_insert;
-			this->insert(first, last);
+			while (first != last)
+			{
+			this->insert(*first);
+			first++;
+			}
+			TNULL->root = _data->getRoot();
+//				std::cout << "ready to end" << std::endl;
+
 			}
 
 	map(const map &src) : _data(), TNULL(), _key_cmp(key_compare()), _alloc(allocator_type()), _size(0) {
@@ -76,7 +84,7 @@ class map {
 
 	virtual ~map(void) {
 		clear();
-		delete TNULL;
+	//	delete TNULL;
 	}
 
 	map	&operator=(map const &rhs) {
@@ -98,28 +106,30 @@ class map {
 	iterator				begin(void) {
 		if (!_data || _data == TNULL)
 			return (iterator(TNULL));
-		return iterator(farLeft(_data));
+		return iterator(farLeft(_data->getRoot()));
 	}
 
 	const_iterator			begin(void) const {
 		if (!_data || _data == TNULL)
 			return (iterator(TNULL));
-		return const_iterator(farLeft(_data));
+		return const_iterator(farLeft(_data->getRoot()));
 		}
 
 
 	iterator				end(void) {
 		if (!_data || _data == TNULL)
 			return (iterator(TNULL));
+		return (iterator(TNULL));
 
-		return iterator(farRight(_data));
+		return iterator(farRight(_data->getRoot())->right);
 	}
 
 	const_iterator			end(void) const {
 		
 		if (!_data || _data == TNULL)
 			return (iterator(TNULL));
-		return const_iterator(farRight(_data));
+		return (iterator(TNULL));
+		return const_iterator(farRight(_data->getRoot())->right);
 	
 	}
 
@@ -131,29 +141,43 @@ class map {
 
 /* ------------------------------Capacity-------------------------------- */
 
-	size_type	size(void) const {return (_size);}
+	size_type	size(void) const {
+
+		return (_size);
+	}
 	size_type	max_size(void) const {return (alloc_node().max_size());}
 	bool		empty(void) const {return (_size == 0? true : false);}
 
 /* -----------------------------Ele Access---------------------------------- */
 
 	mapped_type	&operator[](const key_type &key) {
-		return (insert(value_type(key, mapped_type())).first->second);
+		iterator tmp;
+		insert(ft::make_pair(key, mapped_type()));
+		tmp = find(key);
+		return ((*tmp).second);
 	}
 
 // ******************************** Modifiers ******************************* //
 
 	ft::pair<iterator, bool>	insert(const value_type &val) {
-		std::cout << "je rentre dans insert" << std::endl;
+//	std::cout << "je rentre dans insert" << std::endl;
 		ft::pair<iterator, bool> res;
 		iterator	first = begin();
 		iterator	last = end();
+		node_ptr 	here = _data;
 
-		std::cout << "j'ai init mes ite" << std::endl;
+
+//		std::cout << "j'ai init mes ite" << std::endl;
+//		if (last._node == TNULL)
+//			std::cout << "end marche bien" << std::endl;
 //		std::cout << "je rentre dans la recherche de l'element avant d'insert" << std::endl;
+//		std::cout << "what are we looking for: " << val << std::endl;
+//		std::cout << "bjr" << std::endl;
 		while (_data != TNULL && first != last)
 		{
-			std::cout << "go find if element to insert exist" << std::endl;
+//			std::cout << "go find if element to insert exist" << std::endl;
+			if (!_data)
+				break;
 			if (!_key_cmp(first->first, val.first) && !_key_cmp(val.first, first->first))
 			{
 				res.second = false;
@@ -162,28 +186,32 @@ class map {
 			}
 			first++;
 		}
-//		std::cout << "elements pas trouve" << std::endl;
+	//	std::cout << "elements pas trouve" << std::endl;
 		res.second = true;
-		std::cout << "creation d'une nouvelle node" << std::endl;
+	//	std::cout << "creation d'une nouvelle node" << std::endl;
 		ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
 		_alloc_node.construct(node_to_insert, val);
 		node_to_insert->TNULL = TNULL;
 		node_to_insert->left = TNULL;
 		node_to_insert->right = TNULL;
-		std::cout << "fin de l'init de la nouvel node " << std::endl;
+		_size++;
+//		std::cout << "fin de l'init de la nouvel node " << std::endl;
 		if (_data == NULL || _data == TNULL)
 		{
-			std::cout << "first insert " << std::endl;
+//			std::cout << "first insert " << std::endl;
 			_data = node_to_insert;
 		}
 		else
 		{
-			std::cout << "je rentre dans l'insert de node" << std::endl;
-			_data->insert(node_to_insert);
+	//		std::cout << "je rentre dans l'insert de node" << std::endl;
+	//		std::cout << here->value << std::endl;
+			here->insert(node_to_insert);
 		}
-		std::cout << "end :)" << std::endl;
+//		std::cout << "end :)" << std::endl;
 		res.first = find(val.first);
-		std::cout << "go find l'element pour le ret de la fin:)" << std::endl;
+		TNULL->parent = _data->getRoot();
+		TNULL->root = _data->getRoot();
+//		std::cout << "go find l'element pour le ret de la fin:)" << std::endl;
 		return (res);
 	}
 
@@ -195,10 +223,10 @@ class map {
 	template <class Ite> void	insert(Ite first, Ite last) {
 		while (first != last)
 		{
-			std::cout << "yes" << std::endl;
-			std::cout << "what am i insert with ite: " << *first << std::endl;
+//			std::cout << "yes" << std::endl;
+//			std::cout << "what am i insert with ite: " << *first << std::endl;
 			insert(*first);
-			std::cout << "next" << std::endl;
+//			std::cout << "next" << std::endl;
 			first++;
 		}
 	}
@@ -213,17 +241,12 @@ class map {
 
 
 	void		clear(void) {
-	
-	/* prec version
-		node_ptr void_node_ptr = end()._node;
-		if (_size == 0)
-			return ;
-		void_node_ptr->parent->right = NULL;
-		_btree_clear(_data);
-		_data = void_node_ptr;
-		_size = 0;
-		*/
-	}
+//		std::cout << "ca marche pas" << std::endl;
+		erase(begin(), end());
+
+//		std::cout << "ca marche " << std::endl;
+		
+	}		
 
 /* ----------------------------Observers-------------------------------- */
 
@@ -260,7 +283,7 @@ class map {
 	}
 
 	size_type		count(const key_type &key) const {
-		const_iterator last = end();	
+		const_iterator last = end();
 		if (find(key) == end())
 			return (false);
 		return (true);
