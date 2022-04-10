@@ -277,11 +277,11 @@ struct Node{
 //	  std::cout << "bite en bois" << std::endl;
     while (node != TNULL) {
 //	  std::cout << "bite en bois" << std::endl;
-      if (node->value == key) {
+      if (node->value.first == key.first) {
         z = node;
       }
 
-      if (node->value <= key) {
+      if (node->value.first <= key.first) {
         node = node->right;
       } else {
         node = node->left;
@@ -537,7 +537,7 @@ struct Node{
 
     while (x != TNULL) {
       y = x;
-      if (node->value < x->value) {
+      if (node->value.first < x->value.first) {
         x = x->left;
       } else {
         x = x->right;
@@ -547,7 +547,7 @@ struct Node{
     node->parent = y;
     if (y == nullptr) {
       tmp = node;
-    } else if (node->value < y->value) {
+    } else if (node->value.first < y->value.first) {
       y->left = node;
     } else {
       y->right = node;

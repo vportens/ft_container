@@ -110,10 +110,12 @@ void	map<Key, T, Compare, Alloc>::swap(map &x) {
 
 template<class Key, class T, class Compare, class Alloc>
 void	map<Key, T, Compare, Alloc>::_cpy_content(map &src) {
+	if (_data != NULL)
 	this->clear();
 	node_ptr tmp = this->_data;
 
 	this->_data = src._data;
+	this->TNULL = src.TNULL;
 	this->_key_cmp = src._key_cmp;
 	this->_alloc = src._alloc;
 	this->_size = src._size;
@@ -122,79 +124,6 @@ void	map<Key, T, Compare, Alloc>::_cpy_content(map &src) {
 	tmp = NULL;
 }
 
-template<class Key, class T, class Compare, class Alloc>
-void	map<Key, T, Compare, Alloc>::_btree_clear(node_ptr node) {
-	if (node == NULL)
-		return ;
-	this->_btree_clear(node->left);
-	this->_btree_clear(node->right);
-	delete node;
-}
-
-template<class Key, class T, class Compare, class Alloc>
-void	map<Key, T, Compare, Alloc>::_btree_add(node_ptr newNode) {
-	node_ptr	*parent = &this->_data;
-	node_ptr	*node = &this->_data;
-	node_ptr	ghost = farRight(this->_data);
-	bool		side_left = -1;
-
-	++this->_size;
-	while (*node && *node != ghost)
-	{
-		parent = node;
-		side_left = this->_key_cmp(newNode->data.first, (*node)->data.first);
-		node = (side_left ? &(*node)->left : &(*node)->right);
-	}
-	if (*node == NULL)
-	{
-		newNode->parent = (*parent);
-		*node = newNode;
-	}
-	else // if (*node == ghost)
-	{
-		*node = newNode;
-		newNode->parent = ghost->parent;
-		ghost->parent = farRight(newNode); // Using farRight(newNode)
-		farRight(newNode)->right = ghost; // in case newNode isnt alone
-	}
-}
-
-template<class Key, class T, class Compare, class Alloc>
-void	map<Key, T, Compare, Alloc>::_btree_rm(node_ptr rmNode) {
-	node_ptr	replaceNode = NULL;
-	node_ptr	*rmPlace = &this->_data;
-
-	--this->_size;
-	if (rmNode->parent)
-		rmPlace = (rmNode->parent->left == rmNode ? &rmNode->parent->left : &rmNode->parent->right);
-	if (rmNode->left == NULL && rmNode->right == NULL)
-		;
-	else if (rmNode->left == NULL) // left == NULL && right != NULL
-		replaceNode = rmNode->right;
-	else // left != NULL && right ?= NULL
-	{
-		replaceNode = farRight(rmNode->left);
-		if (replaceNode != rmNode->left)
-			if ((replaceNode->parent->right = replaceNode->left))
-				replaceNode->left->parent = replaceNode->parent;
-	}
-	if (replaceNode)
-	{
-		replaceNode->parent = rmNode->parent;
-		if (rmNode->left && rmNode->left != replaceNode)
-		{
-			replaceNode->left = rmNode->left;
-			replaceNode->left->parent = replaceNode;
-		}
-		if (rmNode->right && rmNode->right != replaceNode)
-		{
-			replaceNode->right = rmNode->right;
-			replaceNode->right->parent = replaceNode;
-		}
-	}
-	*rmPlace = replaceNode;
-	delete rmNode;
-}
 
 
 

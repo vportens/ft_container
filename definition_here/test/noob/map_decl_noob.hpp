@@ -79,6 +79,7 @@ class map {
 	map(const map &src) : _data(), TNULL(), _key_cmp(key_compare()), _alloc(allocator_type()), _size(0) {
 		ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
 		this->TNULL = node_to_insert;
+		_data = NULL;
 		*this = src;
 	}
 
@@ -90,6 +91,7 @@ class map {
 	map	&operator=(map const &rhs) {
 		if (this == &rhs)
 			return (*this);
+		
 		clear();
 		insert(rhs.begin(), rhs.end());
 		return (*this);
@@ -242,7 +244,10 @@ class map {
 
 	void		clear(void) {
 //		std::cout << "ca marche pas" << std::endl;
+		if (_data == NULL)
+			return ;
 		erase(begin(), end());
+		_data = NULL;
 
 //		std::cout << "ca marche " << std::endl;
 		
