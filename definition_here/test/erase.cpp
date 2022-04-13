@@ -33,6 +33,7 @@ int		main(void)
 	for (unsigned int i = 0; i < lst_size; ++i)
 		lst.push_back(T3(i, std::string((lst_size - i), i + 65)));
 	ft::map<T1, T2> mp(lst.begin(), lst.end());
+//jj	ft::map<T1, T2> mp;
 //	printSize(mp);
 	mp.printTree();
 	std::cout << "1" << std::endl;

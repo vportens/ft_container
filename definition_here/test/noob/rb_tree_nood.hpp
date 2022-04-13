@@ -54,7 +54,9 @@ struct Node{
 		TNULL->color = cpy->TNULL->color;
 		TNULL->left = cpy->TNULL->left;
 		TNULL->right = cpy->TNULL->right;
+
 		*/
+	//	std::cout << "bjr" << std::endl;
 		TNULL = cpy->TNULL;
 		root = cpy->root;
 		value = cpy->value;
@@ -76,6 +78,7 @@ struct Node{
 
 
 	Node&	operator=(Node& cpy) {
+	//	std::cout << "test bite :" << std::endl;
 		if (*this == cpy)
 			return (*this);
 		value = cpy.value;
@@ -89,6 +92,8 @@ struct Node{
 	}
 
 	Node*	operator=(Node* cpy) {
+
+	//	std::cout << "test bite :2" << std::endl;
 		if (this == cpy)
 			return (this);
 		this->value = cpy->value;
@@ -103,6 +108,7 @@ struct Node{
 	}
 
 	Node*	operator=(const Node* cpy) {
+//		std::cout << "test bite :3" << std::endl;
 		if (this == cpy)
 			return (this);
 		value = cpy->value;
@@ -118,7 +124,9 @@ struct Node{
 	Node *getRoot() {
 		NodePtr tmp = this;
 		while (tmp->parent)
+		{
 			tmp = tmp->parent;
+		}
 		return (tmp);
 	}
 
@@ -186,24 +194,36 @@ struct Node{
         s = x->parent->right;
 //		std::cout << "what s:" << s->value << std::endl;
         if (s->color == 1) {
+//			std::cout << "color parain est rouge" << std::endl;
           s->color = 0;
           x->parent->color = 1;
           leftRotate(x->parent);
+//		  std::cout << "what s:" << s->value << std::endl;
+//		  std::cout << "what x:" << x->value << std::endl;
+	//	  std::cout << "what x parent:" << x->parent->value << std::endl;
+		  if (s == s->getRoot())
+		  {
+//			  std::cout << "tout est noir par ici" << std::endl;
+		  	break;
+		  }
           s = x->parent->right;
 //		  std::cout << "after rotation: " << std::endl;
 //		  std::cout << "bite" << std::endl;
-//		  x->printTree();
+		  x->printTree();
+//		  std::cout << "what new s:" << s->value << std::endl;
 //		  std::cout << "bite2" << std::endl;
         }
 
 //	  std::cout << "le retour des bites" << std::endl;
         if (s->left->color == 0 && s->right->color == 0) {
 //	  std::cout << "le retour des bites" << std::endl;
+//	std::cout << "?" << std::endl;
           s->color = 1;
           x = x->parent;
 //		  std::cout << "x new value: " << x->value << std::endl;
 		  
         } else {
+//			std::cout << "coucou" << std::endl;
 //	  std::cout << "le retour des bites" << std::endl;
           if (s->right->color == 0) {
             s->left->color = 0;
@@ -252,6 +272,7 @@ struct Node{
     }
 	
 //	  std::cout << "end" << std::endl;
+
 	x = getRoot();
     x->color = 0;
 //	std::cout << "true end" << std::endl;
@@ -326,7 +347,8 @@ struct Node{
 //	  std::cout << z->value << std::endl;
     delete z;
 //	  std::cout << "delete reussit, node x to fix: " << std::endl;
-//	  std::cout << x->value << std::endl;
+//	  std::cout << x->parent->value << std::endl;
+//	  x->printTree();
 	  if (x == y->TNULL)
 //		  std::cout << "test" << std::endl;
     if (y_original_color == 0) {
@@ -523,7 +545,9 @@ struct Node{
 
   void insert(NodePtr node) {
 //    NodePtr node = new ft::Node<T>;
+//	std::cout << "in insert rb" << std::endl;
 	NodePtr tmp = getRoot();
+//	std::cout << "befor" << std::endl;
 //	std::cout << "befor insert tree" << std::endl;
 //	tmp->printTree();
     node->parent = nullptr;
@@ -563,7 +587,7 @@ struct Node{
     }
 //	std::cout << "befor fix tree insert" << std::endl;
 //	tmp->printTree();
-	//std::cout << "node to fix: " << node->value << std::endl;
+//	std::cout << "node to fix: " << node->value << std::endl;
     insertFix(node);
   }
 

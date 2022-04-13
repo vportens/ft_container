@@ -53,8 +53,10 @@ class map {
 
 	explicit map(const key_compare &comp = key_compare(),
 			const allocator_type &alloc = allocator_type()) : _data(), TNULL(), _key_cmp(comp), _alloc(alloc), _size(0){
-		ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
+		//ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
+		ft::Node<value_type> * node_to_insert = new ft::Node<value_type>;
 		this->TNULL = node_to_insert;
+//		std::cout << "TNULL address classique: " << TNULL << std::endl;
 		_data = TNULL;
 		return ;
 		}
@@ -64,20 +66,24 @@ class map {
 			Ite last, const key_compare &comp = key_compare(),
 			const allocator_type &alloc = allocator_type()) : _data(), TNULL(), _key_cmp(comp), _alloc(alloc), _size(0) {
 	//			std::cout << "ready to go" << std::endl;
-					ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
+		ft::Node<value_type> * node_to_insert = new ft::Node<value_type>;
+		//			ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
 			this->TNULL = node_to_insert;
 			while (first != last)
 			{
+//				std::cout << "make it cout " << std::endl;
 			this->insert(*first);
 			first++;
 			}
 			TNULL->root = _data->getRoot();
+//			std::cout << "address TNULL cpy:" <<TNULL<< std::endl;
 //				std::cout << "ready to end" << std::endl;
 
 			}
 
 	map(const map &src) : _data(), TNULL(), _key_cmp(key_compare()), _alloc(allocator_type()), _size(0) {
-		ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
+		//ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
+		ft::Node<value_type> * node_to_insert = new ft::Node<value_type>;
 		this->TNULL = node_to_insert;
 		_data = NULL;
 		*this = src;
@@ -85,13 +91,15 @@ class map {
 
 	virtual ~map(void) {
 		clear();
-	//	delete TNULL;
+	//	std::cout << "test" << std::endl;
+	//	std::cout << "addr TNULL: " << TNULL << std::endl;
+		delete TNULL;
 	}
 
 	map	&operator=(map const &rhs) {
 		if (this == &rhs)
 			return (*this);
-		
+	
 		clear();
 		insert(rhs.begin(), rhs.end());
 		return (*this);
@@ -153,9 +161,15 @@ class map {
 /* -----------------------------Ele Access---------------------------------- */
 
 	mapped_type	&operator[](const key_type &key) {
+//		std::cout << "hey" << std::endl;
 		iterator tmp;
+//		std::cout << "hey" << std::endl;
 		insert(ft::make_pair(key, mapped_type()));
+//		std::cout << "hey" << std::endl;
+	
 		tmp = find(key);
+//		std::cout << "hey" << std::endl;
+		_data = _data->getRoot();
 		return ((*tmp).second);
 	}
 
@@ -168,7 +182,8 @@ class map {
 		iterator	last = end();
 		node_ptr 	here = _data;
 
-
+//		here->printTree();
+//		std::cout << "bjr" << std::endl;
 //		std::cout << "j'ai init mes ite" << std::endl;
 //		if (last._node == TNULL)
 //			std::cout << "end marche bien" << std::endl;
@@ -188,6 +203,7 @@ class map {
 			}
 			first++;
 		}
+//		std::cout << "bjr" << std::endl;
 	//	std::cout << "elements pas trouve" << std::endl;
 		res.second = true;
 	//	std::cout << "creation d'une nouvelle node" << std::endl;
@@ -197,6 +213,7 @@ class map {
 		node_to_insert->left = TNULL;
 		node_to_insert->right = TNULL;
 		_size++;
+//		std::cout << "bjr" << std::endl;
 //		std::cout << "fin de l'init de la nouvel node " << std::endl;
 		if (_data == NULL || _data == TNULL)
 		{
@@ -205,14 +222,80 @@ class map {
 		}
 		else
 		{
+//		std::cout << "insert" << std::endl;
 	//		std::cout << "je rentre dans l'insert de node" << std::endl;
-	//		std::cout << here->value << std::endl;
-			here->insert(node_to_insert);
+//			std::cout << "here value:" << here->value << std::endl;
+//			std::cout << "node to insert:" << node_to_insert->value << std::endl;
+	//		here->printTree();
+
+
+	//		here->insert(node_to_insert); // ancien chemin 
+
+
+	// new one test // 
+		ft::Node<value_type> *tmp = here->getRoot();
+		node_to_insert->parent = nullptr;
+		node_to_insert->left = TNULL;
+		node_to_insert->right = TNULL;
+		node_to_insert->color = 1;
+		
+		ft::Node<value_type> *y = nullptr; 
+		ft::Node<value_type> *x = tmp; 
+
+		while (x != TNULL) {
+			y = x;
+	//		std::cout << "test value comp " << _key_cmp(x->value.first,node_to_insert->value.first) <<std::endl;
+	//		std::cout << "value x key: " << x->value.first <<std::endl;
+	//		std::cout << "value node to insert key: " << node_to_insert->value.first <<std::endl;
+			if (_key_cmp(x->value.first,node_to_insert->value.first)) {
+	//			std::cout << "left" << std::endl;
+	 	       x = x->right;
+			} else { //if (!_key_cmp(x->value.first ,node_to_insert->value.first)){
+	//			std::cout << "right" << std::endl;
+	 	       x = x->left;
+			}
+	    }
+	//	std::cout << "out" << std::endl;
+		node_to_insert->parent = y;
+		if (y == nullptr) {
+			tmp = node_to_insert;
+		} else if (_key_cmp(y->value.first,node_to_insert->value.first)) {
+			y->right = node_to_insert;
+		} else {
+			y->left = node_to_insert;
+		}
+
+		if (node_to_insert->parent == nullptr) {
+			node_to_insert->color = 0;    
+			res.first = find(val.first);
+	//		TNULL->parent = _data->getRoot();
+	//		TNULL->root = _data->getRoot();
+			return (res);
+		}
+
+		if (node_to_insert->parent->parent == nullptr) {
+			res.first = find(val.first);
+		//	TNULL->parent = _data->getRoot();
+		//	TNULL->root = _data->getRoot();
+			return (res);
+		}
+//		std::cout << "go to insert " << std::endl;
+//	std::cout << "befor fix tree insert" << std::endl;
+//	tmp->printTree();
+//	std::cout << "node to fix: " << node->value << std::endl;
+		here->insertFix(node_to_insert);	
+
+		
+
+//		std::cout << "pas the insert" << std::endl;
 		}
 //		std::cout << "end :)" << std::endl;
 		res.first = find(val.first);
+//		std::cout << "bjr" << std::endl;
 		TNULL->parent = _data->getRoot();
+	//	std::cout << "bjr" << std::endl;
 		TNULL->root = _data->getRoot();
+//		std::cout << "bjr" << std::endl;
 //		std::cout << "go find l'element pour le ret de la fin:)" << std::endl;
 		return (res);
 	}
@@ -244,7 +327,7 @@ class map {
 
 	void		clear(void) {
 //		std::cout << "ca marche pas" << std::endl;
-		if (_data == NULL)
+		if (_data == NULL || _data == TNULL)
 			return ;
 		erase(begin(), end());
 		_data = NULL;
@@ -266,6 +349,7 @@ class map {
 
 		while (first != last)
 		{
+	//		std::cout << "value first: " << first._node->value <<std::endl;
 			if (!(_key_cmp(first->first, key)) && !(_key_cmp(key, first->first)))
 				break;
 			first++;

@@ -26,18 +26,18 @@ map<Key, T, Compare, Alloc>::erase(const key_type &k) {
 //	std::cout << "plop" << std::endl;
 	iterator element = this->find(k);
 		
-	if (element._node == element._node->getRoot() && element._node->left == TNULL && element._node->right == TNULL)
+	if (element._node == _data->getRoot() && element._node->left == TNULL && element._node->right == TNULL)
 	{
 //		std::cout << "last element" << std::endl;
 		delete element._node;
 		_size--;
-		_data = TNULL;
+		_data = NULL;
 		return 1;
 	}
 
 	if (element == this->end())
 	{
-		std::cout << "element not found" << std::endl;
+	//	std::cout << "element not found" << std::endl;
 		return (0);
 	}
 	
@@ -67,7 +67,10 @@ map<Key, T, Compare, Alloc>::erase(const key_type &k) {
 	if (bite == NULL)
 		_data = NULL;
 	else 
+	{
 		_data = bite->getRoot();
+//		std::cout << "new data:" << _data->value << std::endl;
+	}
 	}
 	_size--;
 //	std::cout << "delete done ouaiiii" << std::endl;
@@ -87,7 +90,7 @@ void	map<Key, T, Compare, Alloc>::erase(iterator first, iterator last) {
 
 	}
 //	std::cout << "fin de la session de baise" << std::endl;
-			TNULL->root = _data->getRoot();
+	//		TNULL->root = _data->getRoot();
 }
 
 
@@ -98,6 +101,7 @@ void	map<Key, T, Compare, Alloc>::swap(map &x) {
 	tmp._cpy_content(x);
 	x._cpy_content(*this);
 	this->_cpy_content(tmp);
+//	std::cout << "test end swap" << std::endl;
 }
 
 
@@ -109,9 +113,11 @@ void	map<Key, T, Compare, Alloc>::swap(map &x) {
 
 
 template<class Key, class T, class Compare, class Alloc>
-void	map<Key, T, Compare, Alloc>::_cpy_content(map &src) {
-	if (_data != NULL)
-	this->clear();
+void	map<Key, T, Compare, Alloc>::_cpy_content(map &x) {
+/*
+//	std::cout << "test 1" << std::endl;
+//	if (_data != NULL && _data != TNULL)
+//		this->clear();
 	node_ptr tmp = this->_data;
 
 	this->_data = src._data;
@@ -122,6 +128,35 @@ void	map<Key, T, Compare, Alloc>::_cpy_content(map &src) {
 	src._data = tmp;
 	src._size = 0;
 	tmp = NULL;
+	//std::cout << "test 2" << std::endl; */
+
+			key_compare _compTmp;
+			alloc_node _node_allocTmp;
+			node_ptr _rootTmp;
+			node_ptr _TNULLtmp;
+			allocator_type _allocTmp;
+			size_type _sizeTmp;
+
+			_compTmp = _key_cmp;
+			_node_allocTmp = _alloc_node;
+			_rootTmp = _data;
+			_allocTmp = _alloc;
+			_sizeTmp = _size;
+			_TNULLtmp = TNULL;
+			
+			_key_cmp = x._key_cmp;
+			_alloc_node = x._alloc_node;
+			_data= x._data;
+			_alloc = x._alloc;
+			_size = x._size;
+			TNULL = x.TNULL;
+
+			x._key_cmp = _compTmp;
+			x._alloc_node = _node_allocTmp;
+			x._data = _rootTmp;
+			x._alloc = _allocTmp;
+			x._size = _sizeTmp;
+			x.TNULL = _TNULLtmp;
 }
 
 
