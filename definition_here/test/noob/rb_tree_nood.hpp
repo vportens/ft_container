@@ -2,8 +2,9 @@
 #ifndef RB_TREE_NOOB_HPP
 #define RB_TREE_NOOB_HPP
 
-#include "utils_noob.hpp"
+#include "utils_map.hpp"
 #include <iostream>
+
 namespace ft {
 
 
@@ -24,39 +25,11 @@ struct Node{
 	int color;
 
 	Node(const value_type& val) : value(val),  parent(0), left(0), right(0), TNULL(0), root(0), color(0){	}
+	Node() : value(), parent(0) , left(0), right(0), TNULL(0), root(0), color(0) { }
 
-
-//	Node(const value_type& val, Node *par, Node *l, Node *r, int col) : value(val),  parent(par), left(l), right(r), color(col){}
-
-	Node() : value(), parent(0) , left(0), right(0), TNULL(0), root(0), color(0) {
-		
-/*	
-		TNULL = new ft::Node<T>;
-		TNULL->color = 0;
-		TNULL->left = nullptr;
-		TNULL->right= nullptr;
-		
-		*/
-	}
-
-	Node(const Node& cpy) : value(cpy.value), parent(cpy.parent), left(cpy.left), right(cpy.right),TNULL(cpy.TNULL), root(cpy.root), color(cpy.color) {
-		/*
-		TNULL = new ft::Node<T>;
-		TNULL->color = cpy->TNULL->color;
-		TNULL->left = cpy->TNULL->left;
-		TNULL->right = cpy->TNULL->right;
-		*/
-	}
+	Node(const Node& cpy) : value(cpy.value), parent(cpy.parent), left(cpy.left), right(cpy.right),TNULL(cpy.TNULL), root(cpy.root), color(cpy.color) {	}
 
 	Node(const Node* cpy) {
-		/*
-		TNULL = new ft::Node<T>;
-		TNULL->color = cpy->TNULL->color;
-		TNULL->left = cpy->TNULL->left;
-		TNULL->right = cpy->TNULL->right;
-
-		*/
-	//	std::cout << "bjr" << std::endl;
 		TNULL = cpy->TNULL;
 		root = cpy->root;
 		value = cpy->value;
@@ -68,7 +41,6 @@ struct Node{
 
 
 	virtual ~Node() {
-		//delete TNULL;
 	}
 
 
@@ -78,7 +50,6 @@ struct Node{
 
 
 	Node&	operator=(Node& cpy) {
-	//	std::cout << "test bite :" << std::endl;
 		if (*this == cpy)
 			return (*this);
 		value = cpy.value;
@@ -92,13 +63,10 @@ struct Node{
 	}
 
 	Node*	operator=(Node* cpy) {
-
-	//	std::cout << "test bite :2" << std::endl;
 		if (this == cpy)
 			return (this);
 		this->value = cpy->value;
 		this->color = cpy->color;
-		std::cout << "here" << std::endl;
 		TNULL = cpy->TNULL;
 		root = cpy->root;
 		this->parent = cpy->parent;
@@ -108,7 +76,6 @@ struct Node{
 	}
 
 	Node*	operator=(const Node* cpy) {
-//		std::cout << "test bite :3" << std::endl;
 		if (this == cpy)
 			return (this);
 		value = cpy->value;
@@ -121,23 +88,18 @@ struct Node{
 		return (this);
 	}
 /*------------------------utils-------------------*/
+
 	Node *getRoot() {
 		NodePtr tmp = this;
 		while (tmp->parent)
-		{
 			tmp = tmp->parent;
-		}
 		return (tmp);
 	}
 
-	Node *getRoot(Node *node)
-	{
+	Node *getRoot(Node *node) {
 		Node *tmp(node);
 		while (tmp->parent != tmp->TNULL && tmp->parent)
-		{
 			tmp = tmp->parent;
-			//std::cout << "bite: " << tmp->value << std::endl;
-		}
 		return (tmp);
 	}
 
@@ -180,66 +142,37 @@ struct Node{
 
   // For balancing the tree after deletion
   void deleteFix(NodePtr x) {
-///	  x->printTree();
-//	  std::cout << "we print tree`l" << std::endl;
-//	 // std::cout << "qui es tu: " << x->value << std::endl;
-//  std::cout << "qui es tu parent version: " << x->parent->value << std::endl;
-	//  std::cout << "le retour des bites" << std::endl;
-//	std::cout << "getroot :l" << getRoot()->value<< std::endl;
     NodePtr s;
-    while (x != getRoot(x) && x->color == 0) {
-//	  std::cout << "je rentre dans le delete fix boucle" << std::endl;
-      if (x == x->parent->left) {
-//	  std::cout << "je suis le fils gauche" << std::endl;
-        s = x->parent->right;
-//		std::cout << "what s:" << s->value << std::endl;
-        if (s->color == 1) {
-//			std::cout << "color parain est rouge" << std::endl;
-          s->color = 0;
-          x->parent->color = 1;
-          leftRotate(x->parent);
-//		  std::cout << "what s:" << s->value << std::endl;
-//		  std::cout << "what x:" << x->value << std::endl;
-	//	  std::cout << "what x parent:" << x->parent->value << std::endl;
-		  if (s == s->getRoot())
-		  {
-//			  std::cout << "tout est noir par ici" << std::endl;
-		  	break;
-		  }
-          s = x->parent->right;
-//		  std::cout << "after rotation: " << std::endl;
-//		  std::cout << "bite" << std::endl;
-		  x->printTree();
-//		  std::cout << "what new s:" << s->value << std::endl;
-//		  std::cout << "bite2" << std::endl;
-        }
 
-//	  std::cout << "le retour des bites" << std::endl;
+    while (x != getRoot(x) && x->color == 0) {
+      if (x == x->parent->left) {
+        s = x->parent->right;
+        if (s->color == 1) {
+			s->color = 0;
+			x->parent->color = 1;
+			leftRotate(x->parent);
+			if (s == s->getRoot())
+		  		break;
+          	s = x->parent->right;
+		  	x->printTree();
+        }
         if (s->left->color == 0 && s->right->color == 0) {
-//	  std::cout << "le retour des bites" << std::endl;
-//	std::cout << "?" << std::endl;
           s->color = 1;
           x = x->parent;
-//		  std::cout << "x new value: " << x->value << std::endl;
-		  
         } else {
-//			std::cout << "coucou" << std::endl;
-//	  std::cout << "le retour des bites" << std::endl;
-          if (s->right->color == 0) {
+     		if (s->right->color == 0) {
             s->left->color = 0;
             s->color = 1;
             rightRotate(s);
             s = x->parent->right;
-          }
-
-          s->color = x->parent->color;
-          x->parent->color = 0;
-          s->right->color = 0;
-          leftRotate(x->parent);
-          x = getRoot();
+     		}
+        	s->color = x->parent->color;
+    		x->parent->color = 0;
+      		s->right->color = 0;
+       		leftRotate(x->parent);
+        	x = getRoot();
         }
-      } else {
-//	  std::cout << "je suis le fils droite" << std::endl;
+  	} else {
         s = x->parent->left;
         if (s->color == 1) {
           s->color = 0;
@@ -247,179 +180,131 @@ struct Node{
           rightRotate(x->parent);
           s = x->parent->left;
         }
-
         if (s->right->color == 0 && s->left->color == 0) {
-//	  std::cout << "magie magie" << std::endl;
           s->color = 1;
           x = x->parent;
         } else {
-//	  std::cout << "le retour des bites" << std::endl;
-          if (s->left->color == 0) {
+     		if (s->left->color == 0) {
             s->right->color = 0;
             s->color = 1;
             leftRotate(s);
             s = x->parent->left;
-          }
-
-//	  std::cout << "le retour des bites" << std::endl;
-          s->color = x->parent->color;
-          x->parent->color = 0;
-          s->left->color = 0;
-          rightRotate(x->parent);
-          x = getRoot();
-        }
-      }
+    		}
+     		s->color = x->parent->color;
+     		x->parent->color = 0;
+      		s->left->color = 0;
+       		rightRotate(x->parent);
+        	x = getRoot();
+			}
+		}
     }
-	
-//	  std::cout << "end" << std::endl;
-
 	x = getRoot();
     x->color = 0;
-//	std::cout << "true end" << std::endl;
-  }
+}
 
-  void rbTransplant(NodePtr u, NodePtr v) {
-	  NodePtr tmp = getRoot();
+void rbTransplant(NodePtr u, NodePtr v) {
+	NodePtr tmp = getRoot();
     if (u->parent == nullptr) {
-      tmp = v;
+		tmp = v;
     } else if (u == u->parent->left) {
-      u->parent->left = v;
+ 		u->parent->left = v;
     } else {
-      u->parent->right = v;
+  		u->parent->right = v;
     }
     v->parent = u->parent;
   }
 
-  void deleteNodeHelper(NodePtr node, T key) {
-//	  std::cout << "bite en bois" << std::endl;
-//	std::cout << "bjr" << std::endl;
+void deleteNodeHelper(NodePtr node, T key) {
     NodePtr z = TNULL;
     NodePtr x, y;
-//	  std::cout << "bite en bois" << std::endl;
     while (node != TNULL) {
-//	  std::cout << "bite en bois" << std::endl;
-      if (node->value.first == key.first) {
-        z = node;
-      }
-
-      if (node->value.first <= key.first) {
-        node = node->right;
-      } else {
-        node = node->left;
-      }
+    	if (node->value.first == key.first) {
+   			z = node;
+    	}
+  		if (node->value.first <= key.first) {
+   			node = node->right;
+   		} else {
+   			node = node->left;
+    	}
     }
-//	std::cout << "node to delete: " << key <<  std::endl;
-//	  std::cout << "bite en bois" << std::endl;
-    if (z == TNULL) {
- //    std::cout << "Key not found in the tree" << std::endl;
+    if (z == TNULL)
       return;
-    }
-//	std::cout << "print tree befor" << std::endl;
-//	z->printTree();
-//	  std::cout << "bite en bois" << std::endl;
-
     y = z;
     int y_original_color = y->color;
     if (z->left == TNULL) {
-      x = z->right;
-      rbTransplant(z, z->right);
+    	x = z->right;
+    	rbTransplant(z, z->right);
     } else if (z->right == TNULL) {
-      x = z->left;
-      rbTransplant(z, z->left);
+    	x = z->left;
+    	rbTransplant(z, z->left);
     } else {
-      y = minimum(z->right);
-      y_original_color = y->color;
-      x = y->right;
-      if (y->parent == z) {
-        x->parent = y;
-      } else {
-        rbTransplant(y, y->right);
-        y->right = z->right;
-        y->right->parent = y;
-      }
-
-      rbTransplant(z, y);
-      y->left = z->left;
-      y->left->parent = y;
-      y->color = z->color;
+    	y = minimum(z->right);
+    	y_original_color = y->color;
+   		x = y->right;
+    	if (y->parent == z) {
+    	x->parent = y;
+	} else {
+		rbTransplant(y, y->right);
+ 		y->right = z->right;
+  		y->right->parent = y;
+	}
+	rbTransplant(z, y);
+    y->left = z->left;
+    y->left->parent = y;
+ 	y->color = z->color;
     }
-//	  std::cout << "delete node : " ;
-//	  std::cout << z->value << std::endl;
     delete z;
-//	  std::cout << "delete reussit, node x to fix: " << std::endl;
-//	  std::cout << x->parent->value << std::endl;
-//	  x->printTree();
-	  if (x == y->TNULL)
-//		  std::cout << "test" << std::endl;
+	if (x == y->TNULL)
     if (y_original_color == 0) {
-//	  std::cout << "fix d;ero" << std::endl;
       deleteFix(x);
-//	  std::cout << "fix d;ero" << std::endl;
     }
   }
 
   // For balancing the tree after insertion
   void insertFix(NodePtr k) {
-//	  std::cout << "go fix insert" << std::endl;
-//	  std::cout << "k value: " << k->value << std::endl;
     NodePtr u;
     NodePtr tmp = getRoot(k);
-//	std::cout << "?" << std::endl;
-//	std::cout << "addr k->parent: " << k->parent << std::endl;
-//	std::cout << "k->parent: " << k->parent->value << std::endl;
-//	tmp->printTree();
-//	std::cout<< std::endl;
     while (k->parent->color == 1) {
-//	tmp->printTree();
-//	std::cout<< std::endl;
-//		std::cout << "boucle dans le while du fix" <<  std::endl;
-      if (k->parent == k->parent->parent->right) {
-//		  std::cout << "go a droite" << std::endl;
-        u = k->parent->parent->left;
-        if (u->color == 1) {//rb_tree.cpp:39:18: error: a typedef cannot be a template
-          u->color = 0;
-          k->parent->color = 0;
-          k->parent->parent->color = 1; // ici
-          k = k->parent->parent;
-        } else {
-          if (k == k->parent->left) {
-//			  std::cout << "je swap k a k->cousin "  << std::endl;
-            k = k->parent;
-            rightRotate(k);
-          }
-          k->parent->color = 0;
-          k->parent->parent->color = 1; // ici
-          leftRotate(k->parent->parent);
-        }
-      } else {
-//		  std::cout << "go a droite" << std::endl;
-        u = k->parent->parent->right;
-
-        if (u->color == 1) {
-          u->color = 0;
-          k->parent->color = 0;
-          k->parent->parent->color = 1; // ici
-          k = k->parent->parent;
-        } else {
-          if (k == k->parent->right) {
-            k = k->parent;
-            leftRotate(k);
-          }
-          k->parent->color = 0;
-          k->parent->parent->color = 1; // ici
-          rightRotate(k->parent->parent);
-        }
-      }
-      if (k == getRoot()) {
-        break;
-      }
+    	if (k->parent == k->parent->parent->right) {
+    	    u = k->parent->parent->left;
+    	    if (u->color == 1) {
+  				u->color = 0;
+    	    	k->parent->color = 0;
+     		   	k->parent->parent->color = 1;
+      		  	k = k->parent->parent;
+    		} else {
+        	if (k == k->parent->left) {
+            	k = k->parent;
+            	rightRotate(k);
+          	}
+          	k->parent->color = 0;
+          	k->parent->parent->color = 1; // ici
+          	leftRotate(k->parent->parent);
+        	}
+    	} else {
+        	u = k->parent->parent->right;
+        	if (u->color == 1) {
+        		u->color = 0;
+        		k->parent->color = 0;
+        		k->parent->parent->color = 1; // ici
+       			k = k->parent->parent;
+        	} else {
+        		if (k == k->parent->right) {
+        			k = k->parent;
+        			leftRotate(k);
+        		}
+        		k->parent->color = 0;
+        		k->parent->parent->color = 1; // ici
+        		rightRotate(k->parent->parent);
+      		}
+      	}
+    	if (k == getRoot()) {
+       		break;
+    	}
     }
 	tmp = getRoot();
     tmp->color = 0;
-//	std::cout << "end print tree : " << std::endl;
-//	tmp->printTree();
-//	std::cout << "end fix insert" << std::endl;
-  }
+	}
 
   void printHelper(NodePtr root, std::string indent, bool last) {
     if (root != NULL && root != TNULL) {
@@ -500,7 +385,6 @@ struct Node{
   }
 
   void leftRotate(NodePtr x) {
-//	  std::cout << "left rotation done on: " << x->value << std::endl;
     NodePtr y = x->right;
     NodePtr tmp = getRoot();
 
@@ -522,7 +406,6 @@ struct Node{
   }
 
   void rightRotate(NodePtr x) {
-//	  std::cout << "right rotation done" << std::endl;
     NodePtr y = x->left;
     NodePtr tmp = getRoot();
     x->left = y->right;
@@ -541,17 +424,10 @@ struct Node{
     x->parent = y;
   }
 
-  // Inserting a node
 
   void insert(NodePtr node) {
-//    NodePtr node = new ft::Node<T>;
-//	std::cout << "in insert rb" << std::endl;
 	NodePtr tmp = getRoot();
-//	std::cout << "befor" << std::endl;
-//	std::cout << "befor insert tree" << std::endl;
-//	tmp->printTree();
     node->parent = nullptr;
-//    node->value = key;
     node->left = TNULL;
     node->right = TNULL;
     node->color = 1;
@@ -585,15 +461,11 @@ struct Node{
     if (node->parent->parent == nullptr) {
       return;
     }
-//	std::cout << "befor fix tree insert" << std::endl;
-//	tmp->printTree();
-//	std::cout << "node to fix: " << node->value << std::endl;
     insertFix(node);
   }
 
  
   void deleteNode(T value) {
-//	  std::cout << "coucou from rb tree" << std::endl;
     deleteNodeHelper(getRoot(), value);
   }
 
