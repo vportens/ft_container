@@ -4,5 +4,6 @@
 # include <iostream>
 # include "vector.hpp"
 # include "RandomIterator.hpp"
+# include "map.hpp"
 
 #endif

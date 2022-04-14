@@ -1,16 +1,17 @@
 #ifndef MAP_DECL_CLASS_HPP
 # define MAP_DECL_CLASS_HPP
 
-# include "base.hpp"
-# include "mapIte.hpp"
-# include "rev_ite_map.hpp"
-/*
+# include "utils_map.hpp"
+# include "mapIterator_noob.hpp"
+# include "reverse_iterator_map.hpp"
+# include "rb_tree_nood.hpp"
+
 namespace ft {
 
-template < class Key,                                     // map::key_type
-		 class T,                                         // map::mapped_type
-		 class Compare = std::less<Key>,                  // map::key_compare
-		 class Alloc = std::allocator<pair<const Key,T> > // map::allocator_type
+template < class Key,
+		 class T,
+		 class Compare = std::less<Key>,
+		 class Alloc = std::allocator<pair<const Key,T> > 
 		 >
 class map {
 	public:
@@ -26,22 +27,22 @@ class map {
 	typedef typename allocator_type::const_reference	const_reference;
 	typedef typename allocator_type::pointer			pointer;
 	typedef typename allocator_type::const_pointer		const_pointer;
-	typedef ft::mapNode<value_type>						node_type;
+	typedef ft::Node<value_type>						node_type;
 	typedef node_type*									node_ptr;
 
 	typedef	std::allocator<node_type>							alloc_node;
 	typedef ptrdiff_t									difference_type;
 	typedef size_t										size_type;
 
-	typedef ft::mapIte<value_type, node_type>			iterator;
-	typedef ft::mapIte<const value_type, node_type>		const_iterator;
+	typedef ft::mapIterator<value_type, node_type>			iterator;
+	typedef ft::mapIterator<const value_type, node_type>		const_iterator;
 	typedef ft::reverse_iterator<iterator>				reverse_iterator;
 	typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
-*/
+
 /* ----------------------------- Member functions ------------------------------------ */
-/*
 	private:
 	node_ptr				_data;
+	node_ptr				TNULL;
 	key_compare				_key_cmp;
 	allocator_type			_alloc;
 	alloc_node				_alloc_node;
@@ -49,31 +50,42 @@ class map {
 
 	public:
 
-	explicit map(const key_compare &comp = key_compare(),
-			const allocator_type &alloc = allocator_type()) : _data(), _key_cmp(comp), _alloc(alloc), _size(0){
-		ft::mapNode<value_type> * node_to_insert = _alloc_node.allocate(1);
-		this->_data = node_to_insert;
-		return ;
-		}
 
-	template <class Ite>
+	explicit map(const key_compare &comp = key_compare(),
+			const allocator_type &alloc = allocator_type()) : _data(), TNULL(), _key_cmp(comp), _alloc(alloc), _size(0){
+		//ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
+		ft::Node<value_type> * node_to_insert = new ft::Node<value_type>;
+		this->TNULL = node_to_insert;
+		_data = TNULL;
+		return ;
+	}
+
+	template <class Ite >
 	map(typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first,
 			Ite last, const key_compare &comp = key_compare(),
-			const allocator_type &alloc = allocator_type()) : _data(), _key_cmp(comp), _alloc(alloc), _size(0) {
-					ft::mapNode<value_type> * node_to_insert = _alloc_node.allocate(1);
-			this->_data = node_to_insert;
-			this->insert(first, last);
-			}
+		const allocator_type &alloc = allocator_type()) : _data(), TNULL(), _key_cmp(comp), _alloc(alloc), _size(0) {
+		ft::Node<value_type> * node_to_insert = new ft::Node<value_type>;
+		//			ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
+		this->TNULL = node_to_insert;
+		while (first != last)
+		{
+			insert(*first);
+			first++;
+		}
+		TNULL->root = _data->getRoot();
+	}
 
-	map(const map &src) : _data(), _key_cmp(key_compare()), _alloc(allocator_type()), _size(0) {
-		ft::mapNode<value_type> * node_to_insert = _alloc_node.allocate(1);
-		this->_data = node_to_insert;
+	map(const map &src) : _data(), TNULL(), _key_cmp(key_compare()), _alloc(allocator_type()), _size(0) {
+		//ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
+		ft::Node<value_type> * node_to_insert = new ft::Node<value_type>;
+		this->TNULL = node_to_insert;
+		_data = NULL;
 		*this = src;
 	}
 
 	virtual ~map(void) {
 		clear();
-		delete _data;
+		delete TNULL;
 	}
 
 	map	&operator=(map const &rhs) {
@@ -83,15 +95,38 @@ class map {
 		insert(rhs.begin(), rhs.end());
 		return (*this);
 	}
-*/
+
 /* ---------------------------------------Iterators------------------------------------ */
-/*
 
-	iterator				begin(void) {return iterator(farLeft(_data));}
-	const_iterator			begin(void) const {return const_iterator(farLeft(_data));}
+	iterator				begin(void) {
+		if (!_data || _data == TNULL)
+			return (iterator(TNULL));
+		return iterator(farLeft(_data->getRoot()));
+	}
 
-	iterator				end(void) {return iterator(farRight(_data));}
-	const_iterator			end(void) const {return const_iterator(farRight(_data));}
+	const_iterator			begin(void) const {
+		if (!_data || _data == TNULL)
+			return (iterator(TNULL));
+		return const_iterator(farLeft(_data->getRoot()));
+		}
+
+
+	iterator				end(void) {
+		if (!_data || _data == TNULL)
+			return (iterator(TNULL));
+		return (iterator(TNULL));
+
+		return iterator(farRight(_data->getRoot())->right);
+	}
+
+	const_iterator			end(void) const {
+		
+		if (!_data || _data == TNULL)
+			return (iterator(TNULL));
+		return (iterator(TNULL));
+		return const_iterator(farRight(_data->getRoot())->right);
+	
+	}
 
 	reverse_iterator		rbegin(void) {return reverse_iterator(end());}
 	const_reverse_iterator	rbegin(void) const {return reverse_iterator(end());}
@@ -100,27 +135,36 @@ class map {
 	const_reverse_iterator	rend(void) const {return reverse_iterator(begin());}
 
 /* ------------------------------Capacity-------------------------------- */
-/*
-	size_type	size(void) const {return (_size);}
+
+	size_type	size(void) const {
+		return (_size);
+	}
 	size_type	max_size(void) const {return (alloc_node().max_size());}
 	bool		empty(void) const {return (_size == 0? true : false);}
 
 /* -----------------------------Ele Access---------------------------------- */
-/*
 
 	mapped_type	&operator[](const key_type &key) {
-		return (insert(value_type(key, mapped_type())).first->second);
+		iterator tmp;
+
+		insert(ft::make_pair(key, mapped_type()));
+		tmp = find(key);
+		_data = _data->getRoot();
+		return ((*tmp).second);
 	}
 
 // ******************************** Modifiers ******************************* //
-/*
+
 	ft::pair<iterator, bool>	insert(const value_type &val) {
 		ft::pair<iterator, bool> res;
 		iterator	first = begin();
 		iterator	last = end();
+		node_ptr 	here = _data;
 
-		while (first != last)
+		while (_data != TNULL && first != last)
 		{
+			if (!_data)
+				break;
 			if (!_key_cmp(first->first, val.first) && !_key_cmp(val.first, first->first))
 			{
 				res.second = false;
@@ -130,10 +174,54 @@ class map {
 			first++;
 		}
 		res.second = true;
-		ft::mapNode<value_type> * node_to_insert = _alloc_node.allocate(1);
+		ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
 		_alloc_node.construct(node_to_insert, val);
-		_btree_add(node_to_insert);
+
+		node_to_insert->TNULL = TNULL;
+		node_to_insert->left = TNULL;
+		node_to_insert->right = TNULL;
+		_size++;
+		if (_data == NULL || _data == TNULL)
+			_data = node_to_insert;
+		else
+		{
+			ft::Node<value_type> *tmp = here->getRoot();
+			node_to_insert->parent = nullptr;
+			node_to_insert->left = TNULL;
+			node_to_insert->right = TNULL;
+			node_to_insert->color = 1;
+		
+			ft::Node<value_type> *y = nullptr; 
+			ft::Node<value_type> *x = tmp; 
+
+			while (x != TNULL) {
+				y = x;
+				if (_key_cmp(x->value.first,node_to_insert->value.first))
+	 		       x = x->right;
+				else 
+	 				x = x->left;
+	 		}
+			node_to_insert->parent = y;
+			if (y == nullptr)
+				tmp = node_to_insert;
+			else if (_key_cmp(y->value.first,node_to_insert->value.first))
+				y->right = node_to_insert;
+			else
+				y->left = node_to_insert;
+			if (node_to_insert->parent == nullptr) {
+				node_to_insert->color = 0;    
+				res.first = find(val.first);
+				return (res);
+			}
+			if (node_to_insert->parent->parent == nullptr) {
+				res.first = find(val.first);
+				return (res);
+			}
+			here->insertFix(node_to_insert);	
+		}
 		res.first = find(val.first);
+		TNULL->parent = _data->getRoot();
+		TNULL->root = _data->getRoot();
 		return (res);
 	}
 
@@ -150,30 +238,78 @@ class map {
 		}
 	}
 
-	void		erase(iterator position);
-	size_type	erase(const key_type &k);
-	void		erase(iterator first, iterator last);
 
-	void		swap(map &x);
+	void		erase(iterator position) {
+		erase(position._node->value.first);
+	}
+
+	size_type	erase(const key_type &k){
+		iterator element = this->find(k);
+		
+		if (element._node == _data->getRoot() && element._node->left == TNULL && element._node->right == TNULL)
+		{
+			delete element._node;
+			//make ite right
+			_size--;
+			_data = NULL;
+			return 1;
+		}
+		if (element == this->end())
+			return (0);
+
+		node_ptr tmp;
+
+		if (_data->value.first == k)
+		{
+			if (_data->parent && _data->parent != TNULL)
+				tmp = _data->parent;
+			else if (_data->left && _data->left != TNULL)
+				tmp = _data->left;
+			else if (_data->right&& _data->right!= TNULL)
+				tmp = _data->right;
+			else 
+				tmp = NULL;
+		}
+		element._node->deleteNode(element._node);
+		if (_data->value.first == k)
+		{
+			if (tmp == NULL)
+				_data = NULL;
+			else 
+				_data = tmp->getRoot();
+		}
+		_size--;
+		TNULL->root = _data->getRoot();
+		return (1);
+	}
+
+	void		erase(iterator first, iterator last) {
+		while (first != last)
+			erase(first++);
+	}
+
+	void		swap(map &x) {
+		map tmp;
+
+		tmp._cpy_content(x);
+		x._cpy_content(*this);
+		this->_cpy_content(tmp);
+	}
 
 
 	void		clear(void) {
-		node_ptr void_node_ptr = end()._node;
-		if (_size == 0)
+		if (_data == NULL || _data == TNULL)
 			return ;
-		void_node_ptr->parent->right = NULL;
-		_btree_clear(_data);
-		_data = void_node_ptr;
-		_size = 0;
+		erase(begin(), end());
+		_data = NULL;
 	}
 
 /* ----------------------------Observers-------------------------------- */
-/*
+
 	key_compare		key_comp(void) const {return key_compare();}
 	value_compare	value_comp(void) const {return value_compare(key_compare());}
 
 /* -----------------------Operations----------------------------- */
-/*
 
 	iterator		find(const key_type &key) {
 		iterator first = begin();
@@ -199,11 +335,10 @@ class map {
 			first++;
 		}
 		return (first);
-		
 	}
 
 	size_type		count(const key_type &key) const {
-		const_iterator last = end();	
+		const_iterator last = end();
 		if (find(key) == end())
 			return (false);
 		return (true);
@@ -233,7 +368,6 @@ class map {
 			first++;
 		}
 		return first;
-	
 	}
 
 
@@ -248,7 +382,6 @@ class map {
 			first++;
 		}
 		return first;
-
 	}
 
 	const_iterator	upper_bound(const key_type &key) const {
@@ -262,8 +395,6 @@ class map {
 			first++;
 		}
 		return first;
-
-
 	}
 
 
@@ -276,25 +407,52 @@ class map {
 	}
 
 	pair<iterator,iterator>				equal_range(const key_type &key) {
-
 		pair<iterator, iterator> res;
+
 		res.first = lower_bound(key);
 		res.second = upper_bound(key);
 		return (res);
-
 	}
 
 // ******************************* Non-public ******************************* //
 
 	private:
 
-	void				_cpy_content(map &src);
+	void	printTree() 
+	{
+		if (_data != TNULL)
+			_data->printTree();
+	}
 
-	void				_btree_clear(node_ptr node);
-	void				_btree_add(node_ptr node);
-	void				_btree_rm(node_ptr node);
+	void				_cpy_content(map &x) {
+			key_compare _compTmp;
+			alloc_node _node_allocTmp;
+			node_ptr _rootTmp;
+			node_ptr _TNULLtmp;
+			allocator_type _allocTmp;
+			size_type _sizeTmp;
 
-//	bool				_key_eq(const key_type &k1, const key_type &k2) const;
+			_compTmp = _key_cmp;
+			_node_allocTmp = _alloc_node;
+			_rootTmp = _data;
+			_allocTmp = _alloc;
+			_sizeTmp = _size;
+			_TNULLtmp = TNULL;
+			
+			_key_cmp = x._key_cmp;
+			_alloc_node = x._alloc_node;
+			_data= x._data;
+			_alloc = x._alloc;
+			_size = x._size;
+			TNULL = x.TNULL;
+
+			x._key_cmp = _compTmp;
+			x._alloc_node = _node_allocTmp;
+			x._data = _rootTmp;
+			x._alloc = _allocTmp;
+			x._size = _sizeTmp;
+			x.TNULL = _TNULLtmp;
+	}
 
 }; // ***************************************************** class ft::map end //
 
@@ -358,5 +516,5 @@ void	swap(map<Key, T, Compare, Alloc> &x, map<Key, T, Compare, Alloc> &y) {
 
 
 } // ******************************************************* ft namespace end //
-*/
+
 #endif // ******************************************** MAP_DECL_CLASS_HPP end //

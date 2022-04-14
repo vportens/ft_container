@@ -73,7 +73,7 @@ class vector {
 
 					template <class InputIterator>
 					vector ( InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()
-					,		typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = u_nullptr) : _alloc(alloc) {
+					,		typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr) : _alloc(alloc) {
 				difference_type n = ft::distance(first, last);
 				_first= _alloc.allocate( n );
 				_size = n;
@@ -265,7 +265,7 @@ class vector {
 **	change the element from first to end to val
 */
 			template <class InputIterator>
-				void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = u_nullptr) {
+				void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr) {
 					int i = 0;
 					size_t n = ft::distance(first, last);
 					if (n <= _size)
@@ -449,7 +449,7 @@ class vector {
 
 
 			template<class InputIterator>
-			void insert (iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = u_nullptr) {
+			void insert (iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr) {
 				size_t lastone = &(*position) - _first;
 				size_type n = ft::distance(first, last);
 				if (_capacity >= _size + n)
