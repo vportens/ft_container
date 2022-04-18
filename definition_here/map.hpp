@@ -54,7 +54,10 @@ class map {
 	explicit map(const key_compare &comp = key_compare(),
 			const allocator_type &alloc = allocator_type()) : _data(), TNULL(), _key_cmp(comp), _alloc(alloc), _size(0){
 		//ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
-		ft::Node<value_type> * node_to_insert = new ft::Node<value_type>;
+		ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
+		_alloc_node.construct(node_to_insert, value_type());
+
+	//	ft::Node<value_type> * node_to_insert = new ft::Node<value_type>;
 		this->TNULL = node_to_insert;
 		_data = TNULL;
 		return ;
@@ -64,7 +67,9 @@ class map {
 	map(typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first,
 			Ite last, const key_compare &comp = key_compare(),
 		const allocator_type &alloc = allocator_type()) : _data(), TNULL(), _key_cmp(comp), _alloc(alloc), _size(0) {
-		ft::Node<value_type> * node_to_insert = new ft::Node<value_type>;
+		//ft::Node<value_type> * node_to_insert = new ft::Node<value_type>;
+		ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
+		_alloc_node.construct(node_to_insert, value_type());
 		//			ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
 		this->TNULL = node_to_insert;
 		while (first != last)
@@ -77,7 +82,9 @@ class map {
 
 	map(const map &src) : _data(), TNULL(), _key_cmp(key_compare()), _alloc(allocator_type()), _size(0) {
 		//ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
-		ft::Node<value_type> * node_to_insert = new ft::Node<value_type>;
+		//ft::Node<value_type> * node_to_insert = new ft::Node<value_type>;
+		ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
+		_alloc_node.construct(node_to_insert, value_type());
 		this->TNULL = node_to_insert;
 		_data = NULL;
 		*this = src;
