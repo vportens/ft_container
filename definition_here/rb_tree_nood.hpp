@@ -98,7 +98,7 @@ struct Node{
 
 	Node *getRoot(Node *node) {
 		Node *tmp(node);
-		while (tmp->parent != tmp->TNULL && tmp->parent)
+		while (tmp->parent != tmp->TNULL && tmp->parent != nullptr && tmp->parent)
 			tmp = tmp->parent;
 		return (tmp);
 	}
@@ -214,9 +214,11 @@ void rbTransplant(NodePtr u, NodePtr v) {
     v->parent = u->parent;
   }
 
-void deleteNodeHelper(NodePtr node, T key) {
-    NodePtr z = TNULL;
+void deleteNodeHelper(NodePtr z) { //, T key) {
+  //  NodePtr z = TNULL;
     NodePtr x, y;
+
+	/*
     while (node != TNULL) {
     	if (node->value.first == key.first) {
    			z = node;
@@ -227,6 +229,7 @@ void deleteNodeHelper(NodePtr node, T key) {
    			node = node->left;
     	}
     }
+	*/
     if (z == TNULL)
       return;
     y = z;
@@ -262,9 +265,13 @@ void deleteNodeHelper(NodePtr node, T key) {
 
   // For balancing the tree after insertion
   void insertFix(NodePtr k) {
+//	std::cout << "entre dans insert fix`k: " << k->value << std::endl;
     NodePtr u;
     NodePtr tmp = getRoot(k);
+
+//	std::cout << "entre dans insert fix`" << std::endl;
     while (k->parent->color == 1) {
+//		std::cout<< "while" << std::endl;
     	if (k->parent == k->parent->parent->right) {
     	    u = k->parent->parent->left;
     	    if (u->color == 1) {
@@ -424,7 +431,7 @@ void deleteNodeHelper(NodePtr node, T key) {
     x->parent = y;
   }
 
-
+/*
   void insert(NodePtr node) {
 	NodePtr tmp = getRoot();
     node->parent = nullptr;
@@ -463,14 +470,14 @@ void deleteNodeHelper(NodePtr node, T key) {
     }
     insertFix(node);
   }
-
+*/
  
   void deleteNode(T value) {
     deleteNodeHelper(getRoot(), value);
   }
 
   void deleteNode(NodePtr node) {
-	  deleteNodeHelper(getRoot(), node->value);
+	  deleteNodeHelper(node); //, node->value);
   }
 
   void printTree() {

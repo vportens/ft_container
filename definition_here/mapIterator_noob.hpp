@@ -8,8 +8,6 @@ namespace ft {
 template <typename T, typename node_type>
 class mapIterator {
 	protected:
-		node_type						*_node;
-		mapIterator(node_type *src);
 
 	public:
 		typedef T						value_type;
@@ -17,8 +15,12 @@ class mapIterator {
 		typedef value_type&				reference;
 		typedef value_type*				pointer;
 
+		node_type						*_node;
+
 		mapIterator(void);
 		mapIterator(const mapIterator &src);
+		mapIterator(node_type *src);
+
 		virtual ~mapIterator(void);
 		mapIterator	&operator=(mapIterator const &rhs);
 
