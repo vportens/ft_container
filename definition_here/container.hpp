@@ -5,5 +5,6 @@
 # include "vector.hpp"
 # include "RandomIterator.hpp"
 # include "map.hpp"
+# include "set.hpp"
 
 #endif

@@ -1,10 +1,10 @@
-#ifndef MAP_DECL_CLASS_HPP
-# define MAP_DECL_CLASS_HPP
+#ifndef MAP_CLASS_HPP
+# define MAP_CLASS_HPP
 
 # include "utils_map.hpp"
-# include "mapIterator_noob.hpp"
+# include "mapIterator.hpp"
 # include "reverse_iterator_map.hpp"
-# include "rb_tree_nood.hpp"
+# include "rb_tree.hpp"
 
 namespace ft {
 
@@ -53,11 +53,9 @@ class map {
 
 	explicit map(const key_compare &comp = key_compare(),
 			const allocator_type &alloc = allocator_type()) : _data(), TNULL(), _key_cmp(comp), _alloc(alloc), _size(0){
-		//ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
 		ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
 		_alloc_node.construct(node_to_insert, value_type());
 
-	//	ft::Node<value_type> * node_to_insert = new ft::Node<value_type>;
 		this->TNULL = node_to_insert;
 		_data = TNULL;
 		return ;
@@ -67,10 +65,8 @@ class map {
 	map(typename ft::enable_if<!std::numeric_limits<Ite>::is_integer, Ite>::type first,
 			Ite last, const key_compare &comp = key_compare(),
 		const allocator_type &alloc = allocator_type()) : _data(), TNULL(), _key_cmp(comp), _alloc(alloc), _size(0) {
-		//ft::Node<value_type> * node_to_insert = new ft::Node<value_type>;
 		ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
 		_alloc_node.construct(node_to_insert, value_type());
-		//			ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
 		this->TNULL = node_to_insert;
 		while (first != last)
 		{
@@ -81,8 +77,6 @@ class map {
 	}
 
 	map(const map &src) : _data(), TNULL(), _key_cmp(key_compare()), _alloc(allocator_type()), _size(0) {
-		//ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
-		//ft::Node<value_type> * node_to_insert = new ft::Node<value_type>;
 		ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
 		_alloc_node.construct(node_to_insert, value_type());
 		this->TNULL = node_to_insert;
@@ -160,7 +154,7 @@ class map {
 		return ((*tmp).second);
 	}
 
-// ******************************** Modifiers ******************************* //
+/* -------------------------------- Modifiers ------------------------------- */
 
 	ft::pair<iterator, bool>	insert(const value_type &val) {
 		ft::pair<iterator, bool> res;
@@ -421,7 +415,7 @@ class map {
 		return (res);
 	}
 
-// ******************************* Non-public ******************************* //
+/* ------------------------------- Non-public ------------------------------- */
 
 	private:
 
@@ -461,7 +455,7 @@ class map {
 			x.TNULL = _TNULLtmp;
 	}
 
-}; // ***************************************************** class ft::map end //
+}; /* ------------------------------------------------------class ft::map end */
 
 template <class Key, class T, class Compare, class Alloc>
 class	map<Key, T, Compare, Alloc>::value_compare {
@@ -522,6 +516,6 @@ void	swap(map<Key, T, Compare, Alloc> &x, map<Key, T, Compare, Alloc> &y) {
 }
 
 
-} // ******************************************************* ft namespace end //
+}
 
-#endif // ******************************************** MAP_DECL_CLASS_HPP end //
+#endif

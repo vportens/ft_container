@@ -1,10 +1,10 @@
 #ifndef SET_HPP 
 # define SET_HPP 
 
-#include "mapIterator_noob.hpp"
+#include "mapIterator.hpp"
 #include "reverse_iterator_map.hpp"
 #include "utils_map.hpp"
-#include "rb_tree_nood.hpp"
+#include "rb_tree.hpp"
 
 
 namespace ft {
@@ -85,14 +85,12 @@ class set {
 	template <class InputIterator>
 	set (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) :  _data(), TNULL(), _key_cmp(comp), _alloc(alloc), _size(0){
 
-//		std::cout << "here" << std::endl;
 		ft::Node<value_type> * node_to_insert = _alloc_node.allocate(1);
 		_alloc_node.construct(node_to_insert, value_type());
 		TNULL = node_to_insert;
 
 		while (first != last)
 		{
-//			std::cout << "bite" << std::endl;
 			insert(*first);
 			first++;
 		}
@@ -174,15 +172,12 @@ class set {
 		iterator	last = end();
 		node_ptr 	here = _data;
 
-//		std::cout << "data :" << _data->value << std::endl;
 		while (_data != TNULL && first != last)
 		{
-//			std::cout << "test" << std::endl;
 			if (!_data)
 				break;
 			if (!_key_cmp(*first, val) && !_key_cmp(val, *first))
 			{
-//				std::cout << "end test" << std::endl;
 				res.second = false;
 				res.first = first;
 				return (res);
@@ -202,7 +197,6 @@ class set {
 			_data = node_to_insert;
 		else
 		{
-//			std::cout  << "go here" << std::endl;
 			ft::Node<value_type> *tmp = here->getRoot();
 			node_to_insert->parent = nullptr;
 			node_to_insert->left = TNULL;
@@ -212,7 +206,6 @@ class set {
 			ft::Node<value_type> *y = nullptr; 
 			ft::Node<value_type> *x = tmp; 
 
-		//	std::cout << "x: " << x->value << std::endl;
 			while (x != TNULL) {
 				y = x;
 				if (_key_cmp(x->value, node_to_insert->value))
@@ -220,7 +213,6 @@ class set {
 				else 
 	 				x = x->left;
 	 		}
-		//	std::cout  << "go here y: " << y->value << std::endl;
 			node_to_insert->parent = y;
 			if (y == nullptr)
 				tmp = node_to_insert;
@@ -237,9 +229,7 @@ class set {
 				res.first = find(val);
 				return (res);
 			}
-//			std::cout << "tets" << std::endl;
 			here->insertFix(node_to_insert);	
-//			std::cout << "end tets" << std::endl;
 		}
 		res.first = find(val);
 		TNULL->parent = _data->getRoot();
@@ -293,7 +283,6 @@ class set {
 			else 
 				tmp = NULL;
 		}
-//		std::cout << "value to delete: " << element._node->value << std::endl;
 		element._node->deleteNode(element._node);
 		if (_data->value == k)
 		{
@@ -305,7 +294,6 @@ class set {
 		_size--;
 		if ((TNULL->getRoot())->value != k)
 			_data = TNULL->getRoot();
-//		std::cout << "data after erase:" << _data->value << std::endl;
 		TNULL->root = _data->getRoot();
 		return (1);
 	}
@@ -313,7 +301,6 @@ class set {
 	void		erase(iterator first, iterator last) {
 		while (first != last)
 		{
-//			std::cout << "value to erase:" << first._node->value << std::endl;
 			erase(first++);
 		}
 	}

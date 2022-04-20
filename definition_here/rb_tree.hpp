@@ -1,6 +1,6 @@
   
-#ifndef RB_TREE_NOOB_HPP
-#define RB_TREE_NOOB_HPP
+#ifndef RB_TREE_HPP
+#define RB_TREE_HPP
 
 #include "utils_map.hpp"
 #include <iostream>
@@ -214,22 +214,10 @@ void rbTransplant(NodePtr u, NodePtr v) {
     v->parent = u->parent;
   }
 
-void deleteNodeHelper(NodePtr z) { //, T key) {
-  //  NodePtr z = TNULL;
+void deleteNodeHelper(NodePtr z) { 
     NodePtr x, y;
 
-	/*
-    while (node != TNULL) {
-    	if (node->value.first == key.first) {
-   			z = node;
-    	}
-  		if (node->value.first <= key.first) {
-   			node = node->right;
-   		} else {
-   			node = node->left;
-    	}
-    }
-	*/
+
     if (z == TNULL)
       return;
     y = z;
@@ -265,13 +253,10 @@ void deleteNodeHelper(NodePtr z) { //, T key) {
 
   // For balancing the tree after insertion
   void insertFix(NodePtr k) {
-//	std::cout << "entre dans insert fix`k: " << k->value << std::endl;
     NodePtr u;
     NodePtr tmp = getRoot(k);
 
-//	std::cout << "entre dans insert fix`" << std::endl;
     while (k->parent->color == 1) {
-//		std::cout<< "while" << std::endl;
     	if (k->parent == k->parent->parent->right) {
     	    u = k->parent->parent->left;
     	    if (u->color == 1) {
@@ -431,53 +416,14 @@ void deleteNodeHelper(NodePtr z) { //, T key) {
     x->parent = y;
   }
 
-/*
-  void insert(NodePtr node) {
-	NodePtr tmp = getRoot();
-    node->parent = nullptr;
-    node->left = TNULL;
-    node->right = TNULL;
-    node->color = 1;
 
-    NodePtr y = nullptr;
-    NodePtr x = tmp;
-
-    while (x != TNULL) {
-      y = x;
-      if (node->value.first < x->value.first) {
-        x = x->left;
-      } else {
-        x = x->right;
-      }
-    }
-
-    node->parent = y;
-    if (y == nullptr) {
-      tmp = node;
-    } else if (node->value.first < y->value.first) {
-      y->left = node;
-    } else {
-      y->right = node;
-    }
-
-    if (node->parent == nullptr) {
-      node->color = 0;
-      return;
-    }
-
-    if (node->parent->parent == nullptr) {
-      return;
-    }
-    insertFix(node);
-  }
-*/
  
   void deleteNode(T value) {
     deleteNodeHelper(getRoot(), value);
   }
 
   void deleteNode(NodePtr node) {
-	  deleteNodeHelper(node); //, node->value);
+	  deleteNodeHelper(node); 
   }
 
   void printTree() {
