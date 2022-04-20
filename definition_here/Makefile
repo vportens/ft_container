@@ -3,6 +3,7 @@ NAME    =	vector
 # --   Directory   -- #
 OBJ_DIR     =   objs
 INC_DIR        =    incs
+CLONE		= FOLDERTEST
 
 # --  Search All files in SRCS  -- #
 SRC_DIR     =    $(shell find . -type d)
@@ -19,8 +20,11 @@ CPPFLAG    = -std=c++98 -g #-Wall -Wextra -Werror -std=c++98
 
 .PHONY: all
 
-all:
-	@make $(NAME) --no-print-directory
+all: | $(CLONE)
+	cd $(CLONE) && ./do.sh	
+
+$(CLONE) :
+	git clone https://github.com/mli42/containers_test $@
 
 $(NAME): $(OBJS)
 		$(CC) $(CPPFLAG) -o $(NAME) $(OBJS)
@@ -43,3 +47,5 @@ fclean: clean
 
 .PHONY: re
 re: fclean all
+
+
