@@ -1,7 +1,7 @@
 #ifndef MAP_ITE_CLASS_HPP
 # define MAP_ITE_CLASS_HPP
 
-# include "utils_map.hpp"
+# include "utils.hpp"
 
 namespace ft {
 
@@ -11,7 +11,7 @@ class mapIterator {
 
 	public:
 		typedef T						value_type;
-		typedef ptrdiff_t				difference_type;
+		typedef std::ptrdiff_t				difference_type;
 		typedef value_type&				reference;
 		typedef value_type*				pointer;
 

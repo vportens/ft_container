@@ -2,7 +2,7 @@
 #ifndef RB_TREE_HPP
 #define RB_TREE_HPP
 
-#include "utils_map.hpp"
+#include "utils.hpp"
 #include <iostream>
 
 namespace ft {
@@ -154,7 +154,7 @@ struct Node{
 			if (s == s->getRoot())
 		  		break;
           	s = x->parent->right;
-		  	x->printTree();
+		  //	x->printTree();
         }
         if (s->left->color == 0 && s->right->color == 0) {
           s->color = 1;

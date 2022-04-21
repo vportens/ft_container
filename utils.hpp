@@ -31,9 +31,61 @@ static class nullptr_t
 
 } nullptr = {};
 
+
+#include "rb_tree.hpp"
+
 namespace ft
 {
 	
+template <typename T>
+Node<T>	*farRight(Node<T> *node) {
+	if (!node)
+		return (NULL);
+	if (node == node->TNULL)
+		return node->TNULL;
+	while (node->right != node->TNULL)
+	{
+		node = node->right;
+	}
+	return (node);
+}
+
+template <typename T>
+Node<T>	*farLeft(Node<T> *node) {
+	if (!node || node == node->TNULL)
+		return node->TNULL;
+	while (node->left != node->TNULL)
+		node = node->left;
+	return (node);
+}
+
+template <class Ite1, class Ite2>
+bool	lexicographical_compare(Ite1 first1, Ite1 last1, Ite2 first2, Ite2 last2)
+{
+	while (first1 != last1 && first2 != last2 && *first1 == *first2)
+	{
+		++first1; ++first2;
+	}
+	if (first1 == last1)
+		return (first2 != last2);
+	else if (first2 == last2)
+		return (false);
+	return (*first1 < *first2);
+}
+
+
+template <class Ite1, class Ite2>
+bool	equal(Ite1 first1, Ite1 last1, Ite2 first2)
+{
+	while (first1 != last1)
+	{
+		if (*first1 != *first2)
+			return false;
+		++first1; ++first2;
+	}
+	return true;
+}
+
     template<bool Cond, class T = void> struct enable_if {};
     template<class T> struct enable_if<true, T> { typedef T type; };
 
