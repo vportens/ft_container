@@ -15,7 +15,7 @@ In this project we had to reimplement from scratch the following C++ STL contain
 ## What I learned
 
 1. How C++ containers work and how use it.
-2. Red Black Tree implementation with template, o(long(n)) complexity 
+2. Red Black Tree implementation with template, o(log(n)) complexity 
 3. TDD with a preset list of test for each containers (thx mli42)
 4. Iterators implementation from scratch.
 5. Monitoring of big data structur
